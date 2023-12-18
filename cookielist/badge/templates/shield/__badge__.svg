@@ -1,0 +1,94 @@
+
+<?xml version='1.0' encoding='utf-8'?>
+    
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 {{ data.name | size | plus: 2 | times: data.badgeStringWidth | plus: 22 | plus: 5 | plus: 180 | plus: 16 | plus: 35 }} {{ data.badgeHeight }}" preserveAspectRatio="none">
+    <!-- STYLE-START -->
+    <style>
+        @import url("style.css");
+    </style>
+    <!-- STYLE-END -->
+
+    <defs>
+        <!-- LIQUID-START -->
+        <liquid name="badgeHeight" value="28" />
+        <liquid name="badgeStringWidth" value="6.7" />
+        <liquid name="badgeStringHeight" value="10" />
+
+
+        <liquid name="name" value="Anilist" />
+
+        <liquid name="animeCount" value="an-c" />
+        <liquid name="mangaCount" value="ma-c" />
+        <liquid name="musicCount" value="mu-c" />
+        <liquid name="novelCount" value="no-c" />
+
+        <!-- <liquid name="animeSeries" value="an-s" />
+        <liquid name="mangaSeries" value="ma-s" />
+        <liquid name="musicSeries" value="mu-s" />
+        <liquid name="novelSeries" value="no-s" /> -->
+        <liquid name="animeSeries" value="0351" />
+        <liquid name="mangaSeries" value="14" />
+        <liquid name="musicSeries" value="4" />
+        <liquid name="novelSeries" value="0000" />
+
+        <liquid name="CookieListIcon" value="assets/favicon.png" />
+        <!-- LIQUID-END -->
+
+        <symbol id="media-symbol-anime" viewBox="0 0 24 24" width="16" height="16">
+            <path fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+        </symbol>
+
+        <symbol id="media-symbol-manga" viewBox="0 0 24 24" width="16" height="16">
+            <path fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+        </symbol>
+
+        <symbol id="media-symbol-music" viewBox="0 0 24 24" width="16" height="16">
+            <path fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z" />
+        </symbol>
+
+        <symbol id="media-symbol-novel" viewBox="0 0 24 24" width="16" height="16">
+            <path fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+        </symbol>
+
+    </defs>
+
+    <!-- BADGE-START -->
+
+    <rect x="0" width="{{ data.name | size | plus: 2 | times: data.badgeStringWidth | plus: 22 }}" height="100%" fill="#555" />
+    <rect x="{{ data.name | size | plus: 2 | times: data.badgeStringWidth | plus: 22 }}" width="100%" height="100%" fill="#ff69b4" />
+    <image x="4" y="7" width="14" height="14" href="assets/favicon.png" />
+    <text letter-spacing="0" y="18" x="22" font-size="12px" fill="#fff">@{{ data.name | upcase }}</text>
+
+    {% assign start = data.name | size | plus: 2 | times: data.badgeStringWidth | plus: 22 | plus: 5 %}
+
+    <use xlink:href="#media-symbol-anime" x="{{ start }}" y="6" stroke="#fff" />
+    <text letter-spacing="0" y="18" x="{{ start | plus: 18 }}" font-size="12px" fill="#fff" font-weight="bold">{{ data.animeSeries }} |</text>
+
+    <use xlink:href="#media-symbol-manga" x="{{ start | plus: 60 }}" y="6" stroke="#fff" />
+    <text letter-spacing="0" y="18" x="{{ start | plus: 60 | plus: 18}}" font-size="12px" fill="#fff" font-weight="bold">{{ data.mangaSeries | append: "‎ ‎ ‎" }} |</text>
+
+    <use xlink:href="#media-symbol-music" x="{{ start | plus: 120 }}" y="6" stroke="#fff" />
+    <text letter-spacing="0" y="18" x="{{ start | plus: 120 | plus: 18}}" font-size="12px" fill="#fff" font-weight="bold">{{ data.musicSeries }} |</text>
+
+    <use xlink:href="#media-symbol-novel" x="{{ start | plus: 180 }}" y="6" stroke="#fff" />
+    <text letter-spacing="0" y="18" x="{{ start | plus: 180 | plus: 18}}" font-size="12px" fill="#fff" font-weight="bold">{{ data.novelSeries }}</text>
+
+    <!-- <text transform="scale(.1)" x="2388.75" y="175" textLength="1612.5" fill="#fff" font-weight="bold"></text> -->
+
+
+
+    <!-- <rect x="0" y="0" height="100%" width="{{ data.badgeHeight }}" fill="rgb(15 23 42)"/>
+    <image href="assets/favicon.png" x="1" y="5%" height="90%"/>
+    <rect x="{{ data.badgeHeight }}" y="0" height="100%" width="{{ data.name | size | plus: 1 | times: data.badgeStringWidth }}" fill="rgb(15 23 42)"/>
+    <rect x="94" y="0" height="100%" width="100" fill="blue"/>
+    <text y="12px" x="14" font-size="12px" letter-spacing="0">
+        @{{ data.name}}
+    </text> -->
+    <!-- BADGE-END -->
+
+    <!-- SCRIPT-START -->
+    <script href="assets/liquid.browser.js"></script>
+    <script href="assets/cookielist.badge.js"></script>
+    <!-- SCRIPT-END -->
+
+</svg>
