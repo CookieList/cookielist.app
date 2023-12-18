@@ -16,13 +16,19 @@ if [ -z "$REPOSITORY" ]; then
     fi
 fi
 
-echo -e -n "${CYAN}Enter DotEnv Key${NC}: "
-read DOTENV_KEY
+DOTENV_KEY=$2
+if [ -z "$DOTENV_KEY" ]; then
+    echo -e -n "${CYAN}Enter DotEnv Key${NC}: "
+    read DOTENV_KEY
+fi
 
 if [[ -d . && -n "$(ls -A .)" ]]; then
-    echo -e "${YELLOW}Warning:${NC} Current Directory Is Not Empty."
-    echo -e -n "${CYAN}Empty '$(pwd)'${NC} [${GREEN}Yes/(No)${NC}]: "
-    read CHOICE
+    CHOICE=$3
+    if [ -z "$CHOICE" ]; then
+        echo -e "${YELLOW}Warning:${NC} Current Directory Is Not Empty."
+        echo -e -n "${CYAN}Empty '$(pwd)'${NC} [${GREEN}Yes/(No)${NC}]: "
+        read CHOICE
+    fi
 
     case $CHOICE in
     "YES" | "yes" | "Yes" | "Y" | "y")
