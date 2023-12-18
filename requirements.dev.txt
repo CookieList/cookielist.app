@@ -1,0 +1,4 @@
+playwright
+Flask-DebugToolbar
+javascript
+nodejs-bin
