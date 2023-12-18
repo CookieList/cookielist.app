@@ -1,0 +1,78 @@
+{% macro code_snippet(language, snippet) %}
+<div class="flex flex-col w-full my-2 rounded bg-slate-200 dark:bg-slate-800 dark:brightness-125">
+  <div class="flex flex-row justify-between w-full">
+    <span class="p-1 m-1 mb-0 text-xs rounded text-slate-600 bg-slate-100 dark:text-slate-400 dark:bg-slate-900">{{ language }}</span>
+    <button class="p-1 m-1 mb-0 text-xs transition rounded cursor-pointer text-slate-500 bg-slate-100 hover:bg-white dark:text-slate-400 dark:bg-slate-900 hover:dark:brightness-125" data-clipboard-target="#\[snippet\]-language\.code\@{{ language }}" id="[snippet]-language.copy@{{ language }}" clipboard><span>{% icon "square-2-stack", class="w-4 h-4" %}</span></button>
+  </div>
+  <div class="w-full p-2 overflow-auto rounded bg-slate-200 dark:bg-slate-800 dark:text-slate-300" id="[snippet]-language.code@{{ language }}">
+    {% snippet snippet, name=user.name, page=url_for('UserPageView:user_page', id=user.id, _external=True), badge=url_for('BadgeView:get_badge', id=user.id, _external=True) %}
+  </div>
+</div>
+{% endmacro %}
+
+
+<template id="[container]-profile@template.copy_icon_svg">{% icon "square-2-stack", class="w-4 h-4" %}</template>
+<template id="[container]-profile@template.copied_icon_svg">{% icon "clipboard", class="w-4 h-4" %}</template>
+
+
+<template id="[container]-profile">
+  <div class="flex flex-col w-full animate__animated animate__fadeIn" style="--animate-duration: 0.3s;">
+    <div class="w-full">
+
+      <div class="w-full">
+        <a href="{{ user.siteUrl }}" target="_blank">
+          <div class="flex flex-col items-center m-3">
+            <img class="w-1/4 p-3 m-3 border-2 border-dashed rounded-full shadow-xl md:w-1/2 border-slate-400 md:p-1" src="{{ user.avatar.large }}" alt="User Avatar" />
+            <span class="text-3xl text-slate-500 justify-self-end md:text-base">@{{ user.name }}</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="flex flex-col items-center w-full">
+        <div class="advanced-table">
+
+          <div class="at-header">
+            <div class="at-cell !w-[20%] md:!text-xs">category</div>
+            <div class="at-cell !w-[40%] md:!text-xs">duration</div>
+            <div class="at-cell !w-[20%] md:!text-xs">titles</div>
+            <div class="at-cell !w-[20%] md:!text-xs">series</div>
+          </div>
+
+          {% for type, info in data.result.items() %}
+          <div class="at-row">
+            <div class="at-cell !w-[20%] font-bold cursor-default md:!text-sm" data-title="category">
+              {{ type | capitalize }}
+            </div>
+            <div class="at-cell !w-[40%] font-bold md:!w-full cursor-default md:!text-sm" data-title="duration">
+              {{ human.format_timespan(info.duration) if info.duration != 0 else '-' }}
+            </div>
+            <div class="at-cell !w-[20%] font-bold cursor-default md:!text-sm !text-rose-500" data-title="titles">
+              {{ badge[type.lower() + 'Count'] }}
+            </div>
+            <div class="at-cell !w-[20%] font-bold cursor-default md:!text-sm !text-green-500" data-title="series">
+              {{ info.length }}
+            </div>
+          </div>
+          {% endfor %}
+
+        </div>
+      </div>
+
+      <div class="flex flex-col items-center w-full p-2 rounded-lg my-9 bg-slate-100 dark:bg-slate-800">
+
+        <div class="p-8 m-2 shadow rounded-xl bg-slate-900 md:p-3">
+          <img src="{{ badge.URI }}" alt="User Badge" />
+        </div>
+
+        <p class="p-2 my-2 text-sm text-justify rounded text-slate-600 bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:brightness-125">Enhance your AniList profile with these <span class="font-bold text-pink-400 dark:text-pink-500">dynamic {{ SITE_NAME }} badges</span> that <span class="font-bold text-slate-400 dark:text-slate-100">automatically update</span> whenever you visit <span class="font-bold text-slate-400 dark:text-slate-100">{{ SITE_NAME }}</span>. Simply incorporate these badges into your profile bio and showcase your real-time <span class="font-bold text-transparent uppercase bg-clip-text bg-gradient-to-r from-indigo-500 dark:from-indigo-600 via-purple-500 dark:via-purple-600 to-pink-500 dark:to-pink-600 [-webkit-background-clip:text]">otaku moe-moe</span>.</p>
+
+        <div class="w-full">
+          {{ code_snippet('Markdown', '[![@{name}]({badge})]({page})') }}
+          {{ code_snippet('HTML', '<a href="{page}"><img src="{badge}" alt="@{name}" /></a>') }}
+          {{ code_snippet('AniList', '[ img({badge}) ]({page})') }}
+        </div>
+
+      </div>
+    </div>
+  </div>
+</template>

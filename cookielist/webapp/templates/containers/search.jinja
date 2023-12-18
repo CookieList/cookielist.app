@@ -1,0 +1,29 @@
+<!-- <template id="[container]-search@template.search_results">
+  {% raw %}{{#users}}{% endraw %}
+    <a class="relative flex rounded-md group hover:shadow-lg" href="{% raw %}/{{ id }}?_={{ name }}{% endraw %}" target="_self">
+      <div class="dark:group-hover:bg-gray-700 dark:group-hover:border-slate-600 dark:bg-slate-800 dark:border-slate-700 relative w-full h-0 pb-[100%] border-2 rounded-lg bg-slate-50 border-slate-300 p-3 md:py-28 md:pt-1 md:px-1 group-hover:bg-gray-200 group-hover:border-slate-500 group-hover:shadow-xl transition overflow-hidden">
+          <img class="w-full p-1 transition bg-white border border-dashed rounded-full aspect-square border-slate-500 group-hover:border-slate-700 dark:border-slate-800 dark:group-hover:border-slate-900 dark:bg-slate-500" src="{% raw %}{{ avatar.large }}{% endraw %}" />
+          <span class="text-xs italic font-bold text-slate-800 dark:text-slate-400">{% raw %}{{ name }}{% endraw %}</span>
+      </div>
+    </a>
+    {% raw %}{{/users}}{% endraw %}
+</template> -->
+
+<template id="[container]-search@template.search_results">
+  {% raw %}{{#users}}{% endraw %}
+    <a class="flex overflow-hidden rounded-md aspect-[4/5] group hover:scale-105 border-2 border-slate-200 dark:border-slate-700 transition group" href="{% raw %}/{{ id }}?_={{ name }}{% endraw %}" target="_self">
+      <div class="relative flex flex-col items-center w-full h-full dark:bg-slate-800 bg-slate-100">
+        <div class="z-30 overflow-hidden h-5/6"><img class="object-cover h-full min-w-full rounded-md " src="{% raw %}{{ avatar.large }}{% endraw %}"></div>
+        <span class="absolute bottom-0 left-0 z-40 flex w-full p-px text-sm text-center truncate transition-colors rounded-b-md text-slate-500 dark:text-slate-400 h-1/6 group-hover:text-slate-600 dark:group-hover:text-slate-300">{% raw %}{{ name }}{% endraw %}</span>
+      </div>
+    </a>
+    {% raw %}{{/users}}{% endraw %}
+</template>
+
+<template id="[container]-search">
+  <div class="flex flex-col items-center w-full animate__animated animate__fadeIn" style="--animate-duration: 0.3s;">
+    <input type="search" name="serch" placeholder="Search" id="[container]-search.search_box" class="flex-none w-11/12 px-5 my-1 uppercase transition rounded-full cursor-pointer h-14 bg-slate-200/50 text-slate-600 dark:bg-slate-800 dark:text-slate-400 hover:brightness-95 focus:cursor-text focus:outline focus:outline-2 focus:outline-slate-500/30 focus:outline-offset-0 focus:brightness-95">
+    <div id="[container]-search.search_results_container" class="grid w-full grid-cols-7 gap-4 py-8 3xl:grid-cols-6 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-3 md:gap-2 md:py-4"></div>
+  </div>
+  <script>SearchInitialize()</script>
+</template>

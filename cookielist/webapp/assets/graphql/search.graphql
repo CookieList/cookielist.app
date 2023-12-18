@@ -1,0 +1,11 @@
+query ($search: String) {
+  Page(page: 1) {
+    users(search: $search, sort: [SEARCH_MATCH]) {
+      id
+      name
+      avatar {
+        large
+      }
+    }
+  }
+}

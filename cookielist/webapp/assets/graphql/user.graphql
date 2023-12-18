@@ -1,0 +1,59 @@
+query ($userId: Int, $userName: String, $mediaType: MediaType) {
+  MediaListCollection(
+    userId: $userId
+    userName: $userName
+    type: $mediaType
+    # status_in: [CURRENT, COMPLETED, DROPPED, PAUSED, REPEATING]
+    forceSingleCompletedList: true
+  ) {
+    lists {
+      isCustomList
+      status
+      entries {
+        progress
+        media {
+          id
+          status(version: 2)
+          siteUrl
+          format
+          episodes
+          duration
+          title {
+            romaji
+            english
+          }
+          coverImage {
+            large
+          }
+          nextAiringEpisode {
+            airingAt
+            episode
+          }
+        }
+      }
+    }
+    user {
+      id
+      name
+      siteUrl
+      avatar {
+        large
+        medium
+      }
+      options {
+        profileColor
+      }
+      statistics {
+        anime {
+          count
+          minutesWatched
+          episodesWatched
+        }
+        manga {
+          count
+          chaptersRead
+        }
+      }
+    }
+  }
+}

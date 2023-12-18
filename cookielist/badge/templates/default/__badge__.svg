@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 220 100"
+    preserveAspectRatio="none" width="440" height="200">
+    
+    <!-- STYLE-START -->
+    <style>
+        :root {
+            --slate-50: rgb(248 250 252);
+            --slate-100: rgb(241 245 249);
+            --slate-200: rgb(226 232 240);
+            --slate-300: rgb(203 213 225);
+            --slate-400: rgb(148 163 184);
+            --slate-500: rgb(100 116 139);
+            --slate-600: rgb(71 85 105);
+            --slate-700: rgb(51 65 85);
+            --slate-800: rgb(30 41 59);
+            --slate-900: rgb(15 23 42);
+            --slate-950: rgb(2 6 23);
+        }
+
+        :root {
+            --card-bg: {{ data.card_bg | default: "var(--slate-50)" }};
+            --title-bg: {{ data.title_bg | default: "var(--slate-400)" }};
+            
+            --media-icon-bg: {{ data.media_icon_bg | default: "var(--slate-500)" }};
+            --data-bg: {{ data.data_bg | default: "var(--slate-200)" }};
+            --data-text: {{ data.data_text | default: "var(--slate-600)" }};
+            
+            --sakura-petal-bg: {{ data.sakura_petal_bg | default: "var(--slate-200)" }};
+            --sakura-inner-bg: {{ data.sakura_inner_bg | default: "var(--slate-400)" }};
+            --sakura-border-bg: {{ data.sakura_border_bg | default: "var(--slate-600)" }};
+
+            --circle-spin-speed: {{ data.circle_spin_speed | default: "10s" }};;
+            --sakura-spin-speed: {{ data.sakura_spin_speed | default: "10s" }};;
+        } 
+    </style>
+    <style>
+        @import url("style.css");
+    </style>
+    <!-- STYLE-END -->
+
+    <defs>
+        <!-- LIQUID-START -->
+        <liquid name="name" value="Anilist" />
+
+        <liquid name="animeCount" value="an-c" />
+        <liquid name="mangaCount" value="ma-c" />
+        <liquid name="musicCount" value="mu-c" />
+        <liquid name="novelCount" value="no-c" />
+
+        <liquid name="animeSeries" value="an-s" />
+        <liquid name="mangaSeries" value="ma-s" />
+        <liquid name="musicSeries" value="mu-s" />
+        <liquid name="novelSeries" value="no-s" />
+
+        <liquid name="avatarB64" value="assets/favicon.png" />
+        <!-- LIQUID-END -->
+
+        <pattern id="anilist-profile-picture" patternUnits="userSpaceOnUse" width="70" height="70">
+            <image href="{{ data.avatarB64 }}" x="0" y="0" width="70" height="70" />
+        </pattern>
+
+        <symbol id="media-symbol-anime" viewBox="0 0 24 24" width="16" height="16">
+            <path fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+        </symbol>
+
+        <symbol id="media-symbol-manga" viewBox="0 0 24 24" width="16" height="16">
+            <path fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+        </symbol>
+
+        <symbol id="media-symbol-music" viewBox="0 0 24 24" width="16" height="16">
+            <path fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z" />
+        </symbol>
+
+        <symbol id="media-symbol-novel" viewBox="0 0 24 24" width="16" height="16">
+            <path fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+        </symbol>
+
+        <symbol id="decoration-sakura-flower" viewBox="0 0 285 285" width="25" height="25">
+            <g transform="matrix(2.021999 0 0 2.021999 13.745063 -293.54423)">
+                <g class="sakura-flower-outer-petals">
+                    <path
+                        d="M54.209 160.921c-.297.004-.591.11-.88.337-5.95 4.671-11.203 14.597-9.93 22.903 2.897 18.896 14.067 26.707 20.463 26.707s17.566-7.811 20.463-26.707c1.273-8.306-3.98-18.232-9.93-22.903-3.077-2.416-6.681 8.946-10.533 8.946-3.491 0-6.778-9.332-9.653-9.283z"
+                        paint-order="stroke fill markers" />
+                    <path
+                        d="M115.48 191.605c-.096-.282-.288-.528-.592-.732-6.281-4.215-17.345-6.144-24.85-2.366-17.076 8.594-21.053 21.631-19.076 27.714s12.857 14.293 31.723 11.208c8.293-1.356 16.109-9.419 18.714-16.521 1.347-3.673-10.573-3.589-11.763-7.253-1.079-3.32 6.78-9.33 5.846-12.05z"
+                        paint-order="stroke fill markers" />
+                    <path
+                        d="M105.338 259.157c.238-.178.413-.437.514-.79 2.068-7.276.483-18.394-5.429-24.365-13.45-13.584-27.078-13.338-32.253-9.579s-9.62 16.645-.857 33.634c3.852 7.468 13.936 12.41 21.495 12.692 3.909.146.147-11.164 3.263-13.429 2.824-2.052 10.968 3.566 13.266 1.836z"
+                        paint-order="stroke fill markers" />
+                    <path
+                        d="M38.008 270.505c.243.171.543.258.91.244 7.559-.282 17.643-5.224 21.495-12.692 8.763-16.989 4.318-29.875-.857-33.634s-18.803-4.006-32.253 9.579c-5.912 5.971-7.496 17.089-5.429 24.365 1.069 3.763 10.663-3.311 13.78-1.046 2.824 2.052-.002 11.533 2.353 13.184z"
+                        paint-order="stroke fill markers" />
+                    <path
+                        d="M6.28 209.967c-.088.284-.078.596.049.941 2.604 7.102 10.421 15.165 18.714 16.521 18.866 3.084 29.747-5.126 31.723-11.208s-2.001-19.12-19.076-27.714c-7.506-3.778-18.569-1.849-24.85 2.366-3.248 2.18 6.444 9.118 5.253 12.782-1.079 3.32-10.969 3.562-11.812 6.312z"
+                        paint-order="stroke fill markers" />
+                </g>
+                <path
+                    d="M60.884 236.333a.44.44 0 0 1-.271-.104c-1.836-1.441-3.457-4.504-3.064-7.067.894-5.83 4.341-8.241 6.314-8.241s5.42 2.41 6.314 8.241c.393 2.563-1.228 5.626-3.064 7.067-.949.745-2.061-2.76-3.25-2.76-1.077 0-2.091 2.879-2.979 2.864zm19.897-10.128c-.03.087-.089.163-.183.226-1.938 1.301-5.352 1.896-7.668.73-5.269-2.652-6.496-6.675-5.886-8.551s3.967-4.41 9.788-3.458c2.559.418 4.971 2.906 5.774 5.098.416 1.133-3.262 1.108-3.63 2.238-.333 1.024 2.092 2.879 1.804 3.718zm-3.483-22.053a.44.44 0 0 1 .158.244c.638 2.245.149 5.676-1.675 7.518-4.15 4.192-8.355 4.116-9.952 2.956s-2.968-5.136-.264-10.378c1.189-2.304 4.3-3.829 6.633-3.916 1.206-.045.045 3.445 1.007 4.144.871.633 3.384-1.1 4.093-.567zm-22.051-3.502a.44.44 0 0 1 .281-.075c2.332.087 5.444 1.612 6.633 3.916 2.704 5.242 1.332 9.218-.264 10.378s-5.802 1.236-9.952-2.956c-1.824-1.842-2.313-5.273-1.675-7.518.33-1.161 3.29 1.022 4.252.323.871-.633-.001-3.559.726-4.068zm-10.144 19.889c-.027-.088-.024-.184.015-.29.804-2.191 3.215-4.679 5.774-5.098 5.821-.952 9.179 1.582 9.788 3.458s-.617 5.9-5.886 8.551c-2.316 1.166-5.73.57-7.668-.73-1.002-.673 1.988-2.814 1.621-3.944-.333-1.025-3.385-1.099-3.645-1.948z"
+                    paint-order="stroke fill markers" class="sakura-flower-inner-petals" />
+            </g>
+        </symbol>
+
+    </defs>
+
+    <!-- BADGE-START -->
+    {% assign media = "anime|manga|music|novel" | split: "|" %}
+
+    <rect class="card-background" x="45" y="0" height="100" width="175" rx="6" ry="6" />
+
+    <path fill="url(#anilist-profile-picture)" stroke-width="0" transform="translate(10,15)" filter="blur(3px)">
+        <animate attributeName="d" dur="5000ms" repeatCount="indefinite"
+            values="M61.7,44.9Q59.0,55.0,49.8,61.9Q41.0,69.0,32.0,63.1Q22.0,57.0,14.0,51.0Q5.0,46.0,4.4,34.6Q3.0,24.0,12.0,17.6Q22.0,12.0,30.7,10.0Q40.0,7.0,47.0,13.2Q54.0,19.0,59.4,27.0Q65.0,35.0,61.7,44.9Z;M63.53025,44.79845Q58.3769,54.5969,49.55536,61.16297Q40.73381,67.72904,31.35381,62.64071Q21.97381,57.55238,14.79012,51.2369Q7.60644,44.92142,8.77442,35.36548Q9.94241,25.8095,15.82275,18.92941Q21.7031,12.04929,30.8731,9.30536Q40.0431,6.56142,47.0,12.87226Q53.8969,19.1831,61.29025,27.09155Q68.68359,35.0,63.53025,44.79845Z;M57.59576,43.94689Q56.36355,52.89377,48.00888,57.06954Q39.65422,61.24531,30.11911,60.556Q20.58399,59.86668,11.51265,53.334Q2.44131,46.80134,2.86331,35.11733Q3.28531,23.43332,11.562,16.10799Q19.83866,8.78266,29.70666,8.92222Q39.57467,9.06179,49.37423,11.87177Q59.1738,14.68176,59.00088,24.84088Q58.82796,35.0,57.59576,43.94689Z;M61.7,44.9Q59.0,55.0,49.8,61.9Q41.0,69.0,32.0,63.1Q22.0,57.0,14.0,51.0Q5.0,46.0,4.4,34.6Q3.0,24.0,12.0,17.6Q22.0,12.0,30.7,10.0Q40.0,7.0,47.0,13.2Q54.0,19.0,59.4,27.0Q65.0,35.0,61.7,44.9Z;">
+        </animate>
+    </path>
+
+    <path fill="url(#anilist-profile-picture)" stroke-width="0" transform="translate(10,15)">
+        <animate attributeName="d" dur="5000ms" repeatCount="indefinite"
+            values="M61.7,44.9Q59.0,55.0,49.8,61.9Q41.0,69.0,32.0,63.1Q22.0,57.0,14.0,51.0Q5.0,46.0,4.4,34.6Q3.0,24.0,12.0,17.6Q22.0,12.0,30.7,10.0Q40.0,7.0,47.0,13.2Q54.0,19.0,59.4,27.0Q65.0,35.0,61.7,44.9Z;M63.53025,44.79845Q58.3769,54.5969,49.55536,61.16297Q40.73381,67.72904,31.35381,62.64071Q21.97381,57.55238,14.79012,51.2369Q7.60644,44.92142,8.77442,35.36548Q9.94241,25.8095,15.82275,18.92941Q21.7031,12.04929,30.8731,9.30536Q40.0431,6.56142,47.0,12.87226Q53.8969,19.1831,61.29025,27.09155Q68.68359,35.0,63.53025,44.79845Z;M57.59576,43.94689Q56.36355,52.89377,48.00888,57.06954Q39.65422,61.24531,30.11911,60.556Q20.58399,59.86668,11.51265,53.334Q2.44131,46.80134,2.86331,35.11733Q3.28531,23.43332,11.562,16.10799Q19.83866,8.78266,29.70666,8.92222Q39.57467,9.06179,49.37423,11.87177Q59.1738,14.68176,59.00088,24.84088Q58.82796,35.0,57.59576,43.94689Z;M61.7,44.9Q59.0,55.0,49.8,61.9Q41.0,69.0,32.0,63.1Q22.0,57.0,14.0,51.0Q5.0,46.0,4.4,34.6Q3.0,24.0,12.0,17.6Q22.0,12.0,30.7,10.0Q40.0,7.0,47.0,13.2Q54.0,19.0,59.4,27.0Q65.0,35.0,61.7,44.9Z;">
+        </animate>
+    </path>
+
+    <image class="animate-spin magic-circle" href="assets/magic-circle.png" width="100" height="100" x="170"
+        transform-origin="220 50" />
+
+    <text class="card-title" stroke-width="0" font-size="10" font-family="VictorMono" x="50" y="10" font-weight="600"
+        font-style="italic">@{{ data.name }} </text>
+
+    {% assign coordinates = "77.5, 17 | 77.5, 58 | 127, 58 | 127, 17" | split: "|" %}
+
+    {% for coordinate in coordinates %}
+    {% assign cord = coordinate | split: "," %}
+    <rect x="{{ cord[0] | strip }}" y="{{ cord[1] | strip }}" height="35" width="44" rx="6" ry="6"
+        class="card-media-block" />
+    {% endfor %}
+
+
+    {% for coordinate in coordinates %}
+    {% assign cord = coordinate | split: "," %}
+    <use xlink:href="#media-symbol-{{ media[forloop.index0] }}" class="card-media-icon"
+        x="{{ cord[0] | strip | plus: 2 }}" y="{{ cord[1] | strip | plus: 2 }}" />
+    {% endfor %}
+
+    {% for coordinate in coordinates %}
+    {% assign cord = coordinate | split: "," %}
+    <text class="card-media-text-title" stroke-width="0" font-size="7" font-family="VictorMono"
+        x="{{ cord[0] | strip | plus: 18.5 }}" y="{{ cord[1] | strip | plus: 3 }}" font-weight="600"
+        font-style="italic">{{ media[forloop.index0] | upcase }}</text>
+    {% endfor %}
+
+
+    {% for coordinate in coordinates %}
+    {% assign cord = coordinate | split: "," %}
+    {% assign _data = media[forloop.index0] | append: "Count" %}
+    <text class="card-media-text-watched_titles" stroke-width="0" font-size="5" font-family="VictorMono"
+        x="{{ cord[0] | strip | plus: 18.5 }}" y="{{ cord[1] | strip | plus: 9 }}" font-weight="600"
+        font-style="italic">({{ data[_data] }})</text>
+    {% endfor %}
+
+    {% for coordinate in coordinates %}
+    {% assign cord = coordinate | split: "," %}
+    {% assign _data = media[forloop.index0] | append: "Series" %}
+    <text class="card-media-text-watched_series" stroke-width="0" font-size="16" font-family="VictorMono"
+        x="{{ cord[0] | strip | plus: 4.5 }}" y="{{ cord[1] | strip | plus: 30.5 }}" font-weight="600"
+        font-style="italic">{{ data[_data] }}</text>
+    {% endfor %}
+
+    <use xlink:href="#decoration-sakura-flower" class="animate-spin sakura-flower-border sakura-flower" stroke-width="1" x="34" y="77"
+        transform-origin="46.5 89.5" />
+    <!-- BADGE-END -->
+        
+    <!-- SCRIPT-START -->
+    <script href="assets/liquid.browser.js"></script>
+    <script href="assets/cookielist.badge.js"></script>
+    <!-- SCRIPT-END -->
+    
+</svg>

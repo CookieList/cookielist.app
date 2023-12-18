@@ -1,0 +1,47 @@
+@tailwind components
+    
+@layer components
+    $spark-from: theme('colors.purple.500')
+    $spark-via: theme('colors.emerald.500')
+    $spark-to: theme('colors.cyan.500')
+
+    .sparkle
+        @apply inline relative
+        .sparkle-icon
+            --size: clamp(20px, 1.5vw, 30px)
+            top: var(--star-top)
+            width: var(--size)
+            height: var(--size)
+            left: var(--star-left)
+            animation: sparkle-scale 700ms ease forwards
+            @apply absolute block
+            & > svg
+                animation: sparkle-rotate 1000ms linear infinite
+                @apply block opacity-70
+                & > path
+                    @apply fill-[#{$spark-from}]
+
+        .sparkle-text
+            animation: sparkle-background 3s linear infinite
+            background: linear-gradient(to right,$spark-from,$spark-via,$spark-to,$spark-from)
+            background-size: 200%
+            @apply bg-clip-text whitespace-nowrap text-transparent text-5xl md:text-3xl italic
+            -webkit-background-clip: text
+            
+    @keyframes sparkle-background
+        from
+            background-position: 0% center
+        to
+            background-position: -200% center
+
+    @keyframes sparkle-scale
+        from, to
+            transform: scale(0)
+        50%
+            transform: scale(1)
+
+    @keyframes sparkle-rotate
+        from
+            transform: rotate(0deg)
+        to
+            transform: rotate(180deg)

@@ -1,0 +1,107 @@
+@tailwind components
+
+@layer components
+    .entry
+        @apply flex flex-col w-full m-3
+
+        .close-action
+            @apply justify-center hidden mb-1 md:flex
+
+            .close-button
+                @apply flex flex-row p-1 transition border-2 rounded-md cursor-pointer bg-red-500/10 hover:bg-red-500/20 border-red-500/40
+
+                .close-bt-text
+                    @apply text-red-500
+
+                .close-bt-icon
+                    &:before
+                       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='%23ef4444' aria-hidden='true' width='24px' height='24px'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M6 18L18 6M6 6l12 12'%3E%3C/path%3E%3C/svg%3E") 
+
+        .entry-title
+            @apply text-center text-slate-500 bg-slate-50 p-2 rounded-lg m-1 text-sm dark:bg-slate-900 dark:text-slate-400 md:bg-white
+
+            .title-time
+                @apply font-bold text-slate-600 dark:text-slate-300
+
+            .title-status
+                @apply font-bold rounded-full bg-white px-1 m-1 border dark:bg-slate-800 dark:border-slate-700
+
+                .NOT_FINISHED
+                    @apply text-rose-400 dark:text-rose-400
+
+                .NOT_COMPLETE
+                    @apply text-green-400 dark:text-green-500
+
+        .entry-item
+            @apply relative flex m-2
+
+            &:hover
+                .entry-img
+                    @apply brightness-110 shadow-2xl
+                    
+                .entry-text-bg
+                    @apply brightness-125 shadow-xl
+
+            .entry-img
+                @apply rounded-md p-3 my-5 flex w-1/3 z-20 shadow-xl transition xl:my-4 xl:p-2
+                &.watched
+                    @apply bg-slate-50 dark:bg-slate-800
+                &.unwatched
+                    @apply border-2 border-slate-400 border-dashed bg-slate-100 dark:bg-slate-700
+                    & > img
+                        @apply grayscale brightness-100 #{!important}
+                & > img
+                    @apply rounded brightness-100 #{!important}
+
+            .entry-text-bg
+                @apply absolute inset-y-0 right-0 flex w-4/5 p-2 rounded-md shadow-lg bg-slate-50 dark:bg-slate-900 transition
+
+                &.UNAVAILABLE-item
+                    @apply outline outline-4 outline-rose-500/70
+                &.AVAILABLE-item
+                    @apply outline outline-4 outline-emerald-500/70
+                &.NOT_WATCHING-item
+                    @apply outline outline-4 outline-sky-500/70
+                
+            .entry-text-container
+                @apply absolute inset-y-0 right-0 flex w-2/3 p-2
+
+                .entry-text
+                    @apply text-base text-slate-500 dark:text-slate-400 xl:text-xs text-ellipsis overflow-hidden 
+
+                .entry-tags
+                    @apply absolute bottom-0 right-0 m-3 xl:mx-2 xl:my-3
+
+                    .tag
+                        @apply py-[2px] px-2 shadow rounded-full text-xs border xl:py-[0.6px] xl:px-1
+
+                        &.TV
+                            @apply bg-yellow-500/20 border-yellow-500 text-yellow-500
+                        &.TV_SHORT
+                            @apply bg-rose-500/20 border-rose-500 text-rose-500
+                        &.MOVIE
+                            @apply bg-orange-500/20 border-orange-500 text-orange-500
+                        &.SPECIAL
+                            @apply bg-blue-500/20 border-blue-500 text-blue-500
+                        &.OVA
+                            @apply bg-emerald-500/20 border-emerald-500 text-emerald-500
+                        &.ONA
+                            @apply bg-red-500/20 border-red-500 text-red-500
+                        &.MANGA
+                            @apply bg-amber-500/20 border-amber-500 text-amber-500
+                        &.ONE_SHOT
+                            @apply bg-teal-500/20 border-teal-500 text-teal-500
+                        &.NOVEL
+                            @apply bg-sky-500/20 border-sky-500 text-sky-500
+                        &.MUSIC
+                            @apply bg-pink-500/20 border-pink-500 text-pink-500
+                        &.UNKNOWN
+                            @apply bg-slate-500/20 border-slate-500 text-slate-500
+                        &.UNAVAILABLE
+                            @apply text-rose-500 border-rose-500 border-dashed
+                        &.AVAILABLE
+                            @apply text-emerald-500 border-emerald-500 border-dashed
+                        &.NOT_WATCHING
+                            @apply text-sky-500 border-sky-500 border-dashed 
+                        &.ID
+                            @apply bg-purple-500/20 text-purple-500 border-purple-500

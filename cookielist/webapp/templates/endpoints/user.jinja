@@ -1,0 +1,32 @@
+{% extends "base.jinja" %}
+
+{% block title %}
+{{ user or id }}
+{% endblock title %}
+
+{% block content %}
+<div class="flex items-center justify-center w-full h-full bg-white dark:bg-slate-900">
+  <div class="flex flex-col items-center justify-center">
+    <div class="sparkle">
+
+      {% icon "images/sparkle.svg" as sparkle %}
+
+      {% for _ in range(5) %}
+      <span class="sparkle-icon">{{ sparkle }}</span>
+      {% endfor %}
+
+      <span class="sparkle-text">
+        {{ "@" if user else "#" }}{{ user if user else id }}
+      </span>
+    </div>
+    <i id="[_]-status" class="text-slate-500 dark:text-slate-400 md:text-sm">Initializing</i>
+  </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script>
+  AnimateSparkle()
+  $(document).ready(FetchAndShowContent)
+</script>
+{% endblock scripts %}

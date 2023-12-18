@@ -1,0 +1,91 @@
+{% macro entry_view_block(entry, media_type) %}
+<template id="[gutter]-block@{{ entry.id }}">
+  <div class="entry animate__animated animate__fadeIn" style="--animate-duration: 0.4s;">
+    <div class="close-action">
+      <span class="close-button" onclick="CloseSwapEntry()">
+        <span class="close-bt-icon"></span>
+        <span class="close-bt-text">Close</span>
+      </span>
+    </div>
+    <div class="entry-title">
+      {{ entry.name }}
+      {% if entry.duration != 0 %}
+      <br />
+      <span class="title-time">{{ human.format_timespan(entry.duration) }}</span>
+      {% endif %}
+      <br />
+      <span class="title-status"><span class="{{ 'NOT_COMPLETE' if entry.completed == entry.total else 'NOT_FINISHED' }}">{{ entry.completed
+          }}</span>/{{ entry.total }}</span>
+    </div>
+
+    {% for group in entry.group %}
+    <a href="{{ group.url }}" target="_blank">
+      <div class="entry-item">
+        <div class="entry-img aspect-[2/3] {{ 'unwatched' if not group.completed else 'watched' }}">
+          <img class="w-full h-full" src="{{ group.cover }}" alt="{{ group.name }}" />
+        </div>
+        <div class="entry-text-bg{{ ' UNAVAILABLE-item' if not group.available else ' AVAILABLE-item' if group.plausible else ' NOT_WATCHING-item' if not group.completed else '' }}">
+        </div>
+        <div class="entry-text-container">
+          <span class="entry-text">{{ group.name }}</span>
+          <div class="entry-tags">
+            {% if not group.available %}
+            <span class="tag UNAVAILABLE">UNAVAILABLE</span>
+            {% elif group.plausible %}
+            <span class="tag AVAILABLE">AVAILABLE</span>
+            {% elif not group.completed %}
+            <span class="tag NOT_WATCHING">NOT WATCHING</span>
+            {% endif %}
+            <span class="tag {{ group.format }}">{{ group.format|replace('_', ' ') }}</span>
+            <span class="tag ID">#{{ group.id }}</span>
+          </div>
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+
+  </div>
+</template>
+{% endmacro %}
+
+
+{% for media_type, media in data.result.items() %}
+<template id="[container]-{{ media_type|lower }}">
+  <div class="w-full animate__animated animate__fadeIn" style="--animate-duration: 0.3s;">
+    <div class="advanced-table">
+      {% set table_cells = [media_type, "completed", "status"] %}
+
+      <div class="at-header">
+        {% for cell in table_cells %}
+        <div class="at-cell">{{ cell }}</div>
+        {% endfor %}
+      </div>
+
+      {% for entry in media.entries %}
+      {{ entry_view_block(entry, media_type) }}
+      <div class="at-row {{ 'NOT_WATCHED' if not entry.watched }}{{ 'NOT_COMPLETED' if entry.completed != entry.total and entry.watched }}" onclick="SwapEntryView('{{ entry.id }}')">
+        <div class="info-gutter" id="[gutter]-content@{{ entry.id }}">
+          <div class="gutter-container">
+            <div class="at-cell" data-title="{{ table_cells[0] }}">
+              <span>{{ entry.name }}</span>
+            </div>
+            <div class="at-cell" data-title="{{ table_cells[1] }}">
+              <span class="status-text">
+                {% for status in entry.status -%}
+                {{ status[0] }}<b>{{ status[1] }}</b>{{ '-' if not loop.last }}
+                {%- endfor %}
+              </span>
+            </div>
+            <div class="at-cell" data-title="{{ table_cells[2] }}">
+              <span>{{ entry.completed }}/{{ entry.total }}</span>
+            </div>
+          </div>
+          <div class="info-inline"><span onclick="SwapEntryViewMobile('{{ entry.id }}')" class="inline-icon"></span></div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <br class="my-2">
+  </div>
+</template>
+{% endfor %}

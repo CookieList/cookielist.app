@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" media="print" onload="this.media='all'" />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" />
+    </noscript>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    {% assets 'SASS' %}
+    <link rel="stylesheet" href="$ASSET_URL?$TIME" />{% endassets %}
+    <style>
+      {% include "style.jinja.css" %}
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/mustache@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+    <title>
+      {% block title %}{% endblock title %} - {{ SITE_NAME }}
+    </title>
+
+    {% block styles %}{% endblock styles %}
+
+  </head>
+
+  <body class="font-['Victor_Mono']" onload="$('html').addClass(localStorage.getItem('__THEME'))">
+
+    {% include "blocks/notification.jinja" %}
+
+    <noscript>
+      <div class="absolute z-50 flex items-center justify-center w-full h-full bg-gradient-to-r from-rose-600 to-red-600">
+        <div class="p-2 m-4 text-lg font-bold text-slate-50 md:text-base">
+          <span>We're sorry but <span class="text-2xl italic md:text-xl">{{ SITE_NAME }}</span> requires <a href="https://support.google.com/adsense/answer/12654" target="_blank" class="underline text-slate-100">JavaScript</a> to work.</span>
+        </div>
+      </div>
+    </noscript>
+
+    <div class="absolute bottom-0 left-0 z-50 items-center justify-center hidden p-3 mb-5 transition rounded-full shadow-md cursor-pointer ml-14 bg-gradient-to-r from-sky-600/90 to-blue-600/90 hover:scale-105" id="[_]-refresh">
+      <span onclick="$.refresh();">{% icon 'arrow-path', class="w-6 h-6 stroke-slate-50" %}</span>
+      <span class="ml-1 italic font-bold text-slate-50" onclick="$.refresh();">Refresh Required</span>
+      <span class="p-px ml-2 transition-colors border-2 rounded-full bg-rose-500/80 border-rose-500/90 hover:bg-rose-500" onclick="$.refresh('hide')">{% icon 'x-mark', class="w-6 h-6 stroke-slate-50" %}</span>
+    </div>
+
+    <div id="[container]" class="flex w-screen h-screen m-0 overflow-hidden transition-colors bg-purple-50 dark:bg-slate-900">
+      {% block content %}{% endblock content %}
+    </div>
+
+    {% assets 'JS' %}
+    <script src="$ASSET_URL?$TIME"></script>{% endassets %}
+    <script>{% include "script.jinja.js" %}</script>
+    {% block scripts %}{% endblock scripts %}
+
+  </body>
+
+</html>

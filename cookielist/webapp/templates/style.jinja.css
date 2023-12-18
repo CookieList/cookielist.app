@@ -1,0 +1,7 @@
+.flDebugPanelContentParent {
+    overflow: scroll
+}
+
+.select-menu select {
+    background-image: url("{% icon 'chevron-down', datauri=True, stroke='rgb(148 163 184)' %}");
+}
