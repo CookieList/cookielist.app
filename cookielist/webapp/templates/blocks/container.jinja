@@ -1,0 +1,15 @@
+{% include "containers/profile.jinja" %}
+{% include "containers/schedule.jinja" %}
+{% include "containers/queue.jinja" %}
+{% include "containers/search.jinja" %}
+{% include "containers/lists.jinja" %}
+
+{% if userList.ignoredMedia %}
+{% include "containers/ignored.jinja" %}
+{% endif %}
+
+{% include "containers/comments.jinja" %}
+{% include "containers/admin.jinja" %}
+{% include "containers/feedback.jinja" %}
+{% include "containers/share.jinja" %}
+{% include "containers/settings.jinja" %}

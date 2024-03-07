@@ -1,0 +1,61 @@
+.animate-spin {
+  animation-name: spin-animation;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.magic-circle {
+  animation-duration: var(--circle-spin-speed);
+  opacity: var(--circle-opacity);
+}
+
+.sakura-flower {
+  animation-duration: var(--sakura-spin-speed);
+}
+
+
+@keyframes spin-animation {
+  100% {
+    transform: rotate(360deg)
+  }
+}
+
+.card-background {
+  fill: var(--card-bg, var(--color-slate-50))
+}
+
+.card-title {
+  fill: var(--title-bg, var(--color-slate-400))
+}
+
+.card-media-icon {
+  stroke: var(--media-icon-bg, var(--color-slate-500))
+}
+
+.card-media-block {
+  fill: var(--data-bg, var(--color-slate-200))
+}
+
+.card-media-text-title {
+  fill: var(--data-text-bg, var(--color-slate-600))
+}
+
+.card-media-text-watched_titles {
+  fill: var(--data-text-bg, var(--color-slate-600))
+}
+
+.card-media-text-watched_series {
+  fill: var(--data-text-bg, var(--color-slate-600))
+}
+
+.sakura-flower-outer-petals {
+  fill: var(--sakura-petal-bg, var(--color-slate-200))
+}
+
+.sakura-flower-inner-petals {
+  fill: var(--sakura-inner-bg, var(--color-slate-400))
+}
+
+.sakura-flower-border {
+  stroke: var(--sakura-border-bg, var(--color-slate-600))
+}

@@ -1,0 +1,88 @@
+{% macro social_block(icon, name, uri_prefix, left_color="bg-slate-500 dark:bg-slate-600", right_color="bg-slate-400 dark:bg-slate-500") %}
+<div class="flex w-40 md:w-auto m-1 rounded-sm cursor-pointer drop-shadow-lg text-slate-100 hover:drop-shadow-xl hover:brightness-90 transition md:bg-transparent group {{ right_color }}" onclick="SharePage('{{ uri_prefix }}')">
+  <div class="p-2 px-3 rounded-s-sm md:rounded-full md:p-3 {{ left_color }}">{% icon icon, class="w-5 h-5 transition group-hover:scale-105" %}</div>
+  <div class="flex justify-center py-2 text-sm italic font-bold grow rounded-e-sm md:hidden">{{ name }}</div>
+</div>
+{% endmacro %}
+
+{% set __current_question = namespace(number=0) %}
+{% macro faq_block(question, answer, rule=True) %}
+{% set __current_question.number = __current_question.number + 1 %}
+<div class="flex">
+  <div class="mr-2"><span class="font-bold text-slate-600 dark:text-slate-300">Q{{ __current_question.number }}:</span></div>
+  <div class="flex-col">
+    <div class="font-bold text-slate-600 dark:text-slate-300">{{ question }}</div>
+    <div class="italic text-slate-500 dark:text-slate-400">{{ answer }}</div>
+  </div>
+</div>
+{% if rule %}
+<center>
+  <hr class="w-4/5 m-3 border-2 rounded-full border-slate-300/50 dark:border-slate-600/50">
+</center>
+{% endif %}
+{% endmacro %}
+
+<template id="[container]-share">
+  <div class="flex flex-col w-full animate__animated animate__fadeIn" style="--animate-duration: 0.3s;">
+    <div class="flex flex-col items-center w-full p-2 my-2 border-2 border-dashed rounded bg-slate-50 dark:bg-slate-800 dark:border-slate-700">
+      <img class="p-4 border border-dashed rounded-full w-52 border-slate-500 dark:border-slate-600 background-animate dark:!background-animate-dark md:p-2" src="{{ url_for('static', filename='images/favicon.webp') }}" />
+      <span class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 [-webkit-background-clip:text] text-center">{{ SITE_NAME }}</span>
+      <a class="flex flex-row text-sm leading-4 transition text-slate-400 hover:text-slate-500 hover:font-bold hover:dark:text-slate-300" target="_blank" href="https://anilist.co/user/{% env 'ANILIST_DEV_ID' %}">{% icon "link", size=16 %}<span>(Developer)</span></a>
+      <p class="p-4 my-2 text-sm italic text-justify text-slate-500 [text-align-last:center] dark:text-slate-400">One day, a <span class="text-pink-500">waifu</span> fell on my head, and I got so high on anime vibes that I blurted out, <span class="font-bold text-slate-700 dark:text-slate-300">"I like them THICK!"</span> The <span class="text-pink-500">waifu</span> replied, <span class="font-bold text-slate-700 dark:text-slate-300">"You can't say that!"</span> quickly amended, "Okay, okay, how about this, <span class="font-bold text-slate-700 dark:text-slate-300">'Greater the mass, higher the attraction'</span>?" The <span class="text-pink-500">waifu</span> rolled its eyes and left me hanging. Feeling lonely, I decided to create <span class="font-bold text-rose-500">{{ SITE_NAME }}</span>. Now, I calculate anime watch counts instead of pickup lines! <span class="font-bold text-rose-500">(ORIGIN STORY)</span></p>
+    </div>
+
+    <div class="w-full p-2">
+      <div class="flex flex-row justify-center">
+        {{ social_block('images/social/twitter.svg', 'Twitter', 'https://twitter.com/intent/tweet?url=', "bg-gray-600 dark:bg-gray-700", "bg-gray-500 dark:bg-gray-600") }}
+        {{ social_block('images/social/reddit.svg', 'Reddit', 'https://www.reddit.com/submit?url=', "bg-orange-500 dark:bg-orange-600", "bg-orange-400 dark:bg-orange-500") }}
+        {{ social_block('images/social/telegram.svg', 'Telegram', 'https://telegram.me/share/url?url=', "bg-sky-500 dark:bg-sky-600", "bg-sky-400 dark:bg-sky-500") }}
+        {{ social_block('images/social/whatsapp.svg', 'WhatsApp', 'https://api.whatsapp.com/send?text=', "bg-green-500 dark:bg-green-600", "bg-green-400 dark:bg-green-500") }}
+      </div>
+
+      <div class="flex flex-row justify-center">
+        {{ social_block('images/social/facebook.svg', 'Facebook', 'https://www.facebook.com/sharer/sharer.php?u=', "bg-blue-500 dark:bg-blue-600", "bg-blue-400 dark:bg-blue-500") }}
+        {{ social_block('images/social/linkedin.svg', 'LinkedIn', 'https://www.linkedin.com/shareArticle?url=', "bg-indigo-500 dark:bg-indigo-600", "bg-indigo-400 dark:bg-indigo-500") }}
+        {{ social_block('images/social/hacker.svg', 'HackerNews', 'https://news.ycombinator.com/submitlink?u=', "bg-yellow-500 dark:bg-yellow-600", "bg-yellow-400 dark:bg-yellow-500") }}
+      </div>
+
+      <div class="flex flex-row justify-center">
+        {{ social_block('images/social/gmail.svg', 'Gmail', 'https://mail.google.com/mail/u/0/?fs=1&tf=cm&body=', "bg-rose-500 dark:bg-rose-600", "bg-rose-400 dark:bg-rose-500") }}
+        {{ social_block('square-2-stack', 'Copy', '_COPY') }}
+      </div>
+    </div>
+
+    <div class="flex flex-col w-full p-2 my-2 border-2 border-dashed rounded bg-slate-50 dark:bg-slate-800 dark:border-slate-700">
+      {{ faq_block("What is CookieList?", "CookieList is a badge system that jazzes up your AniList profile with real-time otaku flair.") }}
+      {{ faq_block("How do I use CookieList badges?", "Copy-paste our badge code into your AniList bio and watch the magic happen!") }}
+      {{ faq_block("What sparked CookieList's creation?", "A waifu fell on our creator's head, and anime vibes led to anime badge brilliance!") }}
+      {{ faq_block("How was CookieList developed?", "We mixed creativity with code to bring anime enthusiasts dynamic, personalized badges.") }}
+      {{ faq_block("How does CookieList track anime watches?", "Our clever algorithm updates badges in sync with your latest anime watchlist additions.") }}
+      {{ faq_block("Is CookieList affiliated with AniList?", "Nope, we're the indie rockstars of anime badges—complementing but not officially tied to AniList.") }}
+      {{ faq_block("Any future plans for CookieList?", "Absolutely! Brace for exciting updates and features to level up your anime profile game.") }}
+      {{ faq_block("Can I customize CookieList badges?", "Not yet, but we're cooking up ways to let you sprinkle your unique style on those badges!") }}
+      {{ faq_block("What's the weirdest badge idea you've had?", "\"Waifu Magnet\" - but it got rejected for being too magnetic! We'll keep innovating.") }}
+      {{ faq_block("Is there a CookieList mascot?", "Not yet, but we're taking suggestions! Maybe a kawaii cookie with anime eyes?") }}
+      {{ faq_block("How secure is CookieList with my AniList account?", "Rock-solid! We prioritize user privacy and employ industry-standard security measures.") }}
+      {{ faq_block("Can I suggest badge ideas for CookieList?", "Absolutely! We thrive on community input. Drop your creative suggestions in our suggestion box!") }}
+      {{ faq_block("What happens if I delete an anime from my watchlist?", "Fear not! Our badges gracefully adjust, ensuring your otaku achievements stay up-to-date.") }}
+      {{ faq_block("Are CookieList badges mobile-friendly?", "You bet! Our badges shine on both desktop and mobile, spreading otaku joy everywhere.") }}
+      {{ faq_block("How often do the badges update in real-time?", "Lightning-fast! Your badges sync seamlessly, reflecting your anime adventures in real-time.") }}
+      {{ faq_block("Can I temporarily disable CookieList badges?", "Sure thing! We understand there are times you want a badge-free zone. Toggle them on/off at your whim.") }}
+      {{ faq_block("Are there any plans for collaboration with anime creators?", "It's a dream! While nothing's set in stone, we'd love to sprinkle some CookieList magic in the anime world.") }}
+      {{ faq_block("Do you have a favorite CookieList badge?", "Tough one! \"Binge Master\" holds a special place, but we love all our badge babies equally.") }}
+      {{ faq_block("How do you handle user feedback and bug reports?", "We cherish them! Our team eagerly embraces feedback, and bugs? We squash them like anime villains.") }}
+      {{ faq_block("Is there a CookieList community for users to connect?", "Absolutely! Join our Discord community for badge enthusiasts, anime chatter, and the occasional waifu debate!") }}
+      {{ faq_block("How do you ensure the security of user data on CookieList?", "We take user privacy seriously. CookieList employs industry-standard security measures to safeguard your data and ensure a secure experience.") }}
+      {{ faq_block("What is the process for handling user feedback and bug reports?", "We value user feedback as it helps us improve. Users can submit feedback and bug reports through our designated channels, and our team promptly addresses and resolves reported issues.") }}
+      {{ faq_block("Can I request a specific feature for CookieList?", "Absolutely! We encourage users to share their feature requests. Your input helps shape the future of CookieList. Feel free to submit your ideas, and we'll consider them for future updates.") }}
+      {{ faq_block("Is there a roadmap for future developments in CookieList?", "Yes, we have a roadmap outlining planned features and improvements for CookieList. While we're committed to enhancing the user experience, specific details are subject to change based on user feedback and technological advancements.") }}
+      {{ faq_block("How can I stay informed about updates and announcements for CookieList?", "Stay connected with us! Follow our official social media accounts, check our website regularly, or join our newsletter for the latest updates, announcements, and news regarding CookieList.") }}
+      {{ faq_block("What measures are in place to prevent misuse of CookieList badges?", "We have implemented measures to prevent misuse of badges and maintain the integrity of the CookieList system. Any detected misuse is promptly addressed to ensure a fair and positive experience for all users.") }}
+      {{ faq_block("Are there plans for expanding CookieList compatibility with other anime platforms?", "While our primary focus is on AniList compatibility, we are exploring possibilities for expanding CookieList to integrate with other popular anime platforms. Stay tuned for any announcements regarding compatibility expansions.") }}
+      {{ faq_block("How are CookieList badges designed to respect user preferences?", "CookieList badges are designed to be customizable to some extent, allowing users to display their anime-watching achievements in a way that aligns with their preferences. We are actively exploring options for further customization to enhance user expression.") }}
+      {{ faq_block("Are there any limitations on the number of badges a user can display on their profile?", "As of now, there are no limitations on the number of badges users can display. We want users to be able to showcase their anime-watching achievements freely, and we aim to keep the system flexible to accommodate diverse preferences.") }}
+      {{ faq_block("What inspired the choice of badge themes for CookieList?", "The badge themes for CookieList are inspired by various aspects of the anime-watching experience, aiming to capture the diversity and excitement of the anime community. We take user feedback into account when exploring new badge themes.", rule=False) }}
+    </div>
+    <br class="m-2">
+  </div>
+</template>

@@ -1,0 +1,132 @@
+[
+  {
+    "id": "badge_height",
+    "description": "Badge height",
+    "default": "80"
+  },
+  {
+    "id": "badge_border_radius",
+    "description": "Badge border radius",
+    "default": "10"
+  },
+  {
+    "id": "badge_left_bg",
+    "description": "Badge left color",
+    "default": "var(--color-neutral-600)"
+  },
+  {
+    "id": "badge_right_bg",
+    "description": "Badge right color",
+    "default": "var(--color-rose-400)"
+  },
+  {
+    "id": "dynamic_card_colors_enabled",
+    "description": "Use colors from AniList profile",
+    "default": "false"
+  },
+  {
+    "id": "avatar_size",
+    "description": "Avatar size",
+    "default": "48"
+  },
+  {
+    "id": "show_avatar",
+    "description": "Show avatar",
+    "default": "true"
+  },
+  {
+    "id": "username_prefix",
+    "description": "Username prefix",
+    "default": "-null-"
+  },
+  {
+    "id": "font",
+    "description": "Badge font",
+    "default": "victor-mono"
+  },
+  {
+    "id": "font_size",
+    "description": "Badge font size",
+    "default": "38"
+  },
+  {
+    "id": "font_top_margin",
+    "description": "Badge font top margin",
+    "default": "56"
+  },
+  {
+    "id": "font_left_color",
+    "description": "Badge left font color",
+    "default": "var(--color-neutral-50)"
+  },
+  {
+    "id": "font_right_color",
+    "description": "Badge right font color",
+    "default": "var(--color-rose-50)"
+  },
+  {
+    "id": "margin",
+    "description": "Badge spacing factor",
+    "default": "24"
+  },
+  {
+    "id": "data_block_border_radius",
+    "description": "Data block border radius",
+    "default": "6"
+  },
+  {
+    "id": "data_block_bg",
+    "description": "Data block background color",
+    "default": "var(--color-rose-500)"
+  },
+  {
+    "id": "data_block_height",
+    "description": "Data block height",
+    "default": "60"
+  },
+  {
+    "id": "data_block_margin_top",
+    "description": "Data block top margin",
+    "default": "10"
+  },
+  {
+    "id": "show_data_block_anime",
+    "description": "Show anime block",
+    "default": "true"
+  },
+  {
+    "id": "show_data_block_manga",
+    "description": "Show manga block",
+    "default": "true"
+  },
+  {
+    "id": "show_data_block_music",
+    "description": "Show music block",
+    "default": "true"
+  },
+  {
+    "id": "show_data_block_novel",
+    "description": "Show novel block",
+    "default": "true"
+  },
+  {
+    "id": "media_icon_size",
+    "description": "Media icon size",
+    "default": "42"
+  },
+  {
+    "id": "media_icon_stroke_width",
+    "description": "Media icon stroke width",
+    "default": "1.5"
+  },
+  {
+    "id": "media_icon_bg",
+    "description": "Media icon color",
+    "default": "var(--color-rose-50)"
+  },
+  {
+    "id": "solid_media_icon",
+    "description": "Use solid media icon",
+    "default": "true"
+  }
+]

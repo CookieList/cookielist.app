@@ -1,0 +1,68 @@
+<template id="[container]-comments@template.comment">
+  <div class="w-10/12 self-start text-slate-500 dark:text-slate-400 mx-1 my-2 bg-slate-100 dark:bg-slate-800 rounded-md p-2 data-[is-owner='true']:self-end" data-is-owner="<% fn.isOwner %>">
+    <div class="flex items-start justify-between mb-2">
+      <div class="flex items-center px-3 py-2 transition-colors rounded-md cursor-pointer group/user-info hover:bg-slate-300/60 dark:hover:bg-slate-900/60" onclick="$.popup('<% user.siteUrl %>')">
+        <span class="w-8 h-8 overflow-hidden"><img src="https://s4.anilist.co/file/anilistcdn/user/avatar/medium/default.png" data-src="<% user.avatar.medium %>" class="object-cover w-full h-full rounded-md" lazyload /></span>
+        <span class="ml-2 text-sm font-bold transition-colors text-slate-400 group-hover/user-info:text-slate-500 dark:text-slate-500 dark:group-hover/user-info:text-slate-400 group-hover/user-info:font-bold"><% user.name %></span>
+      </div>
+      <div class="flex items-center justify-center mt-2">
+        <% #isLiked %>
+        <span class="flex items-center transition text-rose-400 dark:text-rose-500 [&_svg]:fill-rose-400 dark:[&_svg]:fill-rose-500">
+          <% #likeCount %><span class="mr-px text-xs font-bold"><% likeCount %></span><% /likeCount %>
+          <span>{% icon "heart", class="w-4 h-4" %}</span>
+        </span>
+        <% /isLiked %>
+        <% ^isLiked %>
+        <span class="flex items-center transition text-slate-400 dark:text-slate-500 [&>svg]:fill-slate-400 dark:[&>svg]:fill-slate-500">
+          <% #likeCount %><span class="mr-px text-xs"><% likeCount %></span><% /likeCount %>
+          <span>{% icon "heart", class="w-4 h-4" %}</span>
+        </span>
+        <% /isLiked %>
+        <span class="text-xs font-bold text-slate-400 dark:text-slate-500 ml-2.5 text-center"><% fn.commentedAgo %></span>
+      </div>
+    </div>
+    <div class="comment_section-comment"><% &text %></div>
+  </div>
+</template>
+
+<template id="[container]-comments@template.details">
+  <% #isLiked %>
+  <div class="flex items-center p-2 m-1 transition duration-300 rounded-full bg-slate-300/70 dark:bg-slate-950/70 hover:scale-110 md:hover:scale-100">
+    <span class="mr-1 text-rose-500"><% likeCount %></span>
+    <span>{% icon "heart", class="w-6 h-6 stroke-rose-500 fill-rose-500" %}</span>
+  </div>
+  <% /isLiked %>
+  <% ^isLiked %>
+  <div class="flex items-center p-2 m-1 transition duration-300 rounded-full bg-slate-300/70 dark:bg-slate-950/70 hover:scale-110 md:hover:scale-100">
+    <% #likeCount %><span class="mr-1"><% likeCount %></span><% /likeCount %>
+    <span>{% icon "heart", class="w-6 h-6" %}</span>
+  </div>
+  <% /isLiked %>
+  <div class="flex items-center p-2 m-1 transition duration-300 rounded-full bg-slate-300/70 dark:bg-slate-950/70 hover:scale-110 md:hover:scale-100">
+    <span class="mr-1"><% replyCount %></span>
+    <span>{% icon "chat-bubble-bottom-center-text", class="w-6 h-6" %}</span>
+  </div>
+  <div class="p-2 m-1 transition duration-300 rounded-full cursor-pointer bg-slate-300/70 dark:bg-slate-950/70 hover:scale-110 md:hover:scale-100" onclick="$.popup('<% siteUrl %>')">{% icon "link", class="w-6 h-6" %}</div>
+</template>
+
+<template id="[container]-comments@template.loading">
+  <div class="flex items-center justify-center w-full pb-12 mt-4" id="[container]-comments.loading">{% icon "arrow-path", class="w-8 h-8 md:w-6 md:h-6 animate-spin stroke-slate-400 dark:stroke-slate-500" %}</div>
+</template>
+
+
+<template id="[container]-comments">
+  <div class="flex flex-col w-full animate__animated animate__fadeIn" style="--animate-duration: 0.3s;">
+    <div class="relative flex flex-col w-full h-full">
+      <div class="absolute left-0 flex items-center justify-center w-full bottom-2 text-slate-500 dark:text-slate-400" id="[container]-comments.details" data-initial-update="true"></div>
+      <div class="w-full h-full overflow-x-hidden overflow-y-auto" id="[container]-comments.section" style-hide-scrollbar="true">
+        <div class="flex flex-col w-full h-full" id="[container]-comments.section.comments" data-initial-comment="true">
+          <div class="flex items-center justify-center w-full h-full text-slate-400 dark:text-slate-500">
+            <span>{% icon "arrow-path", class="w-6 h-6 animate-spin" %}</span>
+            <span class="ml-1">Loading Comments...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>InitializeCommentsSection("{{ userOptions.commentSection }}")</script>
+</template>

@@ -1,0 +1,13 @@
+<template id="[container]-ignored">
+  <div class="w-full animate__animated animate__fadeIn" style="--animate-duration: 0.3s;">
+    <span class="p-1 m-1 text-lg capitalize text-slate-500 md:text-base">The following entries have been <span class="underline decoration-pink-500/60 decoration-2">excluded</span> from the computed results due to <span class="underline decoration-pink-500/60 decoration-2">insufficient information</span> in the server's database:</span>
+
+    <span class="flex flex-row flex-wrap p-1 m-1 text-md">
+      {% for media in userList.ignoredMedia %}
+      <span onclick="ShowModal('{{ media.mediaId }}', `{{ media.mediaTitle }}`)" class="p-1 px-2 m-1 transition border border-dashed rounded-full bg-rose-500/20 hover:bg-rose-500/30 border-rose-500 text-rose-500">{{ media.mediaTitle }}</span>
+      {% endfor %}
+    </span>
+
+    <span class="p-1 m-1 text-lg capitalize text-slate-500 md:text-base">These entries are anticipated to be incorporated into forthcoming results after the server undergoes <span class="underline decoration-pink-500/60 decoration-2">synchronization</span> with <a href="https://anilist.co/" target="_blank"><span class="underline decoration-sky-500/60 decoration-2">AniList's</span></a> database, a process expected to be completed within the next <span class="underline decoration-pink-500/60 decoration-2">24 hours</span>.</span>
+  </div>
+</template>

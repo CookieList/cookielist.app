@@ -1,0 +1,48 @@
+query ($userId: Int, $_page_1st: Int, $_page_2nd: Int, $_page_3rd: Int, $_page_4th: Int) {
+  _page_1st: Page(page: $_page_1st, perPage: 50) {
+    ...page
+  }
+  _page_2nd: Page(page: $_page_2nd, perPage: 50) {
+    ...page
+  }
+  _page_3rd: Page(page: $_page_3rd, perPage: 50) {
+    ...page
+  }
+  _page_4th: Page(page: $_page_4th, perPage: 50) {
+    ...page
+  }
+}
+
+fragment page on Page {
+  pageInfo {
+    currentPage
+    hasNextPage
+  }
+  mediaList(userId: $userId) {
+    progress
+    status
+    private
+    media {
+      id
+      idMal
+      type
+      status(version: 2)
+      siteUrl
+      format
+      episodes
+      duration
+      title {
+        romaji
+        english
+        native
+      }
+      coverImage {
+        large
+      }
+      nextAiringEpisode {
+        airingAt
+        episode
+      }
+    }
+  }
+}

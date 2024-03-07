@@ -1,0 +1,129 @@
+<template id="[container]-search@template.search_results">
+  <span class="mt-4 md:mt-2.5 font-bold text-xl md:text-lg mb-2 ml-2">Anime <% ^anime.length %><span class="text-base italic text-slate-400 dark:text-slate-500">(Empty)</span><% /anime.length %></span>
+  <div class="grid w-full grid-cols-3 gap-4 py-8 pt-0 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 md:gap-2 md:py-4 md:pt-0">
+    <% #anime %>
+    <span class="flex overflow-hidden rounded-lg group hover:scale-105 transition w-full cursor-pointer bg-slate-200/70 dark:bg-slate-950/40 border-2 border-transparent data-[list-status='CURRENT']:border-green-500/50 data-[list-status='PLANNING']:border-sky-500/50 data-[list-status='COMPLETED']:border-purple-500/50 data-[list-status='DROPPED']:border-rose-500/50 data-[list-status='PAUSED']:border-orange-500/50 data-[list-status='REPEATING']:border-yellow-500/50" data-list-status="<% mediaListEntry.status %>" onclick="ShowModal('<% media.id %>', '<% fn.mediaTitle %>')">
+      <div class="w-1/4 aspect-[2/3] my-1.5 ml-1.5">
+        <span class="w-full h-full overflow-hidden rounded-l-lg rounded-r-md"><img src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/default.jpg" class="object-cover w-full h-full rounded-l-lg rounded-r" data-src="<% coverImage.large %>" lazyload></span>
+      </div>
+      <div class="flex flex-col w-3/4 h-full ml-1">
+        <span class="p-1 text-sm font-bold"><% fn.mediaTitle %></span>
+        <div class="flex items-center my-px">
+          <span class="px-1 py-0.5 rounded-md text-xs bg-white dark:bg-slate-800/60 ml-1"><% #fn.toHeading %><% status %><% /fn.toHeading %></span>
+          <% #isAdult %>
+          <span class="px-1 py-0.5 bg-rose-500/90 text-white font-bold text-xs rounded-md ml-1.5">R-18</span>
+          <% /isAdult %>
+          <% #isFavourite %>
+          <span class="px-1 py-0.5 bg-pink-400/90 rounded-md ml-1.5">{% icon "heart", class="w-4 h-4 stroke-white fill-white" %}</span>
+          <% /isFavourite %>
+        </div>
+        <span class="p-1 text-sm font-bold text-slate-400 dark:text-slate-500"><% startDate.year %> <% #fn.toHeading %><% format %><% /fn.toHeading %></span>
+      </div>
+    </span>
+    <% /anime %>
+  </div>
+  <span class="mt-2 md:mt-2.5 font-bold text-xl md:text-lg mb-2 ml-2">Manga <% ^manga.length %><span class="text-base italic text-slate-400 dark:text-slate-500">(Empty)</span><% /manga.length %></span>
+  <div class="grid w-full grid-cols-3 gap-4 py-8 pt-0 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 md:gap-2 md:py-4 md:pt-0">
+    <% #manga %>
+    <span class="flex overflow-hidden rounded-lg group hover:scale-105 transition w-full cursor-pointer bg-slate-200/70 dark:bg-slate-950/40 border-2 border-transparent data-[list-status='CURRENT']:border-green-500/50 data-[list-status='PLANNING']:border-sky-500/50 data-[list-status='COMPLETED']:border-purple-500/50 data-[list-status='DROPPED']:border-rose-500/50 data-[list-status='PAUSED']:border-orange-500/50 data-[list-status='REPEATING']:border-yellow-500/50" data-list-status="<% mediaListEntry.status %>" onclick="ShowModal('<% media.id %>', '<% fn.mediaTitle %>')">
+      <div class="w-1/4 aspect-[2/3] my-1.5 ml-1.5">
+        <span class="w-full h-full overflow-hidden rounded-l-lg rounded-r-md"><img src="https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/default.jpg" class="object-cover w-full h-full rounded-l-lg rounded-r" data-src="<% coverImage.large %>" lazyload></span>
+      </div>
+      <div class="flex flex-col w-3/4 h-full ml-1">
+        <span class="p-1 text-sm font-bold"><% fn.mediaTitle %></span>
+        <div class="flex items-center my-px">
+          <span class="px-1 py-0.5 rounded-md text-xs bg-white dark:bg-slate-800/60 ml-1"><% #fn.toHeading %><% status %><% /fn.toHeading %></span>
+          <% #isAdult %>
+          <span class="px-1 py-0.5 bg-rose-500/90 text-white font-bold text-xs rounded-md ml-1.5">R-18</span>
+          <% /isAdult %>
+          <% #isFavourite %>
+          <span class="px-1 py-0.5 bg-pink-400/90 rounded-md ml-1.5">{% icon "heart", class="w-4 h-4 stroke-white fill-white" %}</span>
+          <% /isFavourite %>
+        </div>
+        <span class="p-1 text-sm font-bold text-slate-400 dark:text-slate-500"><% startDate.year %> <% #fn.toHeading %><% format %><% /fn.toHeading %></span>
+      </div>
+    </span>
+    <% /manga %>
+  </div>
+  <span class="mt-2 md:mt-2.5 font-bold text-xl md:text-lg mb-2 ml-2">User <% ^users.length %><span class="text-base italic text-slate-400 dark:text-slate-500">(Empty)</span><% /users.length %></span>
+  <div class="grid w-full grid-cols-3 gap-4 py-8 pt-0 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 md:gap-2 md:py-4 md:pt-0">
+    <% #users %>
+    <div class="flex overflow-hidden rounded-lg group hover:scale-105 transition w-full cursor-pointer bg-slate-200/70 dark:bg-slate-950/40 border-2 border-transparent border-dashed data-[user-is-dev='true']:border-pink-500/50" data-user-is-dev="<% fn.isUserDev %>" onclick="searchUser('<% id %>', '<% name %>')">
+      <div class="w-1/4 aspect-[2/3] my-1.5 ml-1.5">
+        <span class="w-full h-full overflow-hidden rounded-l-lg rounded-r-md"><img src="https://s4.anilist.co/file/anilistcdn/user/avatar/medium/default.png" class="object-cover w-full h-full rounded-l-lg rounded-r" data-src="<% avatar.large %>" lazyload></span>
+      </div>
+      <div class="flex flex-col w-3/4 h-full ml-1">
+        <span class="p-1 text-sm font-bold"><% name %></span>
+        <div class="my-px flex items-center ml-0.5">
+          <% #fn.isUserDev %>
+          <span class="px-1 py-0.5 bg-white dark:bg-slate-800/60 rounded-md my-1.5">{% icon "code-bracket", class="w-4 h-4 stroke-slate-500 dark:stroke-slate-400" %}</span>
+          <% /fn.isUserDev %>
+          <% ^isBlocked %>
+          <% #isFollower %>
+          <% #isFollowing %>
+          <span class="px-1 py-0.5 bg-white dark:bg-slate-800/60 rounded-md my-1.5">{% icon "user-group", class="w-4 h-4 stroke-slate-500 dark:stroke-slate-400" %}</span>
+          <span class="px-1 py-0.5 rounded-md text-xs bg-white dark:bg-slate-800/60 ml-1.5">Mutual</span>
+          <% /isFollowing %>
+          <% ^isFollowing %>
+          <span class="px-1 py-0.5 bg-white dark:bg-slate-800/60 rounded-md my-1.5">{% icon "users", class="w-4 h-4 stroke-slate-500 dark:stroke-slate-400" %}</span>
+          <span class="px-1 py-0.5 rounded-md text-xs bg-white dark:bg-slate-800/60 ml-1.5">Follower</span>
+          <% /isFollowing %>
+          <% /isFollower %>
+          <% ^isFollower %>
+          <% #isFollowing %>
+          <span class="px-1 py-0.5 bg-white dark:bg-slate-800/60 rounded-md my-1.5">{% icon "user", class="w-4 h-4 stroke-slate-500 dark:stroke-slate-400" %}</span>
+          <span class="px-1 py-0.5 rounded-md text-xs bg-white dark:bg-slate-800/60 ml-1.5">Following</span>
+          <% /isFollowing %>
+          <% /isFollower %>
+          <% /isBlocked %>
+          <% #isBlocked %>
+          <span class="px-1 py-0.5 bg-white dark:bg-slate-800/60 rounded-md my-1.5">{% icon "trash", class="w-4 h-4 stroke-slate-500 dark:stroke-slate-400" %}</span>
+          <span class="px-1 py-0.5 rounded-md text-xs bg-white dark:bg-slate-800/60 ml-1.5">Blocked</span>
+          <% /isBlocked %>
+        </div>
+      </div>
+    </div>
+    <% /users %>
+  </div>
+</template>
+
+<template id="[container]-search@template.search_empty">
+  <div class="flex items-center justify-center w-full h-full italic text-slate-500/70 md:text-sm">
+    <span class="mr-1">{% icon "information-circle", class="w-5 h-5"%}</span>
+    <span>No results found.</span>
+  </div>
+</template>
+
+<template id="[container]-search@template.pre_search_view">
+  <div class="flex items-center justify-center w-full h-full bg-white dark:bg-slate-900">
+    <div class="flex flex-col items-center justify-center">
+      <div class="sparkle">
+        {% icon "images/sparkle.svg" as sparkle %}
+        {% for _ in range(5) %}
+        <span class="sparkle-icon">{{ sparkle }}</span>
+        {% endfor %}
+        <span class="sparkle-text">@<% user %></span>
+      </div>
+      <i id="[_]-status" class="mt-px text-slate-500 dark:text-slate-400 md:text-sm">Initializing...</i>
+      <div id="[_]-status.progress" class="flex items-center justify-center w-11/12"></div>
+    </div>
+  </div>
+</template>
+
+<template id="[container]-search">
+  <div class="flex w-full animate__animated animate__fadeIn" style="--animate-duration: 0.3s;">
+    <div class="relative flex flex-col items-center w-full h-full overflow-x-hidden overflow-y-auto" style-hide-scrollbar="true">
+      <div class="relative my-1 p-2 bg-white dark:bg-slate-900 flex items-center justify-center sticky top-2 z-[64] w-11/12 rounded-full">
+        <input type="search" name="serch" placeholder="search anime, manga or users" id="[container]-search.search_box" class="flex-none w-full px-5 uppercase transition rounded-full cursor-pointer placeholder:text-slate-500/70 h-14 bg-slate-200/50 text-slate-600 dark:bg-slate-800 dark:text-slate-400 hover:brightness-95 focus:cursor-text focus:outline focus:outline-2 focus:outline-slate-500/30 focus:outline-offset-0 focus:brightness-95">
+        <button class="absolute top-0 flex items-center justify-center h-full transition-transform right-4 hover:scale-110 active:scale-90" id="[container]-search.search_button">{% icon "magnifying-glass", class="h-9 w-9 p-1.5 stroke-slate-500/90 dark:stroke-slate-400/80 bg-white/60 dark:bg-slate-700/60 rounded-full" %}</button>
+      </div>
+      <div id="[container]-search.search_results_container" class="flex flex-col w-full px-2 text-slate-500 dark:text-slate-400 z-[61] h-full">
+        <div class="flex items-center justify-center w-full h-full italic text-slate-500/70 md:text-sm">
+          <span class="mr-1">{% icon "information-circle", class="w-5 h-5"%}</span>
+          <span>Nothing to search.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>SearchInitialize()</script>
+</template>

@@ -1,0 +1,144 @@
+{% set show_flower_decoration = _.show_flower_decoration %}
+{% set show_circle_decoration = _.show_circle_decoration %}
+{% set show_avatar = _.show_avatar %}
+{% set show_avatar_glow = _.show_avatar_glow %}
+
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 220 100" preserveAspectRatio="none" width="440" height="200">
+    
+    {% tailwind_colors_css %}
+    {% font_css %}
+    {{ "<style>" }}{% include "cookielist-default/options.css" %}{{ "</style>" }}
+    {{ "<style>" }}{% include "cookielist-default/styles.css" %}{{ "</style>" }}
+    
+    <defs>
+        {% if show_avatar == 'true' or show_avatar_glow == 'true' %}
+        <pattern id="anilist-profile-picture" patternUnits="userSpaceOnUse" width="{{ _.avatar_size }}" height="{{ _.avatar_size }}">
+            <image href="{{ _.anilist_avatar_base_64 }}" x="0" y="0" width="{{ _.avatar_size }}" height="{{ _.avatar_size }}" />
+        </pattern>
+        {% endif %}
+
+        {% if _.show_data_block_anime == 'true' %}
+        <symbol id="media-symbol-anime" viewBox="0 0 24 24" width="{{ _.media_icon_size }}" height="{{ _.media_icon_size }}">
+            <path fill="none" stroke-width="{{ _.media_icon_stroke_width }}" stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+        </symbol>
+        {% endif %}
+
+        {% if _.show_data_block_manga == 'true' %}
+        <symbol id="media-symbol-manga" viewBox="0 0 24 24" width="{{ _.media_icon_size }}" height="{{ _.media_icon_size }}">
+            <path fill="none" stroke-width="{{ _.media_icon_stroke_width }}" stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+        </symbol>
+        {% endif %}
+
+        {% if _.show_data_block_music == 'true' %}
+        <symbol id="media-symbol-music" viewBox="0 0 24 24" width="{{ _.media_icon_size }}" height="{{ _.media_icon_size }}">
+            <path fill="none" stroke-width="{{ _.media_icon_stroke_width }}" stroke-linecap="round" stroke-linejoin="round" d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z" />
+        </symbol>
+        {% endif %}
+
+        {% if _.show_data_block_novel == 'true' %}
+        <symbol id="media-symbol-novel" viewBox="0 0 24 24" width="{{ _.media_icon_size }}" height="{{ _.media_icon_size }}">
+            <path fill="none" stroke-width="{{ _.media_icon_stroke_width }}" stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+        </symbol>
+        {% endif %}
+
+        {% if show_flower_decoration == 'true' %}
+        <symbol id="decoration-sakura-flower" viewBox="0 0 285 285" width="{{ _.sakura_size }}" height="{{ _.sakura_size }}">
+            <g transform="matrix(2.021999 0 0 2.021999 13.745063 -293.54423)">
+                <g class="sakura-flower-outer-petals">
+                    <path d="M54.209 160.921c-.297.004-.591.11-.88.337-5.95 4.671-11.203 14.597-9.93 22.903 2.897 18.896 14.067 26.707 20.463 26.707s17.566-7.811 20.463-26.707c1.273-8.306-3.98-18.232-9.93-22.903-3.077-2.416-6.681 8.946-10.533 8.946-3.491 0-6.778-9.332-9.653-9.283z" paint-order="stroke fill markers" />
+                    <path d="M115.48 191.605c-.096-.282-.288-.528-.592-.732-6.281-4.215-17.345-6.144-24.85-2.366-17.076 8.594-21.053 21.631-19.076 27.714s12.857 14.293 31.723 11.208c8.293-1.356 16.109-9.419 18.714-16.521 1.347-3.673-10.573-3.589-11.763-7.253-1.079-3.32 6.78-9.33 5.846-12.05z" paint-order="stroke fill markers" />
+                    <path d="M105.338 259.157c.238-.178.413-.437.514-.79 2.068-7.276.483-18.394-5.429-24.365-13.45-13.584-27.078-13.338-32.253-9.579s-9.62 16.645-.857 33.634c3.852 7.468 13.936 12.41 21.495 12.692 3.909.146.147-11.164 3.263-13.429 2.824-2.052 10.968 3.566 13.266 1.836z" paint-order="stroke fill markers" />
+                    <path d="M38.008 270.505c.243.171.543.258.91.244 7.559-.282 17.643-5.224 21.495-12.692 8.763-16.989 4.318-29.875-.857-33.634s-18.803-4.006-32.253 9.579c-5.912 5.971-7.496 17.089-5.429 24.365 1.069 3.763 10.663-3.311 13.78-1.046 2.824 2.052-.002 11.533 2.353 13.184z" paint-order="stroke fill markers" />
+                    <path d="M6.28 209.967c-.088.284-.078.596.049.941 2.604 7.102 10.421 15.165 18.714 16.521 18.866 3.084 29.747-5.126 31.723-11.208s-2.001-19.12-19.076-27.714c-7.506-3.778-18.569-1.849-24.85 2.366-3.248 2.18 6.444 9.118 5.253 12.782-1.079 3.32-10.969 3.562-11.812 6.312z" paint-order="stroke fill markers" />
+                </g>
+                <path d="M60.884 236.333a.44.44 0 0 1-.271-.104c-1.836-1.441-3.457-4.504-3.064-7.067.894-5.83 4.341-8.241 6.314-8.241s5.42 2.41 6.314 8.241c.393 2.563-1.228 5.626-3.064 7.067-.949.745-2.061-2.76-3.25-2.76-1.077 0-2.091 2.879-2.979 2.864zm19.897-10.128c-.03.087-.089.163-.183.226-1.938 1.301-5.352 1.896-7.668.73-5.269-2.652-6.496-6.675-5.886-8.551s3.967-4.41 9.788-3.458c2.559.418 4.971 2.906 5.774 5.098.416 1.133-3.262 1.108-3.63 2.238-.333 1.024 2.092 2.879 1.804 3.718zm-3.483-22.053a.44.44 0 0 1 .158.244c.638 2.245.149 5.676-1.675 7.518-4.15 4.192-8.355 4.116-9.952 2.956s-2.968-5.136-.264-10.378c1.189-2.304 4.3-3.829 6.633-3.916 1.206-.045.045 3.445 1.007 4.144.871.633 3.384-1.1 4.093-.567zm-22.051-3.502a.44.44 0 0 1 .281-.075c2.332.087 5.444 1.612 6.633 3.916 2.704 5.242 1.332 9.218-.264 10.378s-5.802 1.236-9.952-2.956c-1.824-1.842-2.313-5.273-1.675-7.518.33-1.161 3.29 1.022 4.252.323.871-.633-.001-3.559.726-4.068zm-10.144 19.889c-.027-.088-.024-.184.015-.29.804-2.191 3.215-4.679 5.774-5.098 5.821-.952 9.179 1.582 9.788 3.458s-.617 5.9-5.886 8.551c-2.316 1.166-5.73.57-7.668-.73-1.002-.673 1.988-2.814 1.621-3.944-.333-1.025-3.385-1.099-3.645-1.948z" paint-order="stroke fill markers" class="sakura-flower-inner-petals" />
+            </g>
+        </symbol>
+        {% endif %}
+    </defs>
+
+    {% set data_placements = [
+        {
+            "name": "anime",
+            "coordinate": coordinate(_.data_block_anime_coordinate),
+            "visible": _.show_data_block_anime == 'true',
+            "computed": {
+                "titles": _.watched_anime_title_count,
+                "series": _.watched_anime_series_count
+            }
+        },
+        {
+            "name": "manga",
+            "coordinate": coordinate(_.data_block_manga_coordinate),
+            "visible": _.show_data_block_manga == 'true',
+            "computed": {
+                "titles": _.watched_manga_title_count,
+                "series": _.watched_manga_series_count
+            }
+        },
+        {
+            "name": "music",
+            "coordinate": coordinate(_.data_block_music_coordinate),
+            "visible": _.show_data_block_music == 'true',
+            "computed": {
+                "titles": _.watched_music_title_count,
+                "series": _.watched_music_series_count
+            }
+        },
+        {
+            "name": "novel",
+            "coordinate": coordinate(_.data_block_novel_coordinate),
+            "visible": _.show_data_block_novel == 'true',
+            "computed": {
+                "titles": _.watched_novel_title_count,
+                "series": _.watched_novel_series_count
+            }
+        }
+    ] %}
+
+    {% set card_cords = coordinate(_.card_coordinate ) %}
+    <rect class="card-background" x="{{ card_cords.x }}" y="{{ card_cords.y }}" height="{{ _.card_height }}" width="{{ _.card_width }}" rx="{{ _.card_border_radius }}" ry="{{ _.card_border_radius }}" />
+    
+    {% set avatar_cords = coordinate(_.avatar_coordinate) %}
+    {% set avatar_crop = svg_path_normalize("M88.1 ,64.1 Q84.3 ,78.6 ,71.1 ,88.4 Q58.6 ,98.6 ,45.7 ,90.1 Q31.4 ,81.4 ,20.0 ,72.9 Q7.1 ,65.7 ,6.3 ,49.4 Q4.3 ,34.3 ,17.1 ,25.1 Q31.4 ,17.1 ,43.9 ,14.3 Q57.1 ,10.0 ,67.1 ,18.9 Q77.1 ,27.1 ,84.9 ,38.6 Q92.9 ,50.0 ,88.1 ,64.1 Z;M90.7575 ,63.99779 Q83.3956 ,77.9956 ,70.79337 ,87.37567 Q58.19116 ,96.75577 ,44.79116 ,89.48673 Q31.39116 ,82.21769 ,21.12874 ,73.1956 Q10.86634 ,64.17346 ,12.53489 ,50.52211 Q14.20344 ,36.8707 ,22.60393 ,27.04201 Q31.0044 ,17.21327 ,44.1044 ,13.29337 Q57.2044 ,9.37346 ,67.1 ,18.38894 Q76.9956 ,27.4044 ,87.5575 ,38.70221 Q98.11941 ,50.0 ,90.7575 ,63.99779 Z;M82.27966 ,62.78127 Q80.51936 ,75.56253 ,68.58411 ,81.52791 Q56.64889 ,87.4933 ,43.0273 ,86.509 Q29.4057 ,85.52383 ,16.44664 ,76.191 Q3.48759 ,66.85906 ,4.09044 ,50.16761 Q4.6933 ,33.47617 ,16.517 ,23.01141 Q28.34094 ,12.54666 ,42.43809 ,12.74603 Q56.53524 ,12.94541 ,70.53461 ,16.95967 Q84.534 ,20.97394 ,84.28697 ,35.48697 Q84.03994 ,50.0 ,82.27966 ,62.78127 Z;M88.1 ,64.1 Q84.3 ,78.6 ,71.1 ,88.4 Q58.6 ,98.6 ,45.7 ,90.1 Q31.4 ,81.4 ,20.0 ,72.9 Q7.1 ,65.7 ,6.3 ,49.4 Q4.3 ,34.3 ,17.1 ,25.1 Q31.4 ,17.1 ,43.9 ,14.3 Q57.1 ,10.0 ,67.1 ,18.9 Q77.1 ,27.1 ,84.9 ,38.6 Q92.9 ,50.0 ,88.1 ,64.1 Z;", _.avatar_size | int) %}
+    
+    {% if show_avatar_glow == 'true' %}
+    <path fill="url(#anilist-profile-picture)" stroke-width="0"  transform="translate({{ avatar_cords.x }}, {{ avatar_cords.y }})" filter="blur({{ _.avatar_blur_pixel }})">
+        <animate attributeName="d" dur="{{ _.avatar_animation_duration }}" repeatCount="indefinite" values="{{ avatar_crop }}"></animate>
+    </path>
+    {% endif %}
+    {% if show_avatar == 'true' %}
+    <path fill="url(#anilist-profile-picture)" stroke-width="0" transform="translate({{ avatar_cords.x }}, {{ avatar_cords.y }})">
+        <animate attributeName="d" dur="{{ _.avatar_animation_duration }}" repeatCount="indefinite" values="{{ avatar_crop }}"></animate>
+    </path>
+    {% endif %}
+
+    {% if show_circle_decoration == 'true' %}
+    {% set circle_cords = coordinate(_.circle_coordinate) %}
+    <image class="animate-spin magic-circle" href="{% embed 'cookielist-default/circles/' + (_.anilist_profile_theme_color if _.dynamic_card_colors_enabled == 'true' and not _.anilist_profile_theme_color.startswith('#') else _.circle_variant) + '.png' %}" width="{{ _.circle_size }}" height="{{ _.circle_size }}" x="{{ circle_cords.x }}" y="{{ circle_cords.y }}" transform-origin="{{ circle_cords.x + (_.circle_size | int / 2) }} {{ circle_cords.y + (_.circle_size | int / 2) }}" />
+    {% endif %}
+
+    {% set title_cords = coordinate(_.title_font_coordinate) %}
+    <text class="card-title" stroke-width="0" font-size="{{ _.title_font_size }}" font-family="{{ _.title_font }}" x="{{ title_cords.x }}" y="{{ title_cords.y }}">{{ _.username_prefix if _.username_prefix != '-null-'  else '' }}{{ _.anilist_username }} </text>
+    
+    {% set data_block_icon_relative_coordinate = coordinate(_.data_block_icon_relative_coordinate) %}
+    {% set data_block_title_relative_coordinate = coordinate(_.data_block_title_relative_coordinate) %}
+    {% set data_block_watched_titles_relative_coordinate = coordinate(_.data_block_watched_titles_relative_coordinate) %}
+    {% set data_block_watches_series_relative_coordinate = coordinate(_.data_block_watches_series_relative_coordinate) %}
+    
+    {% for data in data_placements %}
+    {% if data.visible %}
+    <rect x="{{ data.coordinate.x }}" y="{{ data.coordinate.y }}" height="{{ _.data_block_height }}" width="{{ _.data_block_width }}" rx="{{ _.data_block_border_radius }}" ry="{{ _.data_block_border_radius }}" class="card-media-block" />
+    <use xlink:href="#media-symbol-{{ data.name }}" class="card-media-icon" x="{{ data.coordinate.x + data_block_icon_relative_coordinate.x }}" y="{{ data.coordinate.y + data_block_icon_relative_coordinate.y }}" />
+    <text class="card-media-text-title" stroke-width="0" font-size="{{ _.data_title_font_size }}" font-family="{{ _.data_title_font }}" x="{{ data.coordinate.x + data_block_title_relative_coordinate.x }}" y="{{ data.coordinate.y + data_block_title_relative_coordinate.y }}">{{ data.name | capitalize }}</text>
+    <text class="card-media-text-watched_titles" stroke-width="0" font-size="{{ _.data_watched_titles_font_size }}" font-family="{{ _.data_watched_titles_font }}" x="{{ data.coordinate.x + data_block_watched_titles_relative_coordinate.x }}" y="{{ data.coordinate.y + data_block_watched_titles_relative_coordinate.y }}">({{ data.computed.titles }})</text>
+    <text class="card-media-text-watched_series" stroke-width="0" font-size="{{ _.data_watched_series_font_size }}" font-family="{{ _.data_watched_series_font }}" x="{{ data.coordinate.x + data_block_watches_series_relative_coordinate.x }}" y="{{ data.coordinate.y + data_block_watches_series_relative_coordinate.y }}">{{ data.computed.series }}</text>
+    {% endif %}
+    {% endfor %}
+
+    {% if show_flower_decoration == 'true' %}
+    {% set sakura_cords = coordinate(_.sakura_coordinate) %}
+    <use xlink:href="#decoration-sakura-flower" class="animate-spin sakura-flower-border sakura-flower" stroke-width="1" x="{{ sakura_cords.x }}" y="{{ sakura_cords.y }}" transform-origin="{{ sakura_cords.x + (_.sakura_size | int / 2) }} {{ sakura_cords.y + (_.sakura_size | int / 2) }}" />
+    {% endif %}
+</svg>

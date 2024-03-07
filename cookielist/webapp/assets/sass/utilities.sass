@@ -1,0 +1,19 @@
+@tailwind components
+
+@layer components
+    [style-modal-datails-isMainStudio=true]
+        span:nth-child(2)
+            @apply font-bold text-yellow-600 dark:text-yellow-400/80 not-italic #{!important}
+
+    [style-modal-datails-isStudioFavourite=true]
+        span:nth-child(2)
+            @apply border-b-[3px] border-pink-500/50 #{!important}
+
+    [style-modal-schedule-isActive=false]
+        @apply bg-transparent text-slate-400 dark:text-slate-500 #{!important}
+
+    [style-modal-schedule-isToday=true]
+        @apply bg-sky-500/30 dark:bg-sky-600/30 font-bold #{!important}
+
+    [style-hidden~="true"]
+        @apply hidden #{!important}

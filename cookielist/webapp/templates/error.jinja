@@ -1,0 +1,37 @@
+{% extends "base.jinja" %}
+
+{% block title %}
+{{ error.error_name }}
+{% endblock title %}
+
+{% block content %}
+<div class="flex items-center justify-center w-full h-full !bg-purple-100 dark:!bg-slate-900 background-animate dark:!background-animate-dark">
+  <div class="flex flex-col items-center justify-center w-1/2 p-5 overflow-hidden bg-purple-200 border-2 border-purple-300 dark:bg-slate-800 md:w-2/3 xl:w-2/3 rounded-xl h-1/2 dark:border-slate-700" id="[exception]-view">
+    <span class="flex-none text-transparent text-9xl italic bg-clip-text bg-gradient-to-bl from-indigo-500 via-purple-500 to-pink-500 align-bottom m-0 p-0 [-webkit-background-clip:text] dark:from-indigo-600 dark:via-purple-600 dark:to-pink-600 md:text-7xl">{{
+    error.error_code }}</span>
+    <span class="flex-none p-0 text-2xl italic font-extrabold text-center text-slate-800 dark:text-slate-400 md:text-xl">{{ error.error_name }}</span>
+    <a href="{{ request.referrer or url_for('AboutView:index') }}" class="flex-none p-3 mt-3 text-white transition-all duration-300 rounded cursor-pointer hover:drop-shadow-2xl drop-shadow-xl hover:scale-110 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-blue-500 hover:to-cyan-500">{{
+    "Lets Take You Back" if request.referrer else "Lets Go Home" }}</a>
+    <div class="flex">
+      <span class="p-1 px-2 mt-4 text-sm italic text-purple-400 underline transition rounded cursor-pointer dark:text-slate-500 bg-purple-300/40 dark:bg-slate-900/40 hover:scale-105" onclick="ToggleExceptionWindow()">{% icon "code-bracket", class="w-6 h-6" %}</span>
+      <span class="p-1 px-2 mt-4 ml-2 text-sm italic text-purple-400 underline transition rounded cursor-pointer dark:text-slate-500 bg-purple-300/40 dark:bg-slate-900/40 hover:scale-105" onclick="CopyExceptionTrace()">{% icon "finger-print", class="w-6 h-6" %}</span>
+    </div>
+  </div>
+</div>
+
+<div class="absolute top-0 left-0 hidden w-full h-full" id="[exception]-details">
+  <div class="flex flex-col w-full h-full p-4 rounded-lg">
+    <div class="sticky flex self-end">
+      <span class="p-1 ml-2 transition border rounded-full cursor-pointer bg-slate-700/80 border-slate-800 hover:scale-105 text-slate-50 hover:bg-sky-500/80 hover:border-sky-600/95" onclick="CopyExceptionTrace()">{% icon "finger-print", class="w-6 h-6" %}</span>
+      <span class="p-1 ml-2 transition border rounded-full cursor-pointer bg-slate-700/80 border-slate-800 hover:scale-105 text-slate-50 hover:bg-green-500/80 hover:border-green-600/95" onclick="CopyException()">{% icon "square-2-stack", class="w-6 h-6" %}</span>
+      <a class="p-1 ml-2 transition border rounded-full cursor-pointer bg-slate-700/80 border-slate-800 hover:scale-105 text-slate-50 hover:bg-purple-500/80 hover:border-purple-600/95" download="exception-{{ session['session'] }}.txt" href="data:text/plain;charset=UTF-8,{{ error.exception_text | urlencode | replace('/', '%2F') }}">{% icon "arrow-down-tray", class="w-6 h-6" %}</a>
+      <span class="p-1 ml-2 transition border rounded-full cursor-pointer bg-slate-700/80 border-slate-800 hover:scale-105 text-slate-50 hover:bg-rose-500/80 hover:border-rose-600/95" onclick="ToggleExceptionWindow()">{% icon "x-mark", class="w-6 h-6" %}</span>
+    </div><br class="m-1">
+    <div class="w-full overflow-scroll rounded-lg" id="[exception]-svg" style-hide-scrollbar="true">{{ error.exception_svg }}</div>
+  </div>
+</div>
+
+<template id="[exception]-text">{{ error.exception_text | escape }}</template>
+<template id="[exception]-trace">{{ error.trace_id }}</template>
+
+{% endblock content %}

@@ -1,0 +1,282 @@
+[
+  {
+    "id": "card_bg",
+    "description": "Card background color",
+    "default": "var(--color-slate-100)"
+  },
+  {
+    "id": "dynamic_card_colors_enabled",
+    "description": "Use colors from AniList profile",
+    "default": "false"
+  },
+  {
+    "id": "card_border_radius",
+    "description": "Card border radius",
+    "default": "6"
+  },
+  {
+    "id": "card_width",
+    "description": "Card width",
+    "default": "175"
+  },
+  {
+    "id": "card_height",
+    "description": "Card height",
+    "default": "100"
+  },
+  {
+    "id": "card_coordinate",
+    "description": "Card coordinates",
+    "default": "45, 0"
+  },
+  {
+    "id": "title_bg",
+    "description": "Title font color",
+    "default": "var(--color-slate-400)"
+  },
+  {
+    "id": "media_icon_bg",
+    "description": "Media icon color",
+    "default": "var(--color-slate-500)"
+  },
+  {
+    "id": "media_icon_size",
+    "description": "Media icon size",
+    "default": "16"
+  },
+  {
+    "id": "media_icon_stroke_width",
+    "description": "Media icon stroke width",
+    "default": "1.5"
+  },
+  {
+    "id": "data_bg",
+    "description": "Data background color",
+    "default": "var(--color-slate-200)"
+  },
+  {
+    "id": "data_text_bg",
+    "description": "Data font color",
+    "default": "var(--color-slate-600)"
+  },
+  {
+    "id": "sakura_petal_bg",
+    "description": "Flower petal color",
+    "default": "var(--color-slate-200)"
+  },
+  {
+    "id": "sakura_inner_bg",
+    "description": "Flower inner color",
+    "default": "var(--color-slate-400)"
+  },
+  {
+    "id": "sakura_border_bg",
+    "description": "Flower border color",
+    "default": "var(--color-slate-600)"
+  },
+  {
+    "id": "sakura_size",
+    "description": "Flower size",
+    "default": "25"
+  },
+  {
+    "id": "sakura_coordinate",
+    "description": "Flower coordinate",
+    "default": "34, 77"
+  },
+  {
+    "id": "circle_variant",
+    "description": "Circle color variant",
+    "default": "slate"
+  },
+  {
+    "id": "circle_opacity",
+    "description": "Circle opacity",
+    "default": "0.4"
+  },
+  {
+    "id": "circle_spin_speed",
+    "description": "Circle spin duration",
+    "default": "10s"
+  },
+  {
+    "id": "circle_coordinate",
+    "description": "Circle Coordinates",
+    "default": "170, 0"
+  },
+  {
+    "id": "circle_size",
+    "description": "Circle size",
+    "default": "100"
+  },
+  {
+    "id": "sakura_spin_speed",
+    "description": "Flower spin duration",
+    "default": "10s"
+  },
+  {
+    "id": "title_font",
+    "description": "Title font",
+    "default": "victor-mono"
+  },
+  {
+    "id": "title_font_coordinate",
+    "description": "Title coordinates",
+    "default": "50, 10"
+  },
+  {
+    "id": "username_prefix",
+    "description": "Username prefix",
+    "default": "@"
+  },
+  {
+    "id": "data_title_font",
+    "description": "Data title font",
+    "default": "victor-mono"
+  },
+  {
+    "id": "data_watched_titles_font",
+    "description": "Watched titles font",
+    "default": "victor-mono"
+  },
+  {
+    "id": "data_watched_series_font",
+    "description": "Watched series font",
+    "default": "victor-mono"
+  },
+  {
+    "id": "title_font_size",
+    "description": "Title font size",
+    "default": "10"
+  },
+  {
+    "id": "data_title_font_size",
+    "description": "Data title font size",
+    "default": "7"
+  },
+  {
+    "id": "data_watched_titles_font_size",
+    "description": "Watched titles font size",
+    "default": "5"
+  },
+  {
+    "id": "data_watched_series_font_size",
+    "description": "Watched series font size",
+    "default": "15"
+  },
+  {
+    "id": "show_flower_decoration",
+    "description": "Show Flower Decoration",
+    "default": "true"
+  },
+  {
+    "id": "show_circle_decoration",
+    "description": "Show Circle Decoration",
+    "default": "true"
+  },
+  {
+    "id": "show_avatar",
+    "description": "Show Avatar",
+    "default": "true"
+  },
+  {
+    "id": "avatar_coordinate",
+    "description": "Avatar coordinates",
+    "default": "10, 15"
+  },
+  {
+    "id": "avatar_size",
+    "description": "Avatar size",
+    "default": "70"
+  },
+  {
+    "id": "avatar_animation_duration",
+    "description": "Avatar animation speed",
+    "default": "5000ms"
+  },
+  {
+    "id": "show_avatar_glow",
+    "description": "Show Avatar Glow",
+    "default": "true"
+  },
+  {
+    "id": "avatar_blur_pixel",
+    "description": "Avatar glow intensity",
+    "default": "3px"
+  },
+  {
+    "id": "data_block_anime_coordinate",
+    "description": "Anime block coordinates",
+    "default": "77.5, 17"
+  },
+  {
+    "id": "data_block_manga_coordinate",
+    "description": "Manga block coordinates",
+    "default": "77.5, 58"
+  },
+  {
+    "id": "data_block_novel_coordinate",
+    "description": "Novel block coordinates",
+    "default": "127, 17"
+  },
+  {
+    "id": "data_block_music_coordinate",
+    "description": "Music block coordinates",
+    "default": "127, 58"
+  },
+  {
+    "id": "show_data_block_anime",
+    "description": "Show anime block",
+    "default": "true"
+  },
+  {
+    "id": "show_data_block_manga",
+    "description": "Show manga block",
+    "default": "true"
+  },
+  {
+    "id": "show_data_block_music",
+    "description": "Show music block",
+    "default": "true"
+  },
+  {
+    "id": "show_data_block_novel",
+    "description": "Show novel block",
+    "default": "true"
+  },
+  {
+    "id": "data_block_height",
+    "description": "Data block height",
+    "default": "35"
+  },
+  {
+    "id": "data_block_width",
+    "description": "Data block width",
+    "default": "44"
+  },
+  {
+    "id": "data_block_border_radius",
+    "description": "Data block border radius",
+    "default": "6"
+  },
+  {
+    "id": "data_block_icon_relative_coordinate",
+    "description": "Data block icon relative coordinates",
+    "default": "2, 2"
+  },
+  {
+    "id": "data_block_title_relative_coordinate",
+    "description": "Data block title relative coordinates",
+    "default": "18.5, 3"
+  },
+  {
+    "id": "data_block_watched_titles_relative_coordinate",
+    "description": "Data block watched titles relative coordinates",
+    "default": "18.5, 9"
+  },
+  {
+    "id": "data_block_watches_series_relative_coordinate",
+    "description": "Data block watches series relative coordinates",
+    "default": "4.5, 31"
+  }
+]

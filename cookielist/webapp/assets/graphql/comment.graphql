@@ -1,0 +1,43 @@
+query ($activity: Int, $page: Int) {
+  activity: Activity(id: $activity) {
+    ...activity
+  }
+  replies: Page(page: $page) {
+    pageInfo {
+      currentPage
+      hasNextPage
+    }
+    activityReplies(activityId: $activity) {
+      text(asHtml: true)
+      likeCount
+      isLiked
+      createdAt
+      user {
+        id
+        name
+        siteUrl
+        avatar {
+          medium
+        }
+      }
+    }
+  }
+}
+
+fragment activity on TextActivity {
+  userId
+  siteUrl
+  isLiked
+  likeCount
+  replyCount
+  text(asHtml: true)
+  createdAt
+  user {
+    id
+    name
+    siteUrl
+    avatar {
+      medium
+    }
+  }
+}

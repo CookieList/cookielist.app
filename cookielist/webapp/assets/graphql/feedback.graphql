@@ -1,0 +1,6 @@
+mutation ($message: String, $recipient: Int) {
+  SaveMessageActivity(message: $message, private: true, recipientId: $recipient) {
+    id
+    siteUrl
+  }
+}

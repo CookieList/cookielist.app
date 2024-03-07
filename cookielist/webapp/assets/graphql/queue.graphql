@@ -1,0 +1,15 @@
+mutation (
+  $mediaId: Int
+  $progress: Int
+  $private: Boolean
+) {
+  SaveMediaListEntry(
+    mediaId: $mediaId
+    progress: $progress
+    private: $private
+  ) {
+    media {
+      duration
+    }
+  }
+}

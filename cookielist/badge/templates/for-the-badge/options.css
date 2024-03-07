@@ -1,0 +1,20 @@
+{% if _.dynamic_card_colors_enabled == 'true' and not _.anilist_profile_theme_color.startswith('#') %}
+:root {
+    --media-icon-bg: {{ 'var(--color-' + _.anilist_profile_theme_color + '-50)' }};
+    --right-bg: {{ 'var(--color-' + _.anilist_profile_theme_color + '-400)' }};
+    --font-right-color: {{ 'var(--color-' + _.anilist_profile_theme_color + '-50)' }};
+    --data-block-bg: {{ 'var(--color-' + _.anilist_profile_theme_color + '-500)' }}
+}
+{% else %}
+:root {
+    --media-icon-bg: {{ _.media_icon_bg }};
+    --right-bg: {{ _.badge_right_bg }};
+    --font-right-color: {{ _.font_right_color }};
+    --data-block-bg: {{ _.data_block_bg }}
+}
+{% endif %}
+
+:root {
+    --left-bg: {{ _.badge_left_bg }};
+    --font-left-color: {{ _.font_left_color }};
+}

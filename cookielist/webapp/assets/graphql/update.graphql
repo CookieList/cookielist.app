@@ -1,0 +1,39 @@
+mutation ($mediaId: Int, $status: MediaListStatus, $scoreRaw: Int, $progress: Int, $progressVolumes: Int, $repeat: Int, $private: Boolean, $notes: String, $customLists: [String], $startedAt: FuzzyDateInput, $completedAt: FuzzyDateInput, $advancedScores: [Float]) {
+  SaveMediaListEntry(mediaId: $mediaId, status: $status, scoreRaw: $scoreRaw, progress: $progress, progressVolumes: $progressVolumes, repeat: $repeat, private: $private, notes: $notes, customLists: $customLists, startedAt: $startedAt, completedAt: $completedAt, advancedScores: $advancedScores) {
+    id
+    mediaId
+    userId
+    status
+    score(format: POINT_100)
+    progress
+    progressVolumes
+    repeat
+    private
+    notes
+    customLists(asArray: true)
+    advancedScores
+    startedAt {
+      year
+      month
+      day
+    }
+    completedAt {
+      year
+      month
+      day
+    }
+    createdAt
+    updatedAt
+    user {
+      mediaListOptions {
+        scoreFormat
+        animeList {
+          advancedScoringEnabled
+        }
+        mangaList {
+          advancedScoringEnabled
+        }
+      }
+    }
+  }
+}

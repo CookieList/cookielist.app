@@ -1,0 +1,75 @@
+<template id="[container]-feedback@template.anilist_message_template">
+  <center>
+    <h1>FEEDBACK<a href="<% origin %>{{ url_for('UserPageView:user_page', id=userInfo.userId) }}">#{{ SITE_NAME }}</a></h1>
+    <a href="<% origin %>{{ url_for('AboutView:index') }}"><img src="<% origin %>{{ url_for('static', filename='images/favicon.webp') }}" alt="{{ SITE_NAME }} icon" width="55px" /></a><br />
+    <code>USER NAME</code> : <a href="https://anilist.co/user/<% pageUser.name %>">#<% pageUser.name %></a>
+    <code>USER ID</code> : <a href="https://anilist.co/user/<% pageUser.id %>">#<% pageUser.id %></a><br />
+    <h1>Submitted By <a href="https://anilist.co/user/<% currentUser.id %>">#<% currentUser.name %></a></h1>
+    <blockquote>
+      <p><code><% message %></code></p>
+    </blockquote><br />
+    <h5><a>This is a auto generated feedback message through {{ SITE_NAME }}</a></h5>
+    <h5><code>Version: <a>{% env 'COOKIELIST_VERSION' %}.{% env 'COOKIELIST_SUB_VERSION' %}@{{ COOKIEDB_VERSION }}</a></code></h5>
+  </center>
+</template>
+
+
+<template id="[container]-feedback@template.feedback_sent_success_message">
+  <span class="w-full p-2 my-1 border rounded-lg text-slate-500 bg-slate-50 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700">Feedback has been sent, you can check it at <button class="underline text-sky-400 dark:text-sky-500" onclick="$.popup('<% url %>')"><% url %></button></span>
+</template>
+
+
+<template id="[container]-feedback@template.sent_feedbacks">
+  <ul class="space-y-3 text-sm">
+    <% #ids %>
+    <li class="flex space-x-3">
+      {% icon "link", class="flex-shrink-0 w-5 h-5 stroke-slate-600 dark:stroke-slate-500"%}
+      <span class="italic font-bold underline text-sky-500 dark:text-sky-600">
+        <a href="https://anilist.co/activity/<% . %>" target="_blank">#<% . %></a>
+      </span>
+    </li>
+    <% /ids %>
+  </ul>
+</template>
+
+<template id="[container]-feedback@template.msg_sending">
+  {% icon "arrow-path", class="w-6 h-6 animate-spin stroke-slate-600 dark:stroke-slate-500"%}
+</template>
+
+<template id="[container]-feedback@template.msg_sent">
+  {% icon "paper-airplane", class="stroke-slate-600 dark:stroke-slate-500" %}
+</template>
+
+<template id="[container]-feedback">
+  <div class="flex flex-col w-full animate__animated animate__fadeIn" style="--animate-duration: 0.3s;">
+    <div class="relative w-full h-1/2">
+      <textarea class="border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 italic placeholder-shown:border-slate-200 placeholder-shown:dark:border-slate-700 placeholder-shown:border-t-slate-200 placeholder-shown:dark:border-t-slate-700 disabled:bg-slate-50 dark:bg-transparent peer h-full min-h-[100px] w-full resize-none rounded-[7px] border bg-transparent px-3 py-2.5 font-sans text-sm font-normal outline outline-0 transition-all placeholder-shown:border focus:border-2 focus:border-slate-500 focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0" placeholder="" id="[container]-feedback.feedback_box"></textarea>
+      <label class="z-30 before:content[' '] after:content[' '] text-slate-500 dark:text-slate-400 before:border-slate-200 dark:before:border-slate-700 after:border-slate-200 dark:after:border-slate-700 peer-placeholder-shown:text-slate-500 peer-disabled:peer-placeholder-shown:text-slate-500 pointer-events-none absolute -top-1.5 left-0 flex h-full w-full select-none text-[11px] font-normal leading-tight transition-all before:pointer-events-none before:mr-1 before:mt-[6.5px] before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-l before:border-t before:transition-all after:pointer-events-none after:ml-1 after:mt-[6.5px] after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-r after:border-t after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-slate-500 peer-focus:before:border-l-2 peer-focus:before:border-t-2 peer-focus:before:border-slate-500 peer-focus:after:border-r-2 peer-focus:after:border-t-2 peer-focus:after:border-slate-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent">Feedback</label>
+    </div>
+
+    <span id="[container]-feedback.feedback_send_button" class="dark:bg-slate-800 hover:dark:bg-slate-700 dark:border-slate-700 hover:dark:border-slate-600 bg-gray-100 hover:bg-gray-200 hover:border-gray-300 w-full h-12 p-2.5 flex rounded cursor-pointer border-2 justify-center my-2 transition">{% icon "paper-airplane", class="stroke-slate-600 dark:stroke-slate-500" %}</span>
+
+    <p class="text-slate-500 dark:text-slate-400">If you have any inquiries or have identified any technical issues within {{ SITE_NAME }}, or if you are encountering inaccuracies in the generated results, kindly utilize this page to communicate your observations and concerns.</p>
+    <p class="my-2 text-slate-400 dark:text-slate-600">Read <a href="https://anilist.co/forum/thread/14" class="underline text-sky-300 dark:text-sky-500" target="_blank">guidelines</a> before sending.</p>
+
+    <p id="[container]-feedback.message_returned_badge" class="flex flex-col w-full my-2 text-slate-500"><span class="hidden text-rose-400 dark:text-rose-500" id="[container]-feedback.message_returned_badge.not_logged_in">Login from the settings menu, before using this feature or contact me at <a class="italic font-bold text-rose-500 dark:text-rose-600" href="https://anilist.co/user/{% env 'ANILIST_DEV_ID' %}" target="_blank">AniList@{% env 'ANILIST_DEV_ID' %}</a>.</span></p>
+
+    <div class="hidden p-4 mt-2 border-2 border-dashed rounded mb-9 bg-slate-100 dark:bg-slate-800 dark:border-slate-700" id="[container]-feedback.feedback_history">
+      <div class="flex justify-center p-3 mx-12 mb-3 border rounded-lg grow-0 bg-slate-50 border-slate-500 dark:bg-slate-700 dark:border-slate-600">
+        <p class="text-sm font-bold capitalize text-slate-500 dark:text-slate-400">previously submitted reports.</p>
+      </div>
+
+      <div class="mx-3" id="[container]-feedback.feedback_history.history_container"></div>
+
+      <div class="flex flex-row justify-center p-3 mx-12 my-3 transition border rounded-lg cursor-pointer grow-0 bg-rose-500/10 border-rose-500 hover:bg-rose-500/20 dark:border-rose-600" onclick="clearFeedbacks()">
+        <span>{% icon 'trash', class="w-5 h-5 stroke-rose-500 dark:stroke-rose-600"%}</span>
+        <span class="text-sm font-bold text-rose-500 dark:text-rose-600">Clear</span>
+      </div>
+
+    </div>
+
+    <br class="mb-1">
+
+    <script>InitializeFeedbackSystem()</script>
+  </div>
+</template>

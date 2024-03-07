@@ -1,0 +1,238 @@
+query ($id: Int) {
+  Media(id: $id) {
+    id
+    idMal
+    type
+    siteUrl
+    isFavourite 
+    status
+    episodes
+    duration
+    chapters
+    volumes
+    countryOfOrigin
+    isLicensed
+    source
+    hashtag
+    isAdult
+    mediaListEntry {
+      id
+      mediaId
+      userId
+      status
+      score(format: POINT_100)
+      progress
+      progressVolumes
+      repeat
+      private
+      notes
+      customLists(asArray: true)
+      advancedScores
+      startedAt {
+        year
+        month
+        day
+      }
+      completedAt {
+        year
+        month
+        day
+      }
+      createdAt
+      updatedAt
+      user {
+        mediaListOptions {
+          scoreFormat
+          animeList {
+            advancedScoringEnabled
+          }
+          mangaList {
+            advancedScoringEnabled
+          }
+        }
+      }
+    }
+    stats {
+      scoreDistribution {
+        score
+        amount
+      }
+      statusDistribution {
+        status
+        amount
+      }
+    }
+    rankings {
+      rank
+      type
+      year
+      season
+      context
+    }
+    trailer {
+      id
+      site
+    }
+    genres
+    tags {
+      name
+      description
+      category
+      isGeneralSpoiler
+      isMediaSpoiler
+      isAdult
+    }
+    nextAiringEpisode {
+      airingAt
+      timeUntilAiring
+      episode
+    }
+    airingSchedule {
+      nodes {
+        airingAt
+        episode
+      }
+    }
+    modNotes
+    synonyms
+    averageScore
+    meanScore
+    favourites
+    popularity
+    trending
+    studios {
+      pageInfo {
+        hasNextPage
+      }
+      edges {
+        node {
+          name
+          siteUrl
+          isFavourite
+        }
+        isMain
+      }
+    }
+    startDate {
+      year
+      month
+      day
+    }
+    endDate {
+      year
+      month
+      day
+    }
+    season
+    seasonYear    
+    coverImage {
+      large
+      medium
+    }
+    title {
+      english
+      romaji
+      native
+    }
+    format
+    status
+    bannerImage
+    description(asHtml: true)
+    externalLinks {
+      color
+      site
+      url
+      language
+      icon
+      type
+    }
+    recommendations(page: 1, perPage: 12) {
+      pageInfo {
+        hasNextPage
+      }
+      nodes {
+        rating
+        mediaRecommendation {
+          title {
+            english
+            romaji
+            native
+          }
+          id
+          format
+          type
+          idMal
+          status
+          siteUrl
+          coverImage {
+            large
+            medium
+          }
+        }
+      }
+    }
+    staff(page: 1, perPage: 12) {
+      pageInfo {
+        hasNextPage
+      }
+      edges {
+        role
+        node {
+          name {
+            full
+            native
+          }
+          image {
+            large
+            medium
+          }
+          siteUrl
+        }
+      }
+    }
+    characters(page: 1, perPage: 12) {
+      pageInfo {
+        hasNextPage
+      }
+      edges {
+        role
+        node {
+          name {
+            full
+            native
+          }
+          image {
+            large
+            medium
+          }
+          siteUrl
+        }
+      }
+    }
+    relations {
+      edges {
+        relationType
+        node {
+          id
+          idMal
+          type
+          title {
+            english
+            romaji
+            native
+          }
+          format
+          status
+          siteUrl
+          coverImage {
+            large
+            medium
+          }
+          mediaListEntry {
+            status
+          }
+        }
+      }
+    }
+  }
+}

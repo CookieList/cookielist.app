@@ -1,0 +1,49 @@
+@tailwind components
+
+@layer components
+
+    .comment_section-comment
+        @apply text-sm
+
+        br 
+            @apply my-1.5
+        hr
+            @apply border-t-2 border-slate-300 dark:border-slate-600 my-1 w-[80%] ml-[10%]
+        p
+            @apply my-1
+        center
+            @apply my-1
+        a
+            @apply text-sky-500 dark:text-sky-400 my-1
+        a[onclick]
+            @apply cursor-pointer
+        h1
+            @apply text-2xl font-bold mb-1 ml-3 md:ml-1.5 my-1
+        h2
+            @apply text-xl font-bold mb-1 ml-3 md:ml-1.5 my-1
+        h3
+            @apply text-lg font-bold mb-1 ml-3 md:ml-1.5 my-1
+        h4
+            @apply text-base font-bold mb-1 ml-3 md:ml-1.5 my-1
+        h5
+            @apply text-sm font-bold mb-1 ml-3 md:ml-1.5 my-1
+        h6
+            @apply text-xs font-bold mb-1 ml-3 md:ml-1.5 my-1
+        ul
+            @apply list-disc ml-6 list-inside md:ml-4 my-1
+        ol
+            @apply ml-6 list-decimal list-inside md:ml-4 my-1
+        img,video
+            @apply rounded-md my-2
+        code
+            @apply py-1 rounded px-2 my-1
+        pre
+            @apply p-2 rounded-md my-1
+        pre>code
+            @apply p-0 bg-transparent my-0 mx-0 m-0 #{!important}
+        code,pre
+            @apply font-mono bg-slate-800/90 dark:bg-slate-900/90 text-slate-300 dark:text-slate-400
+        blockquote
+            @apply p-1 pl-3 bg-sky-500/20 dark:bg-sky-500/10 rounded-md italic font-bold text-sky-500 dark:text-sky-400 my-1
+        .markdown_spoiler
+            @apply px-2 py-1 text-rose-500 dark:text-rose-400 rounded-md italic font-bold bg-rose-500/20 dark:bg-rose-500/10 my-1

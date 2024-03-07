@@ -1,0 +1,13 @@
+{% macro notification_block(mode, icon, decoration="text-slate-500 border-slate-300 bg-slate-50 dark:text-slate-300 dark:border-slate-600 dark:bg-slate-800") %}
+<div class="absolute z-[90] flex-row justify-center hidden w-full py-2 top-8" id="[notification]-{{ mode }}">
+    <div class="flex flex-row p-2 border-2 rounded-full grow-0 {{ decoration }}">
+        <span>{% icon icon, class="w-6 h-6" %}</span>
+        <span class="ml-1" id="[notification]-{{ mode }}.content"></span>
+    </div>
+</div>
+{% endmacro %}
+
+{{ notification_block('tell', 'bell') }}
+{{ notification_block('success', 'check-circle', decoration="text-emerald-500 border-emerald-300 bg-emerald-50 dark:text-emerald-300 dark:border-emerald-600 dark:bg-emerald-800") }}
+{{ notification_block('failed', 'x-circle', decoration="text-rose-500 border-rose-300 bg-rose-50 dark:text-rose-300 dark:border-rose-600 dark:bg-rose-800") }}
+{{ notification_block('inform', 'information-circle', decoration="text-sky-500 border-sky-300 bg-sky-50 dark:text-sky-300 dark:border-sky-600 dark:bg-sky-800") }}

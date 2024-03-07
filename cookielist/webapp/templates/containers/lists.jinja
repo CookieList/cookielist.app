@@ -1,0 +1,900 @@
+<template id="[gutter]-block@template">
+  <div class="flex flex-col w-full m-3 animate__animated animate__fadeIn" style="--animate-duration: 0.4s;">
+    <div class="justify-center hidden mb-1 md:flex">
+      <span class="flex flex-row items-center justify-center p-1 transition border-2 rounded-md cursor-pointer bg-red-500/10 hover:bg-red-500/20 border-red-500/40" onclick="CloseSwapEntry()">
+        <span>{% icon "x-mark", class="w-5 h-5 stroke-rose-500" %}</span>
+        <span class="text-sm font-bold text-rose-500">Close</span>
+      </span>
+    </div>
+    <div class="flex flex-col justify-center p-2 m-1 mx-4 text-sm text-center bg-white rounded-lg text-slate-500 md:mx-2 dark:bg-slate-900/70 dark:text-slate-400 md:bg-white">
+      <span class="italic font-bold mb-1 md:text-sm md:mb-0.5 leading-tight" style-wordbreak="true"><% group.groupName %></span>
+      <% #group.groupDuration %>
+      <span class="my-px font-bold text-slate-600 dark:text-slate-300 md:text-sm"><% #fn.secondsToHuman %><% group.groupDuration %><% /fn.secondsToHuman %></span>
+      <% /group.groupDuration %>
+      <div class="flex justify-center w-full md:text-sm mt-1 md:mt-0.5">
+        <span class="px-1 m-1 font-bold bg-white border rounded-full dark:bg-slate-800 dark:border-slate-700">
+          <span class="data-[is-group-watched='true']:text-green-400 data-[is-group-watched='true']:dark:text-green-500 data-[is-group-watched='false']:text-rose-400 data-[is-group-watched='false']:dark:text-rose-400" data-is-group-watched="<% fn.isGroupWatched %>"><% group.completedGroupMediaCount %></span>/<% group.groupMediaCount %>
+        </span>
+      </div>
+    </div>
+    <div class="w-full flex flex-col [&>div:first-child>div:first-child]:rounded-t-xl [&>div:last-child>div:first-child]:rounded-b-xl">
+      <% #group.mediaGroups %>
+      <div class="cursor-pointer w-full aspect-[16/8] my-1 first:mt-3.5 last:mb-2 flex" onclick="ShowModal('<% mediaId %>', `<% mediaTitle %>`)">
+        <div class="relative flex group bg-white dark:bg-slate-900/70 w-full h-full rounded-md transition hover:bg-slate-50 duration-150 dark:hover:bg-slate-900/90 hover:shadow-[0px_0px_15px_rgba(0,0,0,0.07)] data-[media-action='unavailable']:!bg-emerald-500/25 data-[media-action='unavailable']:hover:!bg-emerald-500/30 data-[media-action='available']:!bg-rose-500/25 data-[media-action='available']:hover:!bg-rose-500/30 data-[media-action='not\_watching']:!bg-sky-500/25 data-[media-action='not\_watching']:hover:!bg-sky-500/30" data-media-action="<% fn.mediaStatusAction %>">
+          <div class="flex w-4/12 h-full p-1 overflow-hidden"><img src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/default.jpg" data-src="<% mediaCover %>" class="rounded-md aspect-[2/3] object-cover w-full data-[media-watched='false']:grayscale data-[media-watched='false']:group-hover:grayscale-0 transition duration-300" data-media-watched="<% isMediaWatched %>" lazyload></div>
+          <div class="flex flex-col justify-between w-8/12 h-full overflow-x-hidden overflow-y-auto grow-0" style-hide-scrollbar="true">
+            <div class="flex-col w-full m-1 p-1 md:p-0.5">
+              <div class="text-slate-500 dark:text-slate-400 transition leading-4 md:leading-3 text-sm md:text-xs m-1 data-[media-action='unavailable']:!text-emerald-700 data-[media-action='available']:!text-rose-700 data-[media-action='not\_watching']:!text-sky-700 data-[media-action='unavailable']:dark:!text-emerald-200 data-[media-action='available']:dark:!text-rose-200 data-[media-action='not\_watching']:dark:!text-sky-200 group-hover:font-bold" data-media-action="<% fn.mediaStatusAction %>" style-wordbreak="true"><% mediaTitle %></div>
+              <div class="flex m-1">
+                <button class="py-1 px-1.5 rounded-md bg-slate-950/80 mr-1 my-1" onclick="event.stopPropagation();$.popup('https://anilist.co/<% mediaCategory %>/<% mediaId %>')">{% icon 'images/anilist.svg', class="w-4 h-4" %}</button>
+                <% #mediaListStatus.length %>
+                <span class="py-1 px-1.5 rounded-md bg-slate-300/70 mr-1 my-1 text-xs text-slate-500 dark:bg-slate-500/40 dark:text-slate-400"><% mediaListStatus %></span>
+                <% /mediaListStatus.length %>
+              </div>
+            </div>
+            <div class="flex m-1.5 flex-wrap-reverse justify-end">
+              <span class="data-[media-action='unavailable']:before:content-['UNAVAILABLE'] data-[media-action='unavailable']:bg-rose-500/80 data-[media-action='available']:before:content-['AVAILABLE'] data-[media-action='available']:bg-emerald-500/80 data-[media-action='not\_watching']:before:content-['NOT_WATCHING'] data-[media-action='not\_watching']:bg-sky-500/80 data-[media-action='normal']:hidden py-1 px-1.5 leading-tight flex items-center justify-center rounded-full m-1 text-xs font-bold text-white" data-media-action="<% fn.mediaStatusAction %>"></span>
+              <span class="data-[media-format='TV']:bg-yellow-500/80 data-[media-format='TV\_SHORT']:bg-rose-500/80 data-[media-format='MOVIE']:bg-orange-500/80 data-[media-format='SPECIAL']:bg-blue-500/80 data-[media-format='OVA']:bg-emerald-500/80 data-[media-format='ONA']:bg-red-500/80 data-[media-format='MANGA']:bg-amber-500/80 data-[media-format='ONE\_SHOT']:bg-teal-500/80 data-[media-format='NOVEL']:bg-sky-500/80 data-[media-format='music']:bg-pink-500/80 data-[media-format='UNKNOWN']:bg-slate-500/80 py-1 px-1.5 leading-tight flex items-center justify-center rounded-full m-1 text-xs font-bold text-white" data-media-format="<% mediaFormat %>"><% mediaFormat %></span>
+              <span class="py-1 px-1.5 leading-tight flex items-center justify-center rounded-full m-1 text-xs font-bold text-white bg-purple-500/80">#<% mediaId %></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% /group.mediaGroups %>
+    </div>
+  </div>
+</template>
+
+
+{% for mediaType, mediaGroupCollection in userList.listResults.items() %}
+<template id="[container]-{{ mediaType|lower }}">
+  <div class="w-full animate__animated animate__fadeIn" style="--animate-duration: 0.3s;">
+    <div class="hidden md:flex mb-1.5 w-full text-slate-500 dark:text-slate-400 items-center justify-center px-[4%]">
+      <span onclick="searchFilterMobile(this)" class="w-full m-1 px-1 py-2.5 flex items-center justify-center cursor-pointer bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition rounded-md border-2 border-slate-300 dark:border-slate-800 dark:hover:border-slate-700 group/2 data-[mobile-search-filter-active='true']:brightness-90 dark:data-[mobile-search-filter-active='true']:brightness-[.8] data-[mobile-search-filter-active='true']:border-dashed" data-mobile-search-filter-class="NOT_WATCHED" data-mobile-search-filter-active="false">{% icon "archive-box-x-mark", class="w-6 h-6 transition group-hover/2:scale-110" %}</span>
+      <span onclick="searchFilterMobile(this)" class="w-full m-1 px-1 py-2.5 flex items-center justify-center cursor-pointer bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition rounded-md border-2 border-slate-300 dark:border-slate-800 dark:hover:border-slate-700 group/2 data-[mobile-search-filter-active='true']:brightness-90 dark:data-[mobile-search-filter-active='true']:brightness-[.8] data-[mobile-search-filter-active='true']:border-dashed" data-mobile-search-filter-class="COMPLETED" data-mobile-search-filter-active="false">{% icon "archive-box", class="w-6 h-6 transition group-hover/2:scale-110" %}</span>
+      <span onclick="searchFilterMobile(this)" class="w-full m-1 px-1 py-2.5 flex items-center justify-center cursor-pointer bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition rounded-md border-2 border-slate-300 dark:border-slate-800 dark:hover:border-slate-700 group/2 data-[mobile-search-filter-active='true']:brightness-90 dark:data-[mobile-search-filter-active='true']:brightness-[.8] data-[mobile-search-filter-active='true']:border-dashed" data-mobile-search-filter-class="NOT_COMPLETED" data-mobile-search-filter-active="false">{% icon "archive-box-arrow-down", class="w-6 h-6 transition group-hover/2:scale-110" %}</span>
+    </div>
+    <div class="advanced-table">
+      {% set resultTableCells = [mediaType, "completed", "status"] %}
+      <div class="at-header">
+        {% for cell in resultTableCells %}
+        <div class="at-cell">{{ cell }}</div>
+        {% endfor %}
+      </div>
+      {% for mediaGroup in mediaGroupCollection.groupEntries %}
+      <script type="application/json" id="[gutter]-block@data.{{ mediaGroup.groupId }}">{{ mediaGroup | tojson }}</script>
+      <div class="at-row {{ 'COMPLETED ' if mediaGroup.isGroupCompleted and mediaGroup.completedGroupMediaCount == mediaGroup.groupMediaCount }}{{ 'NOT_WATCHED' if not mediaGroup.isGroupCompleted }}{{ 'NOT_COMPLETED' if mediaGroup.completedGroupMediaCount != mediaGroup.groupMediaCount and mediaGroup.isGroupCompleted }}" onclick="SwapEntryView('{{ mediaGroup.groupId }}')">
+        <div class="info-gutter" id="[gutter]-content@{{ mediaGroup.groupId }}">
+          <div class="gutter-container">
+            <div class="at-cell" data-title="{{ resultTableCells[0] }}">
+              <div style-wordbreak="true" search-anchor="{{ mediaGroup.groupId }}">{{ mediaGroup.groupName }}</div>
+            </div>
+            <div class="at-cell" data-title="{{ resultTableCells[1] }}">
+              <span class="status-text">
+                {% for mediaFormatAlias, formatStatus in mediaGroup.groupCompletionStatus.items() -%}
+                {{ mediaFormatAlias }}<b>{{ formatStatus }}</b>{{ '-' if not loop.last }}
+                {%- endfor %}
+              </span>
+            </div>
+            <div class="at-cell" data-title="{{ resultTableCells[2] }}">
+              <span>{{ mediaGroup.completedGroupMediaCount }}/{{ mediaGroup.groupMediaCount }}</span>
+            </div>
+          </div>
+          <div class="info-inline"><span onclick="SwapEntryViewMobile('{{ mediaGroup.groupId }}')" class="inline-icon"></span></div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <br class="my-2">
+  </div>
+  <script>createSearchDatabase(); initializeListSearch()</script>
+</template>
+{% endfor %}
+
+<template id="[container]-lists@template.modal_view.overview">
+  <div class="relative flex w-full">
+    <div class="flex absolute z-[71] top-0 left-0 rounded-ms w-full h-[150px] md:h-[100px]">
+      <span class="flex w-full h-full"><% #media.bannerImage %><img src="<% media.bannerImage %>" class="object-cover w-full h-full rounded-t-md"><% /media.bannerImage %></span>
+    </div>
+    <div class="flex absolute z-[72] top-0 left-0 rounded-ms w-full h-[150px] md:h-[100px] bg-slate-900/40 dark:bg-slate-900/50">
+      <span class="flex w-full h-full bg-gradient-to-t from-slate-900/60 dark:from-slate-900/70"></span>
+    </div>
+    <div class="flex absolute z-[73] mt-[75px] md:mt-[50px] mx-2 w-full">
+      <div class="relative flex w-full">
+        <img class="rounded-md mx-3 md:mx-1 object-cover h-[200px] md:h-[125px] shadow-md md:w-[83.33px] w-[133.33px]" src="<% media.coverImage.large %>">
+        <div class="mt-[80px] md:mt-[52.5px] ml-2 flex flex-col w-full mx-3 md:mx-1">
+          <div class="flex w-full px-1 text-lg italic font-bold md:text-sm"><span class="w-full mr-1" style-wordbreak="true"><% fn.mediaTitle %></span></div>
+          <div class="flex items-center mt-1 ml-1 text-xs font-bold md:flex-col md:items-start text-slate-400 dark:text-slate-500"><span class="flex items-center"><% media.format %> <span>{% icon "play-circle", class="w-1.5 h-1.5 fill-slate-400 dark:fill-slate-500 mx-1.5" %}</span> <% media.status %></span> <span class="flex"><% #media.isAdult %><span class="ml-2 text-rose-500/90 md:ml-0 md:mr-2">R-18</span><% /media.isAdult %> <% #media.averageScore %><span class="ml-2 text-green-500/90 md:ml-0"><% media.averageScore %>%</span><% /media.averageScore %></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="w-full mt-[285px] md:mt-[200px] md:text-sm text-pretty px-6 py-2 dark:[&_i]:text-pink-400/90 [&_i]:text-pink-500/90 [&_i]:font-bold [&>i]:italic [&_i]:px-px">
+    The <i class="lowercase"><% #fn.toHeading %><% media.type %><% /fn.toHeading %></i> (<i><% #fn.toHeading %><% media.format %><% /fn.toHeading %></i>) <i><% fn.mediaTitle %></i>
+    <span style-hidden="<% #fn.styleHidden %><% media.startDate.month %><% media.startDate.day %><% media.startDate.year %><% /fn.styleHidden %>">started on <% #media.season.length %><i><% #fn.toHeading %><% media.season %><% /fn.toHeading %></i> of<% /media.season.length %> <i><% #fn.monthIntToName %><% media.startDate.month %><% /fn.monthIntToName %><% #media.startDate.day %> <% media.startDate.day %><% /media.startDate.day %><% #media.startDate.year %>, <% media.startDate.year %><% /media.startDate.year %></i></span>
+    is <i><% #fn.toHeading %><% media.status %><% /fn.toHeading %></i>
+    <span style-hidden="<% #fn.styleHidden %><% media.nextAiringEpisode.airingAt %><% /fn.styleHidden %>">with its next episode <i>#<% media.nextAiringEpisode.episode %></i> airing in <i><% fn._context_nextAiring_timeRemaining %></i></span>.
+    its a <% #media.isAdult %><i>R-18</i><% /media.isAdult %> series
+    <% #media.averageScore %>with the average scroe of <i><% media.averageScore %>%</i><% /media.averageScore %>
+    , under the Genres of <i class="last:[&_span]:hidden"><% #media.genres %><span><% . %></span><span>, </span><% /media.genres %></i>
+    <% #media.source %>addapted from a <i><% #fn.toHeading %><% media.source %><% /fn.toHeading %></i><% /media.source %>
+    <% #media.episodes %>and has <i><% media.episodes %></i> episodes<% /media.episodes %> <% #media.duration %> <% ^media.episodes %>and has episodes<% /media.episodes %> of duration <i><% media.duration %> minutes</i> each<% /media.duration %>
+    <% #media.chapters %>and has <i><% media.chapters %></i> chapters<% /media.chapters %> <% #media.volumes %>comprising of <i><% media.volumes %></i> volumes<% /media.volumes %>
+    .
+  </div>
+</template>
+
+<template id="[container]-lists@template.modal_view.general">
+  <div class="mb-2" style-hidden="<% #fn.styleHidden %><% media.description.length %><% /fn.styleHidden %>">
+    <div class="flex items-end mt-2 ml-2">
+      <span class="px-5 pt-2 pb-0 font-bold bg-white/70 dark:bg-slate-700/40 rounded-t-md text-slate-600 dark:text-slate-300">Description</span>
+      <span class="flex bg-white/70 dark:bg-slate-700/40">
+        <span class="rounded-bl-md bg-slate-100 dark:bg-[rgb(25,35,53,0.94)] text-transparent">_</span>
+      </span>
+    </div>
+    <div class="flex flex-col p-2 px-4 m-2 mt-0 text-sm italic rounded-md rounded-tl-none bg-white/70 dark:bg-slate-700/40 text-pretty [&>p:first-of-type]:first-letter:text-2xl [&>p:first-of-type]:first-letter:font-bold [&>p:first-of-type]:first-letter:mr-px [&>p:first-of-type]:first-letter:float-top"><% &media.description %></div>
+  </div>
+  <div class="mb-2" style-hidden="<% #fn.styleHidden %><% media.relations.edges.length %><% /fn.styleHidden %>">
+    <div class="flex items-end mt-2 ml-2">
+      <span class="px-5 pt-2 pb-0 font-bold bg-white/70 dark:bg-slate-700/40 rounded-t-md text-slate-600 dark:text-slate-300">Relations</span>
+      <span class="flex bg-white/70 dark:bg-slate-700/40">
+        <span class="rounded-bl-md bg-slate-100 dark:bg-[rgb(25,35,53,0.94)] text-transparent">_</span>
+      </span>
+    </div>
+    <div class="flex w-full p-2 px-4 m-2 mt-0 rounded-md rounded-tl-none bg-white/70 dark:bg-slate-700/40">
+      <div class="grid w-full grid-cols-5 gap-4 3xl:grid-cols-5 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2">
+        <% #media.relations.edges %>
+        <div class="relative flex hover:shadow-lg rounded-md aspect-[2/3] transition group w-full" data-modal-media-relation="<% node.mediaListEntry.status %>"> {# TODO: add some styles for list status #}
+          <div class="w-full overflow-hidden" onclick="event.stopPropagation();ShowModal('<% node.id %>', `<% fn._context_relationMediaTitle %>`)"><img class="object-cover w-full h-full rounded-md" data-src="<% node.coverImage.large %>" src="<% node.coverImage.medium %>" lazyload></div>
+          <div class="absolute bottom-0 left-0 w-full p-1 transition-opacity rounded-b-md bg-slate-950/70 lg:group-hover:opacity-0 xl:group-hover:opacity-0 2xl:group-hover:opacity-0 3xl:group-hover:opacity-0 xl:backdrop-blur-sm 2xl:backdrop-blur-sm 3xl:backdrop-blur-sm" onclick="event.stopPropagation();ShowModal('<% node.id %>', `<% fn._context_relationMediaTitle %>`)">
+            <div class="flex flex-col items-center">
+              <span class="text-xs/[10px] font-bold text-slate-50 tracking-tighter p-px mb-1 text-center whitespace-pre"><% #fn.toHeading %><% node.format %><% /fn.toHeading %><span class="mx-1 md:mx-px lg:mx-px">•</span><% #fn.toHeading %><% node.status %><% /fn.toHeading %></span>
+              <span class="text-xs italic tracking-tight text-cyan-200"><% #fn.toHeading %><% relationType %><% /fn.toHeading %></span>
+            </div>
+          </div>
+          <div class="absolute bottom-0 left-0 z-30 flex flex-col items-center w-full h-full p-1 pt-4 transition-opacity rounded-md opacity-0 cursor-pointer group-hover:opacity-100 backdrop-blur-sm bg-slate-950/70 md:hidden" onclick="event.stopPropagation();ShowModal('<% node.id %>', `<% fn._context_relationMediaTitle %>`)">
+            <div class="text-sm font-bold leading-none tracking-tighter text-center text-slate-50 lg:text-xs xl:text-xs"><% fn._context_relationMediaTitle %></div>
+            <div class="absolute bottom-0 flex flex-col items-center p-1 mb-px">
+              <div class="flex">
+                <button class="p-px px-1 mr-1 transition rounded-md bg-slate-950/80 hover:scale-105" onclick="event.stopPropagation();$.popup('<% node.siteUrl %>')">{% icon 'images/anilist.svg', class="w-5 h-5" %}</button>
+                <% #node.idMal %>
+                <button class="p-px px-1 transition  rounded-md bg-[#2e51a2] hover:scale-105" onclick="event.stopPropagation();$.popup('https://myanimelist.net/<% #fn.toLowerCase %><% node.type %><% /fn.toLowerCase %>/<% node.idMal %>')">{% icon 'images/myanimelist.svg', class="w-5 h-5" %}</button>
+                <% /node.idMal %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% /media.relations.edges %>
+      </div>
+    </div>
+  </div>
+  <div class="mb-2" style-hidden="<% #fn.styleHidden %><% media.characters.edges.length %><% /fn.styleHidden %>">
+    <div class="flex items-end mt-2 ml-2">
+      <span class="px-5 pt-2 pb-0 font-bold bg-white/70 dark:bg-slate-700/40 rounded-t-md text-slate-600 dark:text-slate-300">Characters</span>
+      <span class="flex bg-white/70 dark:bg-slate-700/40">
+        <span class="rounded-bl-md bg-slate-100 dark:bg-[rgb(25,35,53,0.94)] text-transparent">_</span>
+      </span>
+    </div>
+    <div class="flex flex-col p-2 px-4 m-2 mt-0 rounded-md rounded-tl-none bg-white/70 dark:bg-slate-700/40">
+      <div class="grid grid-cols-5 gap-4 3xl:grid-cols-5 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2">
+        <% #media.characters.edges %>
+        <button class="relative flex hover:shadow-lg rounded-md aspect-[2/3] transition group" onclick="event.stopPropagation();$.popup('<% node.siteUrl %>')">
+          <div class="w-full overflow-hidden"><img class="object-cover w-full h-full rounded-md" data-src="<% node.image.large %>" src="<% node.image.medium %>" lazyload></div>
+          <div class="absolute bottom-0 left-0 w-full p-1 transition-opacity rounded-b-md bg-slate-950/70 lg:group-hover:opacity-0 xl:group-hover:opacity-0 2xl:group-hover:opacity-0 3xl:group-hover:opacity-0 xl:backdrop-blur-sm 2xl:backdrop-blur-sm 3xl:backdrop-blur-sm">
+            <div class="flex flex-col items-center">
+              <div class="text-xs italic tracking-tight text-center text-slate-50"><% node.name.full %></div>
+              <span class="text-xs font-bold tracking-tight text-center text-cyan-200"><% #fn.toHeading %><% role %><% /fn.toHeading %></span>
+            </div>
+          </div>
+          <div class="absolute bottom-0 left-0 z-30 flex flex-col items-center w-full h-full p-1 pt-4 transition-opacity rounded-md opacity-0 group-hover:opacity-100 backdrop-blur-sm bg-slate-950/70 md:hidden">
+            <div class="text-sm italic text-center text-slate-50 lg:text-xs xl:text-xs"><% node.name.full %></div>
+            <% #node.name.native %>
+            <div class="text-sm font-bold text-center text-slate-50 lg:text-xs xl:text-xs">(<% node.name.native %>)</div>
+            <% /node.name.native %>
+          </div>
+        </button>
+        <% /media.characters.edges %>
+      </div>
+      <% #media.characters.pageInfo.hasNextPage %>
+      <div class="flex items-center justify-center w-full mt-1 text-sm text-slate-400 dark:text-slate-500"><a class="flex transition hover:text-sky-500/90 dark:hover:text-sky-500/90" href="https://anilist.co/<% #fn.toLowerCase %><% media.type %><% /fn.toLowerCase %>/<% media.id %>/characters" onclick="event.stopPropagation()" target="_blank"><span class="mr-1">See more on AniList</span><span>{% icon "arrow-top-right-on-square", class="w-4 h-4"%}</span></a></div>
+      <% /media.characters.pageInfo.hasNextPage %>
+    </div>
+  </div>
+  <div class="mb-2" style-hidden="<% #fn.styleHidden %><% media.staff.edges.length %><% /fn.styleHidden %>">
+    <div class="flex items-end mt-2 ml-2">
+      <span class="px-5 pt-2 pb-0 font-bold bg-white/70 dark:bg-slate-700/40 rounded-t-md text-slate-600 dark:text-slate-300">Staff</span>
+      <span class="flex bg-white/70 dark:bg-slate-700/40">
+        <span class="rounded-bl-md bg-slate-100 dark:bg-[rgb(25,35,53,0.94)] text-transparent">_</span>
+      </span>
+    </div>
+    <div class="flex flex-col p-2 px-4 m-2 mt-0 rounded-md rounded-tl-none bg-white/70 dark:bg-slate-700/40">
+      <div class="grid grid-cols-5 gap-4 3xl:grid-cols-5 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2">
+        <% #media.staff.edges %>
+        <button class="relative flex hover:shadow-lg rounded-md aspect-[2/3] transition group" onclick="event.stopPropagation();$.popup('<% node.siteUrl %>')">
+          <div class="w-full overflow-hidden"><img class="object-cover w-full h-full rounded-md" data-src="<% node.image.large %>" src="<% node.image.medium %>" lazyload></div>
+          <div class="absolute bottom-0 left-0 w-full p-1 transition-opacity rounded-b-md bg-slate-950/70 lg:group-hover:opacity-0 xl:group-hover:opacity-0 2xl:group-hover:opacity-0 3xl:group-hover:opacity-0 xl:backdrop-blur-sm 2xl:backdrop-blur-sm 3xl:backdrop-blur-sm">
+            <div class="flex flex-col items-center">
+              <div class="text-xs italic tracking-tight text-center text-slate-50"><% node.name.full %></div>
+              <span class="text-xs font-bold tracking-tight text-center text-cyan-200"><% #fn.toHeading %><% role %><% /fn.toHeading %></span>
+            </div>
+          </div>
+          <div class="absolute bottom-0 left-0 z-30 flex flex-col items-center w-full h-full p-1 pt-4 transition-opacity rounded-md opacity-0 group-hover:opacity-100 backdrop-blur-sm bg-slate-950/70 md:hidden">
+            <div class="text-sm italic text-center text-slate-50 lg:text-xs xl:text-xs"><% node.name.full %></div>
+            <% #node.name.native %>
+            <div class="text-sm font-bold text-center text-slate-50 lg:text-xs xl:text-xs">(<% node.name.native %>)</div>
+            <% /node.name.native %>
+          </div>
+        </button>
+        <% /media.staff.edges %>
+      </div>
+      <% #media.staff.pageInfo.hasNextPage %>
+      <div class="flex items-center justify-center w-full mt-1 text-sm text-slate-400 dark:text-slate-500"><a class="flex transition hover:text-sky-500/90 dark:hover:text-sky-500/90" href="https://anilist.co/<% #fn.toLowerCase %><% media.type %><% /fn.toLowerCase %>/<% media.id %>/staff" onclick="event.stopPropagation()" target="_blank"><span class="mr-1">See more on AniList</span><span>{% icon "arrow-top-right-on-square", class="w-4 h-4"%}</span></a></div>
+      <% /media.staff.pageInfo.hasNextPage %>
+    </div>
+  </div>
+  <div class="mb-2" style-hidden="<% #fn.styleHidden %><% media.recommendations.nodes.length %><% /fn.styleHidden %>">
+    <div class="flex items-end mt-2 ml-2">
+      <span class="px-5 pt-2 pb-0 font-bold bg-white/70 dark:bg-slate-700/40 rounded-t-md text-slate-600 dark:text-slate-300">Recomendations</span>
+      <span class="flex bg-white/70 dark:bg-slate-700/40">
+        <span class="rounded-bl-md bg-slate-100 dark:bg-[rgb(25,35,53,0.94)] text-transparent">_</span>
+      </span>
+    </div>
+    <div class="flex flex-col p-2 px-4 m-2 mt-0 rounded-md rounded-tl-none bg-white/70 dark:bg-slate-700/40">
+      <div class="grid grid-cols-5 gap-4 3xl:grid-cols-5 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2">
+        <% #media.recommendations.nodes %>
+        <div class="relative flex hover:shadow-lg rounded-md aspect-[2/3] transition group" onclick="event.stopPropagation();ShowModal('<% mediaRecommendation.id %>', `<% fn._context_recommendationMediaTitle %>`)">
+          <div class="w-full overflow-hidden"><img class="object-cover w-full h-full rounded-md" data-src="<% mediaRecommendation.coverImage.large %>" src="<% mediaRecommendation.coverImage.medium %>" lazyload></div>
+          <div class="absolute bottom-0 left-0 w-full p-1 transition-opacity rounded-b-md bg-slate-950/70 lg:group-hover:opacity-0 xl:group-hover:opacity-0 2xl:group-hover:opacity-0 3xl:group-hover:opacity-0 xl:backdrop-blur-sm 2xl:backdrop-blur-sm 3xl:backdrop-blur-sm" onclick="event.stopPropagation();ShowModal('<% mediaRecommendation.id %>', `<% fn._context_recommendationMediaTitle %>`)">
+            <div class="flex flex-col items-center">
+              <span class="text-xs/[10px] font-bold text-slate-50 tracking-tighter p-px mb-1 text-center whitespace-pre"><% #fn.toHeading %><% mediaRecommendation.format %><% /fn.toHeading %><span class="mx-1 md:mx-px lg:mx-px">•</span><% #fn.toHeading %><% mediaRecommendation.status %><% /fn.toHeading %></span>
+              <span class="flex items-center justify-center w-full text-xs font-bold">
+                <% #fn._context_isRatingPositive %>
+                <span class="mr-1 text-green-300 dark:text-green-300">{% icon "hand-thumb-up", class="w-4 h-4 stroke-2 md:w-3 md:h-3" %}</span>
+                <span class="text-green-300 dark:text-green-300">+<% rating %></span>
+                <% /fn._context_isRatingPositive %>
+                <% ^fn._context_isRatingPositive %>
+                <span class="mr-1 text-rose-300 dark:text-rose-300">{% icon "hand-thumb-down", class="w-4 h-4 stroke-2 md:w-3 md:h-3" %}</span>
+                <span class="text-rose-300 dark:text-rose-300"><% rating %></span>
+                <% /fn._context_isRatingPositive %>
+              </span>
+            </div>
+          </div>
+          <div class="absolute bottom-0 left-0 z-30 flex flex-col items-center w-full h-full p-1 pt-4 transition-opacity rounded-md opacity-0 cursor-pointer group-hover:opacity-100 backdrop-blur-sm bg-slate-950/70 md:hidden" onclick="event.stopPropagation();ShowModal('<% mediaRecommendation.id %>', `<% fn._context_recommendationMediaTitle %>`)">
+            <div class="text-sm font-bold leading-none tracking-tighter text-center text-slate-50 lg:text-xs xl:text-xs"><% fn._context_recommendationMediaTitle %></div>
+            <div class="absolute bottom-0 flex flex-col items-center p-1 mb-px">
+              <div class="flex">
+                <button class="p-px px-1 mr-1 transition rounded-md bg-slate-950/80 hover:scale-105" onclick="event.stopPropagation();$.popup('<% mediaRecommendation.siteUrl %>')">{% icon 'images/anilist.svg', class="w-5 h-5" %}</button>
+                <% #mediaRecommendation.idMal %>
+                <button class="p-px px-1 transition  rounded-md bg-[#2e51a2] hover:scale-105" onclick="event.stopPropagation();$.popup('https://myanimelist.net/<% #fn.toLowerCase %><% mediaRecommendation.type %><% /fn.toLowerCase %>/<% mediaRecommendation.idMal %>')">{% icon 'images/myanimelist.svg', class="w-5 h-5" %}</button>
+                <% /mediaRecommendation.idMal %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% /media.recommendations.nodes %>
+      </div>
+      <% #media.recommendations.pageInfo.hasNextPage %>
+      <div class="flex items-center justify-center w-full mt-1 text-sm text-slate-400 dark:text-slate-500"><a class="flex transition hover:text-sky-500/90 dark:hover:text-sky-500/90" href="https://anilist.co/<% #fn.toLowerCase %><% media.type %><% /fn.toLowerCase %>/<% media.id %>" onclick="event.stopPropagation()" target="_blank"><span class="mr-1">See more on AniList</span><span>{% icon "arrow-top-right-on-square", class="w-4 h-4"%}</span></a></div>
+      <% /media.recommendations.pageInfo.hasNextPage %>
+    </div>
+  </div>
+  <div class="mb-2" style-hidden="<% #fn.styleHidden %><% media.externalLinks.length %><% /fn.styleHidden %>">
+    <div class="flex items-end mt-2 ml-2">
+      <span class="px-5 pt-2 pb-0 font-bold bg-white/70 dark:bg-slate-700/40 rounded-t-md text-slate-600 dark:text-slate-300">External & Streaming Links</span>
+      <span class="flex bg-white/70 dark:bg-slate-700/40">
+        <span class="rounded-bl-md bg-slate-100 dark:bg-[rgb(25,35,53,0.94)] text-transparent">_</span>
+      </span>
+    </div>
+    <div class="grid grid-cols-2 gap-1 p-2 px-4 m-2 mt-0 rounded-md rounded-tl-none md:grid-cols-1 bg-white/70 dark:bg-slate-700/40">
+      <% #media.externalLinks %>
+      <button onclick="event.stopPropagation();$.popup('<% url %>')" class="text-sm items-center group flex m-1 p-1 px-2 justify-between bg-slate-100 dark:bg-slate-700/40 rounded-md hover:!bg-[color:var(--external-link-theme)] dark:hover:!bg-[color:var(--external-link-theme)] transition hover:shadow-md" style="--external-link-theme: <% #color %><% color %>e6<% /color %><% ^color %>rgb(6 182 212 / .9)<% /color %>;">
+        <div class="flex items-center">
+          <span class="p-1.5 m-1 w-8 h-8 rounded-md bg-[color:var(--external-link-theme)] dark:bg-[color:var(--external-link-theme)]"><img class="w-full" src="<% icon %>" /></span>
+          <span class="ml-1 italic transition group-hover:text-slate-50 dark:group-hover:text-slate-50"><% site %></span>
+          <span class="ml-2 text-xs font-bold transition group-hover:text-slate-50 dark:group-hover:text-slate-50"><% fn._context_externalSiteLanguage %></span>
+        </div>
+        <% #fn._context_isLinkTypeINFO %>
+        <span>{% icon "information-circle", class="w-6 h-6 p-1 m-1 stroke-2 group-hover:stroke-slate-50" %}</span>
+        <% /fn._context_isLinkTypeINFO %>
+        <% #fn._context_isLinkTypeSTREAMING %>
+        <span>{% icon "tv", class="w-6 h-6 p-1 m-1 stroke-2 group-hover:stroke-slate-50" %}</span>
+        <% /fn._context_isLinkTypeSTREAMING %>
+        <% #fn._context_isLinkTypeSOCIAL %>
+        <span>{% icon "chat-bubble-left-right", class="w-6 h-6 p-1 m-1 stroke-2 group-hover:stroke-slate-50" %}</span>
+        <% /fn._context_isLinkTypeSOCIAL %>
+      </button>
+      <% /media.externalLinks %>
+    </div>
+  </div>
+  <div class="mb-2" style-hidden="<% #fn.styleHidden %><% media.modNotes.length %><% /fn.styleHidden %>">
+    <div class="flex items-end mt-2 ml-2">
+      <span class="px-5 pt-2 pb-0 font-bold bg-white/70 dark:bg-slate-700/40 rounded-t-md text-slate-600 dark:text-slate-300">Moderator Notes</span>
+      <span class="flex bg-white/70 dark:bg-slate-700/40">
+        <span class="rounded-bl-md bg-slate-100 dark:bg-[rgb(25,35,53,0.94)] text-transparent">_</span>
+      </span>
+    </div>
+    <div class="flex flex-col p-2 px-4 m-2 mt-0 text-sm italic rounded-md rounded-tl-none bg-white/70 dark:bg-slate-700/40 text-pretty"><% media.modNotes %></div>
+  </div>
+</template>
+
+<template id="[container]-lists@template.modal_view.details">
+  <div class="mb-2" style-hidden="<% #fn.styleHidden %><% media.startDate.month %><% media.startDate.day %><% media.startDate.year %><% media.endDate.month %><% media.endDate.day %><% media.endDate.year %><% media.seasonYear %><% /fn.styleHidden %>">
+    <div class="flex items-end mt-2 ml-2">
+      <span class="px-5 pt-2 pb-0 font-bold bg-white/70 dark:bg-slate-700/40 rounded-t-md text-slate-600 dark:text-slate-300">Dates</span>
+      <span class="flex bg-white/70 dark:bg-slate-700/40">
+        <span class="rounded-bl-md bg-slate-100 dark:bg-[rgb(25,35,53,0.94)] text-transparent">_</span>
+      </span>
+    </div>
+    <div class="grid justify-between grid-cols-3 gap-2 p-2 px-4 m-2 mt-0 rounded-md rounded-tl-none md:grid-cols-2 bg-white/70 dark:bg-slate-700/40">
+      <div class="flex flex-col items-center w-full rounded-md" style-hidden="<% #fn.styleHidden %><% media.seasonYear %><% /fn.styleHidden %>">
+        <span class="flex items-center justify-center w-full h-full py-1 text-sm font-bold text-center lowercase rounded-t-md bg-slate-200/25 dark:bg-slate-600/40"><% media.season %> <% media.seasonYear %></span>
+        <span class="w-full py-1 text-xs italic text-center bg-slate-200/70 dark:bg-slate-900/70 rounded-b-md">Season</span>
+      </div>
+      <div class="flex flex-col items-center w-full rounded-md" style-hidden="<% #fn.styleHidden %><% media.startDate.month %><% media.startDate.day %><% media.startDate.year %><% /fn.styleHidden %>">
+        <span class="flex items-center justify-center w-full h-full py-1 text-sm font-bold text-center rounded-t-md bg-slate-200/25 dark:bg-slate-600/40"><% #fn.monthIntToName %><% media.startDate.month %><% /fn.monthIntToName %><% #media.startDate.day %> <% media.startDate.day %><% /media.startDate.day %><% #media.startDate.year %>, <% media.startDate.year %><% /media.startDate.year %></span>
+        <span class="w-full py-1 text-xs italic text-center bg-slate-200/70 dark:bg-slate-900/70 rounded-b-md">Start Date</span>
+      </div>
+      <div class="flex flex-col items-center w-full rounded-md" style-hidden="<% #fn.styleHidden %><% media.endDate.month %><% media.endDate.day %><% media.endDate.year %><% /fn.styleHidden %>">
+        <span class="flex items-center justify-center w-full h-full py-1 text-sm font-bold text-center rounded-t-md bg-slate-200/25 dark:bg-slate-600/40"><% #fn.monthIntToName %><% media.endDate.month %><% /fn.monthIntToName %><% #media.endDate.day %> <% media.endDate.day %><% /media.endDate.day %><% #media.endDate.year %>, <% media.endDate.year %><% /media.endDate.year %></span>
+        <span class="w-full py-1 text-xs italic text-center bg-slate-200/70 dark:bg-slate-900/70 rounded-b-md">End Date</span>
+      </div>
+    </div>
+  </div>
+  <div class="mb-2" style-hidden="<% #fn.styleHidden %><% media.studios.edges.length %><% /fn.styleHidden %>">
+    <div class="flex items-end mt-2 ml-2">
+      <span class="px-5 pt-2 pb-0 font-bold bg-white/70 dark:bg-slate-700/40 rounded-t-md text-slate-600 dark:text-slate-300">Production</span>
+      <span class="flex bg-white/70 dark:bg-slate-700/40">
+        <span class="rounded-bl-md bg-slate-100 dark:bg-[rgb(25,35,53,0.94)] text-transparent">_</span>
+      </span>
+    </div>
+    <div class="grid grid-cols-3 gap-2 p-2 px-4 m-2 mt-0 rounded-md rounded-tl-none md:grid-cols-2 bg-white/70 dark:bg-slate-700/40">
+      <% #media.studios.edges %>
+      <button class="flex flex-col items-center w-full transition rounded-md group hover:brightness-95 dark:hover:brightness-110" onclick="event.stopPropagation();$.popup('<% node.siteUrl %>')" style-modal-datails-isMainStudio="<% isMain %>" style-modal-datails-isStudioFavourite="<% node.isFavourite %>">
+        <span class="py-1.5 bg-slate-200/25 dark:bg-slate-600/40 rounded-t-md text-sm font-bold w-full h-full flex items-center justify-center text-center transition group-hover:text-sky-500/90 dark:group-hover:text-sky-500/90 leading-none"><% node.name %></span>
+        <span class="w-full py-1 text-xs italic text-center bg-slate-200/70 dark:bg-slate-900/70 rounded-b-md"><% #isMain %>Studio<% /isMain %><% ^isMain %>Producer<% /isMain %></span>
+      </button>
+      <% /media.studios.edges %>
+    </div>
+  </div>
+  <div class="mb-2">
+    <div class="flex items-end mt-2 ml-2">
+      <span class="px-5 pt-2 pb-0 font-bold bg-white/70 dark:bg-slate-700/40 rounded-t-md text-slate-600 dark:text-slate-300">Community</span>
+      <span class="flex bg-white/70 dark:bg-slate-700/40">
+        <span class="rounded-bl-md bg-slate-100 dark:bg-[rgb(25,35,53,0.94)] text-transparent">_</span>
+      </span>
+    </div>
+    <div class="grid justify-between grid-cols-4 gap-2 p-2 px-4 m-2 mt-0 rounded-md rounded-tl-none md:grid-cols-2 bg-white/70 dark:bg-slate-700/40">
+      <div class="flex flex-col items-center w-full rounded-md" style-hidden="<% #fn.styleHidden %><% media.averageScore %><% /fn.styleHidden %>">
+        <span class="flex items-center justify-center w-full h-full py-1 text-sm font-bold text-center lowercase rounded-t-md bg-slate-200/25 dark:bg-slate-600/40"><% media.averageScore %>%</span>
+        <span class="w-full py-1 text-xs italic text-center bg-slate-200/70 dark:bg-slate-900/70 rounded-b-md">Average Score</span>
+      </div>
+      <div class="flex flex-col items-center w-full rounded-md" style-hidden="<% #fn.styleHidden %><% media.meanScore %><% /fn.styleHidden %>">
+        <span class="flex items-center justify-center w-full h-full py-1 text-sm font-bold text-center rounded-t-md bg-slate-200/25 dark:bg-slate-600/40"><% media.meanScore %>%</span>
+        <span class="w-full py-1 text-xs italic text-center bg-slate-200/70 dark:bg-slate-900/70 rounded-b-md">Mean Score</span>
+      </div>
+      <div class="flex flex-col items-center w-full rounded-md" style-hidden="<% #fn.styleHidden %><% media.favourites %><% /fn.styleHidden %>">
+        <span class="flex items-center justify-center w-full h-full py-1 text-sm font-bold text-center rounded-t-md bg-slate-200/25 dark:bg-slate-600/40"><% #fn.numberToLocaleString %><% media.favourites %><% /fn.numberToLocaleString %></span>
+        <span class="w-full py-1 text-xs italic text-center bg-slate-200/70 dark:bg-slate-900/70 rounded-b-md">Favorites</span>
+      </div>
+      <div class="flex flex-col items-center w-full rounded-md" style-hidden="<% #fn.styleHidden %><% media.popularity %><% /fn.styleHidden %>">
+        <span class="flex items-center justify-center w-full h-full py-1 text-sm font-bold text-center rounded-t-md bg-slate-200/25 dark:bg-slate-600/40"><% #fn.numberToLocaleString %><% media.popularity %><% /fn.numberToLocaleString %></span>
+        <span class="w-full py-1 text-xs italic text-center bg-slate-200/70 dark:bg-slate-900/70 rounded-b-md">Popularity</span>
+      </div>
+    </div>
+  </div>
+  <div class="mb-2">
+    <div class="flex items-end mt-2 ml-2">
+      <span class="px-5 pt-2 pb-0 font-bold bg-white/70 dark:bg-slate-700/40 rounded-t-md text-slate-600 dark:text-slate-300">Titles</span>
+      <span class="flex bg-white/70 dark:bg-slate-700/40">
+        <span class="rounded-bl-md bg-slate-100 dark:bg-[rgb(25,35,53,0.94)] text-transparent">_</span>
+      </span>
+    </div>
+    <div class="grid grid-cols-1 gap-2 p-2 px-4 m-2 mt-0 rounded-md rounded-tl-none bg-white/70 dark:bg-slate-700/40">
+      <% #media.title.english %>
+      <div class="flex flex-col items-center w-full mb-1">
+        <span class="leading-none py-1.5 bg-slate-200/25 dark:bg-slate-600/40 rounded-t-md text-sm font-bold w-full h-full flex items-center justify-center text-center"><% media.title.english %></span>
+        <span class="w-full py-1 text-xs italic text-center bg-slate-200/70 dark:bg-slate-900/70 rounded-b-md">English</span>
+      </div>
+      <% /media.title.english %>
+      <% #media.title.romaji %>
+      <div class="flex flex-col items-center w-full mb-1">
+        <span class="leading-none py-1.5 bg-slate-200/25 dark:bg-slate-600/40 rounded-t-md text-sm font-bold w-full h-full flex items-center justify-center text-center"><% media.title.romaji %></span>
+        <span class="w-full py-1 text-xs italic text-center bg-slate-200/70 dark:bg-slate-900/70 rounded-b-md">Romaji</span>
+      </div>
+      <% /media.title.romaji %>
+      <% #media.title.native %>
+      <div class="flex flex-col items-center w-full mb-1">
+        <span class="leading-none py-1.5 bg-slate-200/25 dark:bg-slate-600/40 rounded-t-md text-sm font-bold w-full h-full flex items-center justify-center text-center"><% media.title.native %></span>
+        <span class="w-full py-1 text-xs italic text-center bg-slate-200/70 dark:bg-slate-900/70 rounded-b-md">Native</span>
+      </div>
+      <% /media.title.native %>
+      <div class="flex flex-col items-center w-full" style-hidden="<% #fn.styleHidden %><% media.synonyms.length %><% /fn.styleHidden %>">
+        <div class="flex flex-col items-center justify-center w-full h-full py-1 text-sm font-bold bg-slate-200/25 dark:bg-slate-600/40 rounded-t-md">
+          <div class="flex flex-col px-2">
+            <% #media.synonyms %>
+            <div class="flex items-center my-1"><span class="mr-1.5 h-full">{% icon "play-circle", class="mt-1.5 w-1.5 h-1.5 fill-slate-500 dark:fill-slate-400" %}</span><span class="px-px leading-none"><% . %></span></div>
+            <% /media.synonyms %>
+          </div>
+        </div>
+        <span class="w-full py-1 text-xs italic text-center bg-slate-200/70 dark:bg-slate-900/70 rounded-b-md">Synonyms</span>
+      </div>
+    </div>
+  </div>
+  <div class="mb-2" style-hidden="<% #fn.styleHidden %><% media.genres.length %><% /fn.styleHidden %>">
+    <div class="flex items-end mt-2 ml-2">
+      <span class="px-5 pt-2 pb-0 font-bold bg-white/70 dark:bg-slate-700/40 rounded-t-md text-slate-600 dark:text-slate-300">Genres</span>
+      <span class="flex bg-white/70 dark:bg-slate-700/40">
+        <span class="rounded-bl-md bg-slate-100 dark:bg-[rgb(25,35,53,0.94)] text-transparent">_</span>
+      </span>
+    </div>
+    <div class="grid grid-cols-3 gap-2 p-2 px-4 m-2 mt-0 rounded-md rounded-tl-none md:grid-cols-2 bg-white/70 dark:bg-slate-700/40">
+      <% #media.genres %>
+      <span class="p-1 text-center rounded-md bg-slate-200/25 dark:bg-slate-600/40"><% . %></span>
+      <% /media.genres %>
+    </div>
+  </div>
+  <div class="mb-0">
+    <div class="flex items-end mt-2 ml-2">
+      <span class="px-5 pt-2 pb-0 font-bold bg-white/70 dark:bg-slate-700/40 rounded-t-md text-slate-600 dark:text-slate-300">Miscellaneous</span>
+      <span class="flex bg-white/70 dark:bg-slate-700/40">
+        <span class="rounded-bl-md bg-slate-100 dark:bg-[rgb(25,35,53,0.94)] text-transparent">_</span>
+      </span>
+    </div>
+    <div class="grid justify-between grid-cols-3 gap-2 p-2 px-4 mx-2 md:grid-cols-2 rounded-tr-md bg-white/70 dark:bg-slate-700/40">
+      <div class="flex flex-col items-center w-full rounded-md">
+        <span class="flex items-center justify-center w-full h-full py-1 text-sm font-bold text-center rounded-t-md bg-slate-200/25 dark:bg-slate-600/40"><% #fn.toHeading %><% media.status %><% /fn.toHeading %></span>
+        <span class="w-full py-1 text-xs italic text-center bg-slate-200/70 dark:bg-slate-900/70 rounded-b-md">Status</span>
+      </div>
+      <% #media.episodes %>
+      <div class="flex flex-col items-center w-full rounded-md">
+        <span class="flex items-center justify-center w-full h-full py-1 text-sm font-bold text-center rounded-t-md bg-slate-200/25 dark:bg-slate-600/40"><% media.episodes %></span>
+        <span class="w-full py-1 text-xs italic text-center bg-slate-200/70 dark:bg-slate-900/70 rounded-b-md">Episodes</span>
+      </div>
+      <% /media.episodes %>
+      <% #media.duration %>
+      <div class="flex flex-col items-center w-full rounded-md">
+        <span class="flex items-center justify-center w-full h-full py-1 text-sm font-bold text-center rounded-t-md bg-slate-200/25 dark:bg-slate-600/40"><% media.duration %></span>
+        <span class="w-full py-1 text-xs italic text-center bg-slate-200/70 dark:bg-slate-900/70 rounded-b-md">Duration</span>
+      </div>
+      <% /media.duration %>
+      <% #media.chapters %>
+      <div class="flex flex-col items-center w-full rounded-md">
+        <span class="flex items-center justify-center w-full h-full py-1 text-sm font-bold text-center rounded-t-md bg-slate-200/25 dark:bg-slate-600/40"><% media.chapters %></span>
+        <span class="w-full py-1 text-xs italic text-center bg-slate-200/70 dark:bg-slate-900/70 rounded-b-md">Chapters</span>
+      </div>
+      <% /media.chapters %>
+      <% #media.volumes %>
+      <div class="flex flex-col items-center w-full rounded-md">
+        <span class="flex items-center justify-center w-full h-full py-1 text-sm font-bold text-center rounded-t-md bg-slate-200/25 dark:bg-slate-600/40"><% media.volumes %></span>
+        <span class="w-full py-1 text-xs italic text-center bg-slate-200/70 dark:bg-slate-900/70 rounded-b-md">Volumes</span>
+      </div>
+      <% /media.volumes %>
+      <% #media.countryOfOrigin %>
+      <div class="flex flex-col items-center w-full rounded-md">
+        <span class="flex items-center justify-center w-full h-full py-1 text-sm font-bold text-center rounded-t-md bg-slate-200/25 dark:bg-slate-600/40"><% media.countryOfOrigin %></span>
+        <span class="w-full py-1 text-xs italic text-center bg-slate-200/70 dark:bg-slate-900/70 rounded-b-md">Origin Country</span>
+      </div>
+      <% /media.countryOfOrigin %>
+      <div class="flex flex-col items-center w-full rounded-md" style-hidden="<% #fn.styleHidden %><% media.source.length %><% /fn.styleHidden %>">
+        <span class="flex items-center justify-center w-full h-full py-1 text-sm font-bold text-center rounded-t-md bg-slate-200/25 dark:bg-slate-600/40"><% media.source %></span>
+        <span class="w-full py-1 text-xs italic text-center bg-slate-200/70 dark:bg-slate-900/70 rounded-b-md">Source Material</span>
+      </div>
+      <div class="flex flex-col items-center w-full rounded-md">
+        <span class="flex items-center justify-center w-full h-full py-1 text-sm font-bold text-center rounded-t-md bg-slate-200/25 dark:bg-slate-600/40"><% #media.isLicensed %>Licensed<% /media.isLicensed %><% ^media.isLicensed %>Unlicensed<% /media.isLicensed %></span>
+        <span class="w-full py-1 text-xs italic text-center bg-slate-200/70 dark:bg-slate-900/70 rounded-b-md">License</span>
+      </div>
+    </div>
+    <div class="flex items-center justify-center px-4 pt-3 pb-2 mx-2 mt-0 mb-4 bg-white/70 dark:bg-slate-700/40 rounded-b-md">
+      <div class="flex flex-col items-center justify-center w-full py-1 text-center bg-white rounded-md dark:bg-slate-600/40" style-hidden="<% #fn.styleHidden %><% media.hashtag.length %><% /fn.styleHidden %>">
+        <span class="rounded-md -mt-4 bg-[rgb(227,234,241)] dark:bg-[rgb(20,30,49)] p-2">{% icon "images/social/twitter.svg", class="w-5 h-5" %}</span>
+        <div class="grid w-full grid-cols-2 gap-3 px-2 my-2">
+          <% #fn._context_mediaHashTags %>
+          <button class="flex items-center justify-center w-full p-1 text-sm italic text-center break-all transition rounded-md hover:text-sky-500/90 bg-slate-100 dark:bg-slate-600/40" onclick="event.stopPropagation();$.popup('https://twitter.com/hashtag/<% . %>')" target="_blank">#<% . %></button>
+          <% /fn._context_mediaHashTags %>
+        </div>
+        <% #media.isAdult %>
+        <span class="p-1 mx-1 mb-1 text-xs font-bold rounded-md dark:bg-red-600/90 bg-red-500/90 text-slate-50">R-18</span>
+        <% /media.isAdult %>
+      </div>
+    </div>
+  </div>
+  <div class="mb-2" style-hidden="<% #fn.styleHidden %><% media.trailer.id.length %><% /fn.styleHidden %>">
+    <div class="flex items-end mt-2 ml-2">
+      <span class="px-5 pt-2 pb-0 font-bold bg-white/70 dark:bg-slate-700/40 rounded-t-md text-slate-600 dark:text-slate-300">Trailer</span>
+      <span class="flex bg-white/70 dark:bg-slate-700/40">
+        <span class="rounded-bl-md bg-slate-100 dark:bg-[rgb(25,35,53,0.94)] text-transparent">_</span>
+      </span>
+    </div>
+    <div class="flex p-2 px-4 m-2 mt-0 rounded-md rounded-tl-none bg-white/70 dark:bg-slate-700/40">
+      <div class="w-full m-2 aspect-video md:m-1">
+        <% #fn._context_isTrailerEmbedYouTube %>
+        <iframe class="w-full h-full rounded-md" src="https://www.youtube-nocookie.com/embed/<% media.trailer.id %>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <% /fn._context_isTrailerEmbedYouTube %>
+        <% ^fn._context_isTrailerEmbedYouTube %>
+        <iframe class="w-full h-full rounded-md" src="https://www.dailymotion.com/embed/video/<% media.trailer.id %>" frameborder="0" type="text/html" allowfullscreen></iframe>
+        <% /fn._context_isTrailerEmbedYouTube %>
+      </div>
+    </div>
+  </div>
+  <div class="mb-2" style-hidden="<% #fn.styleHidden %><% media.tags.length %><% /fn.styleHidden %>">
+    <div class="flex items-end mt-2 ml-2">
+      <span class="px-5 pt-2 pb-0 font-bold bg-white/70 dark:bg-slate-700/40 rounded-t-md text-slate-600 dark:text-slate-300">Tags</span>
+      <span class="flex bg-white/70 dark:bg-slate-700/40">
+        <span class="rounded-bl-md bg-slate-100 dark:bg-[rgb(25,35,53,0.94)] text-transparent">_</span>
+      </span>
+    </div>
+    <div class="gap-3 p-2 px-4 m-2 mt-0 rounded-md rounded-tl-none break-inside-avoid-page columns-2 md:columns-1 bg-white/70 dark:bg-slate-700/40">
+      <% #media.tags %>
+      <div class="relative inline-flex flex-col items-center w-full rounded-md my-1.5">
+        <div class="flex flex-col items-center w-full h-full rounded-md">
+          <span class="p-1 rounded-t-md bg-slate-200/25 dark:bg-slate-600/40 text-xs py-1.5 w-full flex items-center justify-center h-full text-center leading-none"><% description %></span>
+          <span class="w-full py-1 text-sm font-bold text-center bg-slate-200/70 dark:bg-slate-900/70 rounded-b-md"><% name %></span>
+        </div>
+        <% #isAdult %>
+        <div class="absolute top-0 left-0 flex w-full h-full">
+          <div class="top-0 left-0 flex items-center justify-center w-full h-full text-sm font-bold transition duration-300 rounded-md opacity-100 cursor-pointer text-rose-500 dark:text-rose-600 bg-slate-800 dark:bg-slate-900" onclick="event.stopPropagation();$(this).toggleClass('!opacity-0')">R-18</div>
+        </div>
+        <% /isAdult %>
+        <% ^isAdult %><% #isMediaSpoiler %>
+        <div class="absolute top-0 left-0 flex w-full h-full">
+          <div class="top-0 left-0 flex items-center justify-center w-full h-full transition duration-300 rounded-md opacity-100 cursor-pointer text-rose-500 dark:text-rose-600 bg-slate-800 dark:bg-slate-900" onclick="event.stopPropagation();$(this).toggleClass('!opacity-0')">{% icon "eye-slash", class="w-5 h-5" %}</div>
+        </div>
+        <% /isMediaSpoiler %><% /isAdult %>
+        <% ^isAdult %><% ^isMediaSpoiler %><% #isGeneralSpoiler %>
+        <div class="absolute top-0 left-0 flex w-full h-full">
+          <div class="top-0 left-0 flex items-center justify-center w-full h-full transition duration-300 rounded-md opacity-100 cursor-pointer bg-slate-800 dark:bg-slate-900" onclick="event.stopPropagation();$(this).toggleClass('!opacity-0')">{% icon "eye-slash", class="w-5 h-5" %}</div>
+        </div>
+        <% /isGeneralSpoiler %><% /isMediaSpoiler %><% /isAdult %>
+      </div>
+      <% /media.tags %>
+    </div>
+  </div>
+</template>
+
+<template id="[container]-lists@template.modal_view.statistics">
+  <div class="mb-2" style-hidden="<% #fn.styleHidden %><% media.rankings.length %><% /fn.styleHidden %>">
+    <div class="flex items-end mt-2 ml-2">
+      <span class="px-5 pt-2 pb-0 font-bold bg-white/70 dark:bg-slate-700/40 rounded-t-md text-slate-600 dark:text-slate-300">Rankings</span>
+      <span class="flex bg-white/70 dark:bg-slate-700/40">
+        <span class="rounded-bl-md bg-slate-100 dark:bg-[rgb(25,35,53,0.94)] text-transparent">_</span>
+      </span>
+    </div>
+    <div class="grid justify-between grid-cols-2 gap-2 p-2 px-4 m-2 mt-0 rounded-md rounded-tl-none md:grid-cols-1 bg-white/70 dark:bg-slate-700/40">
+      <% #media.rankings %>
+      <div class="flex items-center justify-start w-full p-1 text-sm rounded-md md:text-xs bg-slate-200/25 dark:bg-slate-600/40">
+        <% #fn._context_isRankingTypeRATED %>
+        <span class="mx-1 my-2 md:my-1">{% icon "star", class="w-6 h-6 md:w-4 md:h-4 fill-yellow-500/90 stroke-yellow-500/90 dark:fill-yellow-600/90 dark:stroke-yellow-600/90" %}</span>
+        <% /fn._context_isRankingTypeRATED %>
+        <% ^fn._context_isRankingTypeRATED %>
+        <span class="mx-1 my-2 md:my-1">{% icon "heart", class="w-6 h-6 md:w-4 md:h-4 fill-rose-500/90 stroke-rose-500/90 dark:fill-rose-600/90 dark:stroke-rose-600/90" %}</span>
+        <% /fn._context_isRankingTypeRATED %>
+        <span class="lowercase"><span class="">#<% rank %></span> <% context %> <% season %> <% year %></span>
+      </div>
+      <% /media.rankings %>
+    </div>
+  </div>
+  <div class="mb-2" style-hidden="<% #fn.styleHidden %><% media.stats.statusDistribution.length %><% /fn.styleHidden %>">
+    <div class="flex items-end mt-2 ml-2">
+      <span class="px-5 pt-2 pb-0 font-bold bg-white/70 dark:bg-slate-700/40 rounded-t-md text-slate-600 dark:text-slate-300">Status Distribution</span>
+      <span class="flex bg-white/70 dark:bg-slate-700/40">
+        <span class="rounded-bl-md bg-slate-100 dark:bg-[rgb(25,35,53,0.94)] text-transparent">_</span>
+      </span>
+    </div>
+    <div class="flex flex-col md:h-[280px] md:flex-row-reverse md:justify-end p-2 px-4 m-2 mt-0 text-sm rounded-md rounded-tl-none bg-white/70 dark:bg-slate-700/40">
+      <div class="flex mt-1 overflow-hidden md:flex-col md:w-full md:h-full md:mt-0">
+        <% #media.stats.statusDistribution %>
+        <div class="flex flex-col items-center justify-center w-full mx-1 md:flex-row md:my-1 md:h-full">
+          <span class="md:h-full md:w-[70%] md:flex md:items-center md:justify-center rounded-md p-1 m-1 w-full text-slate-50 text-center font-bold data-[media-status=CURRENT]:bg-green-500/90 data-[media-status=PLANNING]:bg-sky-500/90 data-[media-status=COMPLETED]:bg-purple-500/90 data-[media-status=DROPPED]:bg-rose-500/90 data-[media-status=PAUSED]:bg-orange-500/90 data-[media-status=REPEATING]:bg-yellow-500/90" data-media-status="<% status %>"><% status %></span>
+          <span class="md:h-full md:w-[30%] md:flex md:items-center md:justify-center italic w-full font-bold text-center data-[media-status=CURRENT]:text-green-500/90 data-[media-status=PLANNING]:text-sky-500 data-[media-status=COMPLETED]:text-purple-500 data-[media-status=DROPPED]:text-rose-500 data-[media-status=PAUSED]:text-orange-500 data-[media-status=REPEATING]:text-yellow-500" data-media-status="<% status %>"><% amount %></span>
+        </div>
+        <% /media.stats.statusDistribution %>
+      </div>
+      <div class="flex md:flex-col w-full md:h-full md:w-2 mx-1 md:mx-0 md:my-1 mt-2 md:mt-0 [&>*:first-child]:rounded-l-full md:[&>*:first-child]:rounded-l-none md:[&>*:first-child]:!rounded-t-full [&>*:last-child]:rounded-r-full md:[&>*:last-child]:rounded-r-none md:[&>*:last-child]:!rounded-b-full">
+        <% #media.stats.statusDistribution %>
+        <% #amount %>
+        <span class="h-3 w-[var(--status-amount)] md:w-full md:h-[var(--status-amount)] data-[media-status=CURRENT]:bg-green-500/90 data-[media-status=PLANNING]:bg-sky-500/90 data-[media-status=COMPLETED]:bg-purple-500/90 data-[media-status=DROPPED]:bg-rose-500/90 data-[media-status=PAUSED]:bg-orange-500/90 data-[media-status=REPEATING]:bg-yellow-500/90" style="--status-amount: <% #fn._context_normalizedStatus %><% media.id %>|<% amount %><% /fn._context_normalizedStatus %>%;" data-media-status="<% status %>"></span>
+        <% /amount %>
+        <% /media.stats.statusDistribution %>
+      </div>
+    </div>
+  </div>
+  <div class="mb-2" style-hidden="<% #fn.styleHidden %><% media.stats.scoreDistribution.length %><% /fn.styleHidden %>">
+    <div class="flex items-end mt-2 ml-2">
+      <span class="px-5 pt-2 pb-0 font-bold bg-white/70 dark:bg-slate-700/40 rounded-t-md text-slate-600 dark:text-slate-300">Score Distribution</span>
+      <span class="flex bg-white/70 dark:bg-slate-700/40">
+        <span class="rounded-bl-md bg-slate-100 dark:bg-[rgb(25,35,53,0.94)] text-transparent">_</span>
+      </span>
+    </div>
+    <div class="flex justify-center p-2 px-4 m-2 mt-0 rounded-md rounded-tl-none group bg-white/70 dark:bg-slate-700/40">
+      <div class="w-[85%] md:w-full flex">
+        <% #media.stats.scoreDistribution %>
+        <div class="w-full flex flex-col h-[150px] justify-end items-center">
+          <span class="text-xs font-bold opacity-0 md:opacity-100 group-hover:opacity-100 transition duration-300 mb-1 md:text-[0.5rem] data-[score-distribution='10']:text-red-600/90 data-[score-distribution='20']:text-rose-600/90 data-[score-distribution='30']:text-rose-500/90 data-[score-distribution='40']:text-orange-500/90 data-[score-distribution='50']:text-amber-500/90 data-[score-distribution='60']:text-yellow-500/90 data-[score-distribution='70']:text-lime-500/90 data-[score-distribution='80']:text-green-500/90 data-[score-distribution='90']:text-green-400/90 data-[score-distribution='100']:text-emerald-500/90" data-score-distribution="<% score %>"><% amount %></span>
+          <span class="rounded-t-full h-2 w-3 data-[score-distribution='10']:bg-red-600/90 data-[score-distribution='20']:bg-rose-600/90 data-[score-distribution='30']:bg-rose-500/90 data-[score-distribution='40']:bg-orange-500/90 data-[score-distribution='50']:bg-amber-500/90 data-[score-distribution='60']:bg-yellow-500/90 data-[score-distribution='70']:bg-lime-500/90 data-[score-distribution='80']:bg-green-500/90 data-[score-distribution='90']:bg-green-400/90 data-[score-distribution='100']:bg-emerald-500/90" data-score-distribution="<% score %>"></span>
+          <span class="h-[var(--score-normalized)] w-3 data-[score-distribution='10']:bg-red-600/90 data-[score-distribution='20']:bg-rose-600/90 data-[score-distribution='30']:bg-rose-500/90 data-[score-distribution='40']:bg-orange-500/90 data-[score-distribution='50']:bg-amber-500/90 data-[score-distribution='60']:bg-yellow-500/90 data-[score-distribution='70']:bg-lime-500/90 data-[score-distribution='80']:bg-green-500/90 data-[score-distribution='90']:bg-green-400/90 data-[score-distribution='100']:bg-emerald-500/90" style="--score-normalized: <% #fn._context_normalizedScore %><% media.id %><% /fn._context_normalizedScore %>%;" data-score-distribution="<% score %>"></span>
+          <span class="rounded-b-full h-2 w-3 data-[score-distribution='10']:bg-red-600/90 data-[score-distribution='20']:bg-rose-600/90 data-[score-distribution='30']:bg-rose-500/90 data-[score-distribution='40']:bg-orange-500/90 data-[score-distribution='50']:bg-amber-500/90 data-[score-distribution='60']:bg-yellow-500/90 data-[score-distribution='70']:bg-lime-500/90 data-[score-distribution='80']:bg-green-500/90 data-[score-distribution='90']:bg-green-400/90 data-[score-distribution='100']:bg-emerald-500/90" data-score-distribution="<% score %>"></span>
+          <span class="font-bold text-sm md:text-xs data-[score-distribution='10']:text-red-600/90 data-[score-distribution='20']:text-rose-600/90 data-[score-distribution='30']:text-rose-500/90 data-[score-distribution='40']:text-orange-500/90 data-[score-distribution='50']:text-amber-500/90 data-[score-distribution='60']:text-yellow-500/90 data-[score-distribution='70']:text-lime-500/90 data-[score-distribution='80']:text-green-500/90 data-[score-distribution='90']:text-green-400/90 data-[score-distribution='100']:text-emerald-500/90" data-score-distribution="<% score %>"><% score %></span>
+        </div>
+        <% /media.stats.scoreDistribution %>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="[container]-lists@template.modal_view.schedule">
+  <div class="w-full h-full mb-2 overflow-y-auto" style-hide-scrollbar="true">
+    <div class="flex flex-col-reverse items-center justify-end w-full h-full px-2 md:p-2">
+      <template id="[modal]-schedule@template.next_airing_text">
+        <div class="animate__animated animate__fadeIn" style="--animate-duration: 0.3s;">Next episode <span class="not-italic font-bold text-slate-500 dark:text-slate-400">#<% media.nextAiringEpisode.episode %></span> airing in <span class="not-italic font-bold text-slate-500 dark:text-slate-400"><% fn._context_nextAiring_timeRemaining %></span>.</div>
+      </template>
+      {% raw %}<%={{ }}=%>{% endraw %}
+      <template id="[modal]-schedule@template.airing_notice">
+        <div class="animate__animated animate__fadeIn" style="--animate-duration: 0.3s;">
+          <% #isAired %>
+          Episode <span class="not-italic font-bold text-slate-500 dark:text-slate-400">#<% episode %></span> aired <span class="not-italic font-bold text-slate-500 dark:text-slate-400"><% timeUntil %></span> ago.
+          <% /isAired %>
+          <% ^isAired %>
+          <% #isNext %>Next episode<% /isNext %><% ^isNext %>Episode<% /isNext %> <span class="not-italic font-bold text-slate-500 dark:text-slate-400">#<% episode %></span> airing in <span class="not-italic font-bold text-slate-500 dark:text-slate-400"><% timeUntil %></span>.
+          <% /isAired %>
+        </div>
+      </template>
+      {% raw %}{{=<% %>=}}{% endraw %}
+      <span class="my-2 w-[80%] md:w-[95%] text-center text-slate-400 dark:text-slate-500 md:text-xs italic" id="[modal]-schedule.airing_text" data-not-have-airing="<% #fn.styleHidden %><% media.nextAiringEpisode.airingAt %><% /fn.styleHidden %>"><span class="text-transparent">_</span></span>
+      <div class="grid grid-cols-7 w-[80%] gap-2 [&>div]:text-xl md:[&>div]:text-xs md:w-[95%] [&>div]:flex [&>div]:items-center [&>div]:justify-center [&>div]:bg-slate-100 dark:[&>div]:bg-slate-900/40 [&>div]:rounded-md [&>div]:p-1 [&>div]:mb-2 md:[&>div]:mb-1 [&>div]:italic animate__animated animate__fadeIn" style="--animate-duration: 0.3s;">
+        <div>Su<span class="md:hidden">n</span></div>
+        <div>Mo<span class="md:hidden">n</span></div>
+        <div>Tu<span class="md:hidden">e</span></div>
+        <div>We<span class="md:hidden">d</span></div>
+        <div>Th<span class="md:hidden">u</span></div>
+        <div>Fr<span class="md:hidden">i</span></div>
+        <div>Sa<span class="md:hidden">t</span></div>
+        <% #fn._context_getMediaCalender %>
+        <span class="relative flex items-center justify-center w-full text-xl transition bg-white rounded-full dark:bg-slate-900 md:text-sm aspect-square dark:hover:bg-slate-900/80 hover:bg-white/50" style-modal-schedule-isActive="<% isActive %>" style-modal-schedule-isToday="<% isToday %>">
+          <% #animeAiring.year %>
+          <div class="flex items-center justify-center w-full h-full overflow-hidden"><img class="object-cover w-full h-full rounded-full" src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/default.jpg" data-src="<% media.coverImage.medium %>" lazyload></div>
+          <div class="absolute flex bg-slate-900/50 dark:bg-slate-950/70 rounded-full w-full h-full top-0 left-0 data-[is-next-episode='true']:border-[3px] data-[is-next-episode='true']:border-sky-400/90 dark:data-[is-next-episode='true']:border-sky-300/70 transition" data-is-next-episode="false" data-for-episode="<% animeAiring.episode %>"></div>
+          <div class="absolute flex items-center justify-center w-full h-full p-1 text-base text-white rounded-full cursor-pointer md:p-px md:text-xs dark:text-slate-50" data-episode="<% animeAiring.episode %>" data-time-until="<% animeAiring.humanizedAir %>" data-is-aired="<% animeAiring.isAired %>" data-next-airing-episode="<% media.nextAiringEpisode.episode %>" episode-airing-day><span class="text-slate-100">#</span><span><% animeAiring.episode %></span></div>
+          <% /animeAiring.year %>
+          <% ^animeAiring.year %>
+          <div class="flex items-center justify-center w-full h-full p-1 md:p-px"><span><% number %></span></div>
+          <% /animeAiring.year %>
+        </span>
+        <% /fn._context_getMediaCalender %>
+      </div>
+      <div class="mb-4 mt-3 md:mb-2 flex justify-between w-[80%] md:w-[95%] items-center">
+        <% #fn._context_maxPrevious %>
+        <span class="p-2 ml-4 rounded-full cursor-not-allowed md:p-1 md:ml-2 bg-white/40 dark:bg-slate-600/20 text-slate-400 dark:text-slate-500">{% icon "chevron-left", class="w-6 h-6 md:w-4 md:h-4" %}</span>
+        <% /fn._context_maxPrevious %>
+        <% ^fn._context_maxPrevious %>
+        <span class="p-2 ml-4 transition bg-white rounded-full cursor-pointer md:p-1 hover:scale-105 md:ml-2 dark:bg-slate-600/40" onclick="event.stopPropagation();schedulePrevious('<% media.id %>')">{% icon "chevron-left", class="w-6 h-6 md:w-4 md:h-4" %}</span>
+        <% /fn._context_maxPrevious %>
+        <span class="my-2 text-3xl font-bold text-center md:text-lg" id="[modal]-schedule.heading_text"><% fn.scheduleHead %></span>
+        <% #fn._context_maxNext %>
+        <span class="p-2 mr-4 rounded-full cursor-not-allowed md:p-1 md:mr-2 bg-white/40 dark:bg-slate-600/20 text-slate-400 dark:text-slate-500">{% icon "chevron-right", class="w-6 h-6 md:w-4 md:h-4" %}</span>
+        <% /fn._context_maxNext %>
+        <% ^fn._context_maxNext %>
+        <span class="p-2 mr-4 transition bg-white rounded-full cursor-pointer md:p-1 hover:scale-105 md:mr-2 dark:bg-slate-600/40" onclick="event.stopPropagation();scheduleNext('<% media.id %>')">{% icon "chevron-right", class="w-6 h-6 md:w-4 md:h-4" %}</span>
+        <% /fn._context_maxNext %>
+      </div>
+    </div>
+  </div>
+  <script>InitializeScheduleHover()</script>
+</template>
+
+<template id="[container]-lists@template.modal_view.list">
+  <% ^fn._context_mediaInList %>
+  <div class="flex flex-col items-center justify-center w-full h-full">
+    <span class="italic mb-1.5 md:text-sm m-1 mx-2 mr-3 p-1 text-center">Add <span class="font-bold text-slate-600 dark:text-slate-300">"<% fn.mediaTitle %>"</span> to list before using the editor.</span>
+    <div class="grid grid-cols-2 gap-4 p-1 m-1 mx-2 mr-3">
+      <span class="text-base md:text-sm font-bold rounded-md bg-green-500/10 dark:bg-green-600/10 border border-green-500/60 text-green-500 p-2 cursor-pointer hover:bg-green-500/30 dark:hover:bg-green-600/20 transition flex items-center justify-center px-2.5" onclick="setInitialMediaStatus('<% media.id %>', 'CURRENT')"><span class="mr-1">{% icon "eye", class="w-6 h-6 md:w-4 md:h-4" %}</span><span class="ml-1">Current</span></span>
+      <span class="text-base md:text-sm font-bold rounded-md bg-sky-500/10 dark:bg-sky-600/10 border border-sky-500/60 text-sky-500 p-2 cursor-pointer hover:bg-sky-500/30 dark:hover:bg-sky-600/20 transition flex items-center justify-center px-2.5" onclick="setInitialMediaStatus('<% media.id %>', 'PLANNING')"><span class="mr-1">{% icon "calendar", class="w-6 h-6 md:w-4 md:h-4" %}</span><span class="ml-1">Planning</span></span>
+      <span class="text-base md:text-sm font-bold rounded-md bg-purple-500/10 dark:bg-purple-600/10 border border-purple-500/60 text-purple-500 p-2 cursor-pointer hover:bg-purple-500/30 dark:hover:bg-purple-600/20 transition flex items-center justify-center px-2.5" onclick="setInitialMediaStatus('<% media.id %>', 'COMPLETED')"><span class="mr-1">{% icon "check", class="w-6 h-6 md:w-4 md:h-4" %}</span><span class="ml-1">Completed</span></span>
+      <span class="text-base md:text-sm font-bold rounded-md bg-rose-500/10 dark:bg-rose-600/10 border border-rose-500/60 text-rose-500 p-2 cursor-pointer hover:bg-rose-500/30 dark:hover:bg-rose-600/20 transition flex items-center justify-center px-2.5" onclick="setInitialMediaStatus('<% media.id %>', 'DROPPED')"><span class="mr-1">{% icon "archive-box-x-mark", class="w-6 h-6 md:w-4 md:h-4" %}</span><span class="ml-1">Dropped</span></span>
+      <span class="text-base md:text-sm font-bold rounded-md bg-orange-500/10 dark:bg-orange-600/10 border border-orange-500/60 text-orange-500 p-2 cursor-pointer hover:bg-orange-500/30 dark:hover:bg-orange-600/20 transition flex items-center justify-center px-2.5" onclick="setInitialMediaStatus('<% media.id %>', 'PAUSED')"><span class="mr-1">{% icon "archive-box-arrow-down", class="w-6 h-6 md:w-4 md:h-4" %}</span><span class="ml-1">Paused</span></span>
+      <span class="text-base md:text-sm font-bold rounded-md bg-yellow-500/10 dark:bg-yellow-600/10 border border-yellow-500/60 text-yellow-500 p-2 cursor-pointer hover:bg-yellow-500/30 dark:hover:bg-yellow-600/20 transition flex items-center justify-center px-2.5" onclick="setInitialMediaStatus('<% media.id %>', 'REPEATING')"><span class="mr-1">{% icon "arrow-path-rounded-square", class="w-6 h-6 md:w-4 md:h-4" %}</span><span class="ml-1">Repeating</span></span>
+    </div>
+  </div>
+  <% /fn._context_mediaInList %>
+  <% #fn._context_mediaInList %>
+  <div class="grid grid-cols-2 gap-4 p-1 m-1 mx-2 mr-3 md:grid-cols-1">
+    <div class="w-full">
+      <span class="ml-2 text-xs transition-colors text-slate-500 dark:text-slate-400">Status</span>
+      <select id="[modal]-actions.status" class="hover:dark:bg-slate-900 hover:bg-slate-50 bg-white bg-no-repeat dark:focus:bg-slate-900 focus:bg-slate-50 dark:[&_option]:bg-slate-900/90 [&_option]:bg-white [&_option]:cursor-pointer dark:[&_option]:text-slate-400 [&_option]:text-slate-600 border border-slate-300 text-slate-600 text-sm rounded-lg appearance-none block w-full p-2.5 dark:bg-slate-900/50 dark:border-slate-700/70 dark:placeholder-slate-700 dark:text-slate-400 cursor-pointer m-1 appearance-none outline-none bg-[right_10px_center] bg-[length:auto_50%] [&::-ms-expand]:hidden">
+        <option value="CURRENT">Current</option>
+        <option value="PLANNING">Planning</option>
+        <option value="COMPLETED">Completed</option>
+        <option value="DROPPED">Dropped</option>
+        <option value="PAUSED">Paused</option>
+        <option value="REPEATING">Repeating</option>
+      </select>
+    </div>
+    <div class="flex flex-col justify-end w-full h-full mx-1" id="[modal]-actions.score" data-score-mode="<% media.mediaListEntry.user.mediaListOptions.scoreFormat %>">
+      <span class="ml-2 text-xs transition-colors text-slate-500 dark:text-slate-400">Score</span>
+      <% #fn._context_score_POINT_100 %>
+      <div class="relative flex items-center justify-between my-1 text-sm transition-colors bg-white border rounded-lg hover:dark:bg-slate-900 hover:bg-slate-50 border-slate-300 text-slate-600 dark:text-slate-400 dark:bg-slate-900/50 dark:border-slate-700/70">
+        <input type="number" id="[modal]-actions.score.point_100" min="0" max="100" step="1" value="<% media.mediaListEntry.score %>" autocomplete="off" inputmode="numeric" class="block float-left w-full h-10 pl-4 m-0 leading-relaxed bg-transparent rounded-md outline-none" />
+        <div class="relative float-left h-10">
+          <button data-action="plus" data-target="[modal]-actions.score.point_100" class="absolute top-0 text-center transition -translate-x-full w-7 dark:hover:text-slate-300 dark:text-slate-400 text-slate-500 hover:text-slate-600 h-1/2 rounded-tr-md" number-input-button>{% icon "chevron-up", class="w-3.5 h-3.5" %}</button>
+          <button data-action="minus" data-target="[modal]-actions.score.point_100" class="absolute bottom-0 text-center transition -translate-x-full w-7 dark:hover:text-slate-300 dark:text-slate-400 text-slate-500 hover:text-slate-600 h-1/2 rounded-br-md" number-input-button>{% icon "chevron-down", class="w-3.5 h-3.5" %}</button>
+        </div>
+      </div>
+      <% /fn._context_score_POINT_100 %>
+      <% #fn._context_score_POINT_10_DECIMAL %>
+      <div class="relative flex items-center justify-between my-1 text-sm transition-colors bg-white border rounded-lg hover:dark:bg-slate-900 hover:bg-slate-50 border-slate-300 text-slate-600 dark:text-slate-400 dark:bg-slate-900/50 dark:border-slate-700/70">
+        <input type="number" id="[modal]-actions.score.point_10_decimal" min="0" max="10.0" step="0.1" value="<% #fn.convert_POINT_10_DECIMAL %><% media.mediaListEntry.score %><% /fn.convert_POINT_10_DECIMAL %>" autocomplete="off" inputmode="numeric" class="block float-left w-full h-10 pl-4 m-0 leading-relaxed bg-transparent rounded-md outline-none" />
+        <div class="relative float-left h-10">
+          <button data-action="plus" data-target="[modal]-actions.score.point_10_decimal" class="absolute top-0 text-center transition -translate-x-full w-7 dark:hover:text-slate-300 dark:text-slate-400 text-slate-500 hover:text-slate-600 h-1/2 rounded-tr-md" number-input-button>{% icon "chevron-up", class="w-3.5 h-3.5" %}</button>
+          <button data-action="minus" data-target="[modal]-actions.score.point_10_decimal" class="absolute bottom-0 text-center transition -translate-x-full w-7 dark:hover:text-slate-300 dark:text-slate-400 text-slate-500 hover:text-slate-600 h-1/2 rounded-br-md" number-input-button>{% icon "chevron-down", class="w-3.5 h-3.5" %}</button>
+        </div>
+      </div>
+      <% /fn._context_score_POINT_10_DECIMAL %>
+      <% #fn._context_score_POINT_10 %>
+      <div class="relative flex items-center justify-between my-1 text-sm transition-colors bg-white border rounded-lg hover:dark:bg-slate-900 hover:bg-slate-50 border-slate-300 text-slate-600 dark:text-slate-400 dark:bg-slate-900/50 dark:border-slate-700/70">
+        <input type="number" id="[modal]-actions.score.point_10" min="0" max="10" step="1" value="<% #fn.convert_POINT_10 %><% media.mediaListEntry.score %><% /fn.convert_POINT_10 %>" autocomplete="off" inputmode="numeric" class="block float-left w-full h-10 pl-4 m-0 leading-relaxed bg-transparent rounded-md outline-none" />
+        <div class="relative float-left h-10">
+          <button data-action="plus" data-target="[modal]-actions.score.point_10" class="absolute top-0 text-center transition -translate-x-full w-7 dark:hover:text-slate-300 dark:text-slate-400 text-slate-500 hover:text-slate-600 h-1/2 rounded-tr-md" number-input-button>{% icon "chevron-up", class="w-3.5 h-3.5" %}</button>
+          <button data-action="minus" data-target="[modal]-actions.score.point_10" class="absolute bottom-0 text-center transition -translate-x-full w-7 dark:hover:text-slate-300 dark:text-slate-400 text-slate-500 hover:text-slate-600 h-1/2 rounded-br-md" number-input-button>{% icon "chevron-down", class="w-3.5 h-3.5" %}</button>
+        </div>
+      </div>
+      <% /fn._context_score_POINT_10 %>
+      <% #fn._context_score_POINT_5 %>
+      <div class="hover:dark:bg-slate-900 hover:bg-slate-50 transition-colors flex justify-between items-center transition-colors bg-white border border-slate-300 text-slate-600 text-sm rounded-lg dark:text-slate-400 dark:bg-slate-900/50 dark:border-slate-700/70 my-1 p-1 h-[41.6px]">
+        <span></span>
+        <% #fn._context_convert_POINT_5 %>
+        <span class="cursor-pointer hover:scale-105 transition [&>svg]:data-[score-star='active']:fill-yellow-500/90 [&>svg]:data-[score-star='active']:stroke-yellow-500/90" data-score-star="<% . %>">{% icon "star", class="w-6 h-6 transition stroke-slate-400 dark:stroke-slate-500" %}</span>
+        <% /fn._context_convert_POINT_5 %>
+        <span></span>
+      </div>
+      <% /fn._context_score_POINT_5 %>
+      <% #fn._context_score_POINT_3 %>
+      <div class="hover:dark:bg-slate-900 hover:bg-slate-50 transition-colors flex bg-white justify-between items-center transition-colors border border-slate-300 text-slate-600 text-sm rounded-lg dark:text-slate-400 dark:bg-slate-900/50 dark:border-slate-700/70 my-1 p-px h-[41.6px]">
+        <span></span>
+        <span></span>
+        <span class="cursor-pointer hover:scale-105 transition grayscale data-[score-smile='active']:grayscale-0 data-[score-smile='active']:scale-125" data-score-smile="<% fn._context_convert_POINT_3_HAPPY %>" data-smile-type="HAPPY">{% icon "images/face-happy.svg", class="w-6 h-6" %}</span>
+        <span class="cursor-pointer hover:scale-105 transition grayscale data-[score-smile='active']:grayscale-0 data-[score-smile='active']:scale-125" data-score-smile="<% fn._context_convert_POINT_3_NEUTRAl %>" data-smile-type="NEUTRAL">{% icon "images/face-neutral.svg", class="w-6 h-6" %}</span>
+        <span class="cursor-pointer hover:scale-105 transition grayscale data-[score-smile='active']:grayscale-0 data-[score-smile='active']:scale-125" data-score-smile="<% fn._context_convert_POINT_3_SAD %>" data-smile-type="SAD">{% icon "images/face-sad.svg", class="w-6 h-6" %}</span>
+        <span></span>
+        <span></span>
+      </div>
+      <% /fn._context_score_POINT_3 %>
+    </div>
+    <div class="flex flex-col justify-end w-full h-full mx-1">
+      <span class="ml-2 text-xs transition-colors text-slate-500 dark:text-slate-400">Start Date</span>
+      <div class="hover:dark:bg-slate-900 hover:bg-slate-50 transition-colors flex justify-between items-center transition-colors bg-white border border-slate-300 text-slate-600 text-sm rounded-lg dark:text-slate-400 dark:bg-slate-900/50 dark:border-slate-700/70 my-1 p-2.5">
+        <input id="[modal]-actions.start_date" type="date" value="<% fn._context_mediaStartDate %>" autocomplete="off" inputmode="numeric" class="w-full bg-transparent appearance-none [-moz-appearance:textfield] [-webkit-appearance:textfield] outline-none h-5 [&::-ms-expand]:hidden">
+      </div>
+    </div>
+    <div class="flex flex-col justify-end w-full h-full mx-1">
+      <span class="ml-2 text-xs transition-colors text-slate-500 dark:text-slate-400">Finish Date</span>
+      <div class="hover:dark:bg-slate-900 hover:bg-slate-50 transition-colors flex justify-between items-center transition-colors bg-white border border-slate-300 text-slate-600 text-sm rounded-lg dark:text-slate-400 dark:bg-slate-900/50 dark:border-slate-700/70 my-1 p-2.5">
+        <input id="[modal]-actions.finish_date" type="date" value="<% fn._context_mediaFinishDate %>" autocomplete="off" inputmode="numeric" class="w-full bg-transparent appearance-none [-moz-appearance:textfield] [-webkit-appearance:textfield] outline-none h-5 [&::-ms-expand]:hidden">
+      </div>
+    </div>
+    <div class="flex flex-col justify-end w-full h-full mx-1">
+      <span class="ml-2 text-xs transition-colors text-slate-500 dark:text-slate-400"><% #fn._context_isManga %>Chapter<% /fn._context_isManga %><% ^fn._context_isManga %>Episode<% /fn._context_isManga %> Progress</span>
+      <div class="relative flex items-center justify-between my-1 text-sm transition-colors bg-white border rounded-lg hover:dark:bg-slate-900 hover:bg-slate-50 border-slate-300 text-slate-600 dark:text-slate-400 dark:bg-slate-900/50 dark:border-slate-700/70">
+        <input type="number" id="[modal]-actions.episode_progress" min="0" max="<% media.episodes %><% media.chapters %>" step="1" value="<% media.mediaListEntry.progress %>" autocomplete="off" inputmode="numeric" pattern="[0-9]+" class="block float-left w-full h-10 pl-4 m-0 leading-relaxed bg-transparent rounded-md outline-none" />
+        <div class="relative float-left h-10">
+          <button data-action="plus" data-target="[modal]-actions.episode_progress" class="absolute top-0 text-center transition -translate-x-full w-7 dark:hover:text-slate-300 dark:text-slate-400 text-slate-500 hover:text-slate-600 h-1/2 rounded-tr-md" number-input-button>{% icon "chevron-up", class="w-3.5 h-3.5" %}</button>
+          <button data-action="minus" data-target="[modal]-actions.episode_progress" class="absolute bottom-0 text-center transition -translate-x-full w-7 dark:hover:text-slate-300 dark:text-slate-400 text-slate-500 hover:text-slate-600 h-1/2 rounded-br-md" number-input-button>{% icon "chevron-down", class="w-3.5 h-3.5" %}</button>
+        </div>
+      </div>
+    </div>
+    <% #fn._context_isManga %>
+    <div class="flex flex-col justify-end w-full h-full mx-1">
+      <span class="ml-2 text-xs transition-colors text-slate-500 dark:text-slate-400">Volume Progress</span>
+      <div class="relative flex items-center justify-between my-1 text-sm transition-colors bg-white border rounded-lg hover:dark:bg-slate-900 hover:bg-slate-50 border-slate-300 text-slate-600 dark:text-slate-400 dark:bg-slate-900/50 dark:border-slate-700/70">
+        <input type="number" id="[modal]-actions.volume_progress" min="0" max="<% media.volumes %>" step="1" value="<% media.mediaListEntry.progressVolumes %>" autocomplete="off" inputmode="numeric" pattern="[0-9]+" class="block float-left w-full h-10 pl-4 m-0 leading-relaxed bg-transparent rounded-md outline-none" />
+        <div class="relative float-left h-10">
+          <button data-action="plus" data-target="[modal]-actions.volume_progress" class="absolute top-0 text-center transition -translate-x-full w-7 dark:hover:text-slate-300 dark:text-slate-400 text-slate-500 hover:text-slate-600 h-1/2 rounded-tr-md" number-input-button>{% icon "chevron-up", class="w-3.5 h-3.5" %}</button>
+          <button data-action="minus" data-target="[modal]-actions.volume_progress" class="absolute bottom-0 text-center transition -translate-x-full w-7 dark:hover:text-slate-300 dark:text-slate-400 text-slate-500 hover:text-slate-600 h-1/2 rounded-br-md" number-input-button>{% icon "chevron-down", class="w-3.5 h-3.5" %}</button>
+        </div>
+      </div>
+    </div>
+    <% /fn._context_isManga %>
+    <div class="flex flex-col justify-end w-full h-full mx-1">
+      <span class="ml-2 text-xs transition-colors text-slate-500 dark:text-slate-400">Total <% #fn._context_isManga %>Rereads<% /fn._context_isManga %><% ^fn._context_isManga %>Rewatches<% /fn._context_isManga %></span>
+      <div class="relative flex items-center justify-between my-1 text-sm transition-colors bg-white border rounded-lg hover:dark:bg-slate-900 hover:bg-slate-50 border-slate-300 text-slate-600 dark:text-slate-400 dark:bg-slate-900/50 dark:border-slate-700/70">
+        <input type="number" id="[modal]-actions.repeat" min="0" step="1" value="<% media.mediaListEntry.repeat %>" autocomplete="off" inputmode="numeric" pattern="[0-9]+" class="block float-left w-full h-10 pl-4 m-0 leading-relaxed bg-transparent rounded-md outline-none" />
+        <div class="relative float-left h-10">
+          <button data-action="plus" data-target="[modal]-actions.repeat" class="absolute top-0 text-center transition -translate-x-full w-7 dark:hover:text-slate-300 dark:text-slate-400 text-slate-500 hover:text-slate-600 h-1/2 rounded-tr-md" number-input-button>{% icon "chevron-up", class="w-3.5 h-3.5" %}</button>
+          <button data-action="minus" data-target="[modal]-actions.repeat" class="absolute bottom-0 text-center transition -translate-x-full w-7 dark:hover:text-slate-300 dark:text-slate-400 text-slate-500 hover:text-slate-600 h-1/2 rounded-br-md" number-input-button>{% icon "chevron-down", class="w-3.5 h-3.5" %}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% #fn._context_advancedScoringEnabled %>
+  <div class="flex justify-center">
+    <hr class="w-4/5 my-2 md:w-3/5 border-slate-300/90 dark:border-slate-700/90">
+  </div>
+  <div class="grid grid-cols-3 gap-4 p-1 m-1 mx-2 mr-3 md:grid-cols-2">
+    <% #fn._context_advancedScoring %>
+    <div class="flex flex-col justify-end w-full h-full mx-1">
+      <span class="ml-2 text-xs transition-colors text-slate-500 dark:text-slate-400"><% category %></span>
+      <div class="relative flex items-center justify-between my-1 text-sm transition-colors bg-white border rounded-lg hover:dark:bg-slate-900 hover:bg-slate-50 border-slate-300 text-slate-600 dark:text-slate-400 dark:bg-slate-900/50 dark:border-slate-700/70">
+        <input type="number" id="[modal]-actions.advance_score.<% category %>" data-advance-score-type="<% category %>" type="number" min="0" step="1" value="<% score %>" max="100" autocomplete="off" inputmode="numeric" pattern="[0-9]+" class="block float-left w-full h-10 pl-4 m-0 leading-relaxed bg-transparent rounded-md outline-none" />
+        <div class="relative float-left h-10">
+          <button data-action="plus" data-target="[modal]-actions.advance_score.<% category %>" class="absolute top-0 text-center transition -translate-x-full w-7 dark:hover:text-slate-300 dark:text-slate-400 text-slate-500 hover:text-slate-600 h-1/2 rounded-tr-md" number-input-button>{% icon "chevron-up", class="w-3.5 h-3.5" %}</button>
+          <button data-action="minus" data-target="[modal]-actions.advance_score.<% category %>" class="absolute bottom-0 text-center transition -translate-x-full w-7 dark:hover:text-slate-300 dark:text-slate-400 text-slate-500 hover:text-slate-600 h-1/2 rounded-br-md" number-input-button>{% icon "chevron-down", class="w-3.5 h-3.5" %}</button>
+        </div>
+      </div>
+    </div>
+    <% /fn._context_advancedScoring %>
+  </div>
+  <% /fn._context_advancedScoringEnabled %>
+  <div class="w-full flex flex-col justify-end m-1 px-2.5 p-1 pr-4">
+    <span class="ml-2 text-xs transition-colors text-slate-500 dark:text-slate-400">Notes</span>
+    <div class="hover:dark:bg-slate-900 hover:bg-slate-50 transition-colors flex justify-between items-center transition-colors bg-white border border-slate-300 text-slate-600 text-sm rounded-lg dark:text-slate-400 dark:bg-slate-900/50 dark:border-slate-700/70 my-1 p-2.5">
+      <textarea id="[modal]-actions.notes" class="h-[120px] w-full resize-none bg-transparent appearance-none outline-none"><% media.mediaListEntry.notes %></textarea>
+    </div>
+  </div>
+  <% #media.mediaListEntry.customLists.length %>
+  <div class="flex justify-center">
+    <hr class="w-4/5 my-2 md:w-3/5 border-slate-300/90 dark:border-slate-700/90">
+  </div>
+  <div class="grid grid-cols-3 gap-4 p-1 m-1 mx-2 mr-3 md:grid-cols-2 lg:grid-cols-2 md:gap-3">
+    <% #media.mediaListEntry.customLists %>
+    <div class="flex items-center justify-center w-full h-full p-1">
+      <label class="w-full h-full cursor-pointer hover:dark:bg-slate-900 hover:bg-slate-50 transition-colors flex justify-center items-center transition-colors bg-white border border-slate-300 text-slate-600 text-xs rounded-lg dark:text-slate-400 dark:bg-slate-900/50 dark:border-slate-700/70 p-2.5">
+        <% #enabled %>
+        <input class="accent-pink-500/90" type="checkbox" data-custom-list-name="<% name %>" checked="checked">
+        <% /enabled %>
+        <% ^enabled %>
+        <input class="accent-pink-500/90" type="checkbox" data-custom-list-name="<% name %>">
+        <% /enabled %>
+        <div class="ml-1.5"><% name %></div>
+      </label>
+    </div>
+    <% /media.mediaListEntry.customLists %>
+  </div>
+  <% /media.mediaListEntry.customLists.length %>
+  <div class="flex justify-center">
+    <hr class="w-4/5 my-2 md:w-3/5 border-slate-300/90 dark:border-slate-700/90">
+  </div>
+  <div class="flex mx-2.5 mt-1 mb-2 p-1 md:flex-col">
+    <div class="flex w-full md:mb-2">
+      <div onclick="event.stopPropagation();saveModalListEdits('<% media.mediaListEntry.mediaId %>')" class="mr-1 cursor-pointer hover:dark:bg-green-600/10 hover:dark:border-green-500/60 hover:dark:text-green-500 hover:bg-green-100 hover:border-green-500/50 hover:text-green-500 transition-colors flex justify-center items-center transition-colors bg-white border border-slate-300 text-slate-600 text-xs rounded-lg dark:text-slate-400 dark:bg-slate-900/50 dark:border-slate-700/70 p-1.5 h-10 rounded-md w-full">Save</div>
+      <div onclick="event.stopPropagation();deleteMediaListEntry('<% media.mediaListEntry.mediaId %>', '<% media.mediaListEntry.id %>')" class="ml-1 cursor-pointer hover:dark:bg-rose-600/10 hover:dark:border-rose-500/60 hover:dark:text-rose-500 hover:bg-rose-100 hover:border-rose-500/50 hover:text-rose-500 transition-colors flex justify-center items-center transition-colors bg-white border border-slate-300 text-slate-600 text-xs rounded-lg dark:text-slate-400 dark:bg-slate-900/50 dark:border-slate-700/70 p-1.5 h-10 rounded-md w-full">Delete</div>
+    </div>
+    <div class="flex w-full ml-2 md:mb-2 md:ml-0">
+      <div onclick="event.stopPropagation();saveModalListEdits('<% media.mediaListEntry.mediaId %>', private=true)" class="mr-1 cursor-pointer hover:dark:bg-sky-600/10 hover:dark:border-sky-500/60 hover:dark:text-sky-500 hover:bg-sky-100 hover:border-sky-500/50 hover:text-sky-500 transition-colors flex justify-center items-center transition-colors bg-white border border-slate-300 text-slate-600 text-xs rounded-lg dark:text-slate-400 dark:bg-slate-900/50 dark:border-slate-700/70 p-1.5 h-10 rounded-md w-full">Save private</div>
+      <div onclick="event.stopPropagation();setModalContent('<% media.mediaListEntry.mediaId %>', 'list')" class="ml-1 cursor-pointer hover:dark:bg-purple-600/10 hover:dark:border-purple-500/60 hover:dark:text-purple-500 hover:bg-purple-100 hover:border-purple-500/50 hover:text-purple-500 transition-colors flex justify-center items-center transition-colors bg-white border border-slate-300 text-slate-600 text-xs rounded-lg dark:text-slate-400 dark:bg-slate-900/50 dark:border-slate-700/70 p-1.5 h-10 rounded-md w-full">Reset</div>
+    </div>
+  </div>
+  <script>InitializeModalActions("<% media.mediaListEntry.mediaId %>")</script>
+  <% /fn._context_mediaInList %>
+</template>
+
+<template id="[container]-lists@template.modal_view">
+  <div class="flex w-full h-full md:flex-col md:flex-col-reverse">
+    <div class="m-5 mr-2 p-1 w-[25%] flex flex-col justify-between md:w-[95%] md:m-0 md:mr-0 md:mb-2 md:flex-row md:justify-normal md:overflow-x-auto shrink-0 md:py-0 rounded-md" style-hide-scrollbar="true" id="[container]-lists@template.modal_view.sections">
+      <div class="flex flex-col p-1 md:flex-row md:py-0">
+        <div class="w-full mr-1 md:p-2 md:mb-0 my-1.5 md:mt-0 bg-slate-100 dark:bg-slate-800/60 ml-0 rounded-md p-3 text-slate-500 dark:text-slate-400 flex items-center cursor-pointer hover:bg-slate-200/70 hover:dark:bg-slate-800/80 transition italic md:mr-2 md:ml-1 md:w-40 md:justify-center" id="[container]-lists@template.modal_view.section.overview" onclick="setModalContent('<% media.id %>', 'overview')"><span class="ml-2">{% icon "sparkles", class="w-5 h-5" %}</span><span class="ml-3">Overview</span></div>
+        <div class="w-full mr-1 md:p-2 md:mb-0 my-1.5 md:mt-0 bg-slate-100 dark:bg-slate-800/60 ml-0 rounded-md p-3 text-slate-500 dark:text-slate-400 flex items-center cursor-pointer hover:bg-slate-200/70 hover:dark:bg-slate-800/80 transition italic md:mr-2 md:w-40 md:justify-center" id="[container]-lists@template.modal_view.section.general" onclick="setModalContent('<% media.id %>', 'general')"><span class="ml-2">{% icon "rectangle-group", class="w-5 h-5" %}</span><span class="ml-3">General</span></div>
+        <div class="w-full mr-1 md:p-2 md:mb-0 my-1.5 md:mt-0 bg-slate-100 dark:bg-slate-800/60 ml-0 rounded-md p-3 text-slate-500 dark:text-slate-400 flex items-center cursor-pointer hover:bg-slate-200/70 hover:dark:bg-slate-800/80 transition italic md:mr-2 md:w-40 md:justify-center" id="[container]-lists@template.modal_view.section.details" onclick="setModalContent('<% media.id %>', 'details')"><span class="ml-2">{% icon "clipboard-document-list", class="w-5 h-5" %}</span><span class="ml-3">Details</span></div>
+        <div class="w-full mr-1 md:p-2 md:mb-0 my-1.5 md:mt-0 bg-slate-100 dark:bg-slate-800/60 ml-0 rounded-md p-3 text-slate-500 dark:text-slate-400 flex items-center cursor-pointer hover:bg-slate-200/70 hover:dark:bg-slate-800/80 transition italic md:mr-2 md:w-40 md:justify-center" id="[container]-lists@template.modal_view.section.list" onclick="setModalContent('<% media.id %>', 'list')"><span class="ml-2">{% icon "bookmark-square", class="w-5 h-5" %}</span><span class="ml-3">List</span></div>
+        <div class="w-full mr-1 md:p-2 md:mb-0 my-1.5 md:mt-0 bg-slate-100 dark:bg-slate-800/60 ml-0 rounded-md p-3 text-slate-500 dark:text-slate-400 flex items-center cursor-pointer hover:bg-slate-200/70 hover:dark:bg-slate-800/80 transition italic md:mr-2 md:w-40 md:justify-center" id="[container]-lists@template.modal_view.section.statistics" onclick="setModalContent('<% media.id %>', 'statistics')"><span class="ml-2">{% icon "presentation-chart-line", class="w-5 h-5" %}</span><span class="ml-3">Statistics</span></div>
+        <div class="w-full mr-1 md:p-2 md:mb-0 my-1.5 md:mt-0 bg-slate-100 dark:bg-slate-800/60 ml-0 rounded-md p-3 text-slate-500 dark:text-slate-400 flex items-center cursor-pointer hover:bg-slate-200/70 hover:dark:bg-slate-800/80 transition italic md:mr-1 md:w-40 md:justify-center" id="[container]-lists@template.modal_view.section.schedule" onclick="setModalContent('<% media.id %>', 'schedule')" style-hidden="<% #fn.styleHidden %><% media.airingSchedule.nodes.length %><% /fn.styleHidden %>"><span class="ml-2">{% icon "calendar-days", class="w-5 h-5" %}</span><span class="ml-3">Schedule</span></div>
+      </div>
+      <div class="flex flex-col p-1 md:flex-row md:py-0">
+        <button class="flex items-center justify-center w-full p-3 m-1 ml-0 font-bold transition rounded-md md:mt-0 md:p-2 md:mb-0 bg-slate-200/50 dark:bg-slate-800/60 text-slate-400 dark:text-slate-500 hover:bg-slate-200/70 hover:dark:bg-slate-800/80 md:mr-2" onclick="$.popup('<% media.siteUrl %>')"><span class="mr-1">{% icon "images/anilist-bw.svg", class="w-5 h-5 dark:hidden fill-slate-600" %}{% icon "images/anilist.svg", class="hidden w-5 h-5 dark:block" %}</span><span>{% icon "arrow-top-right-on-square", class="w-5 h-5" %}</span></button>
+        <button class="flex items-center justify-center w-full p-3 m-1 ml-0 font-bold transition rounded-md md:mt-0 md:p-2 md:mb-0 bg-slate-200/50 dark:bg-slate-800/60 text-slate-400 dark:text-slate-500 hover:bg-slate-200/70 hover:dark:bg-slate-800/80 md:mr-1" onclick="$.popup('https://myanimelist.net/<% #fn.toLowerCase %><% media.type %><% /fn.toLowerCase %>/<% media.idMal %>')"><span class="mr-2">{% icon "images/myanimelist.svg", class="w-5 h-5" %}</span><span>{% icon "arrow-top-right-on-square", class="w-5 h-5" %}</span></button>
+      </div>
+    </div>
+    <div class="m-5 ml-2 p-1 w-[75%] flex md:w-full md:m-0 md:ml-0 md:h-full flex-col justify-start md:justify-end">
+      <div class="w-full md:w-[95%] md:m-2 rounded-md mb-2 flex overflow-x-auto" style-hide-scrollbar="true">
+        <div class="flex w-1 text-xs">
+          <span class="p-1 mx-px text-slate-400 dark:text-slate-500">{% icon "chevron-right", class="w-4 h-4" %}</span>
+          <% #history %>
+          <div class="p-1 whitespace-pre transition rounded-md cursor-pointer text-slate-400 dark:text-slate-500 hover:text-sky-500/90 dark:hover:text-sky-500/90 hover:bg-slate-200/40 hover:dark:bg-slate-800/50" onclick="event.stopPropagation();ShowModal('<% mediaId %>', `<% modalTitle %>`, index='<% index %>')"><% modalTitle %></div>
+          <span class="p-px text-slate-400 dark:text-slate-500">{% icon "minus", class="w-5 h-5 -rotate-[65deg]" %}</span>
+          <% /history %>
+          <% #current %>
+          <div class="p-1 whitespace-pre text-slate-500 dark:text-slate-400"><% current.modalTitle %></div>
+          <% /current %>
+        </div>
+      </div>
+      <div class="w-full md:w-[95%] md:h-[84%] h-full md:m-2 bg-slate-100 dark:bg-slate-800/70 rounded-md flex flex-col overflow-y-scroll overflow-x-hidden text-slate-500 dark:text-slate-400" id="[container]-lists@template.modal_view.content" style-hide-scrollbar="true"></div>
+    </div>
+  </div>
+</template>

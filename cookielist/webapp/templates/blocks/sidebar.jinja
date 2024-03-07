@@ -1,0 +1,63 @@
+{% macro sidebar_block(container, icon="cube") %}
+<span onclick="SwapContainer('{{ container }}')" id="[sidebar]-{{ container }}" class="flex w-10 h-10 p-2 my-[3px] transition bg-gray-100 border-2 rounded cursor-pointer hover:bg-gray-200 hover:border-gray-300 dark:bg-slate-800 hover:dark:bg-slate-700 dark:border-slate-700 hover:dark:border-slate-600">
+  {% icon icon, class="stroke-slate-600 dark:stroke-slate-500" %}
+</span>
+{% endmacro %}
+
+{% set lists_sidebar_icons = dict(anime="play", manga="book-open", music="musical-note", novel="bookmark") %}
+
+<div class="flex flex-col justify-between h-full p-2 transition-colors bg-white dark:bg-slate-900">
+
+  <div class="flex flex-col items-center mt-3">
+    <a href="{{ url_for('AboutView:index') }}">
+      <img src="{{ url_for('static', filename='images/favicon.webp') }}" class="p-1 mb-2 transition border border-dashed rounded-full bg-slate-50 dark:bg-slate-800 hover:shadow-md hover:bg-slate-100 hover:dark:bg-slate-700 hover:border-slate-500 w-11 border-slate-400 dark:border-slate-700 hover:dark:border-slate-600" alt="{{ SITE_NAME }} favicon" />
+    </a>
+
+    <hr class="m-[3px] transition-colors dark:border-slate-800 border-slate-200 w-8" />
+
+    {{ sidebar_block('profile', icon="cube") }}
+    {% if not userSchedule.isScheduleEmpty %}
+    {{ sidebar_block('schedule', icon="calendar-days") }}
+    {% endif %}
+
+    {% set __queue = namespace(added=False) %}
+    {% for group in userQueue.values() %}
+    {% if group.queueSectionMediaCollection and not __queue.added %}
+    {% set __queue.added = True %}
+    {{ sidebar_block('queue', icon="queue-list") }}
+    {% endif %}
+    {% endfor %}
+
+    {{ sidebar_block('search', icon="magnifying-glass") }}
+
+    {% set __seprator = namespace(found=False) %}
+    {% for mediaType, mediaGroupCollection in userList.listResults.items() %}
+    {% if mediaGroupCollection.groupEntries %}
+    {% if not __seprator.found %}
+    <hr class="m-[3px] transition-colors dark:border-slate-800 border-slate-200 w-8" />
+    {% endif %}
+    {% set __seprator.found = True %}
+    {{ sidebar_block( mediaType.lower(), icon=lists_sidebar_icons[mediaType.lower()]) }}
+    {% endif %}
+    {% endfor %}
+
+    {% if userList.ignoredMedia %}
+    <hr class="m-[3px] transition-colors dark:border-slate-800 border-slate-200 w-8" />
+    {{ sidebar_block('ignored', icon="information-circle") }}
+    {% endif %}
+    {% if userOptions.commentSection %}
+    <hr class="m-[3px] transition-colors dark:border-slate-800 border-slate-200 w-8" />
+    {{ sidebar_block('comments', icon="chat-bubble-left-right") }}
+    {% endif %}
+  </div>
+
+  <div class="flex flex-col items-center mb-3">
+    {% if session.id == ADMIN_ID %}
+    {{ sidebar_block('admin', icon="wrench-screwdriver") }}
+    {% endif %}
+    {{ sidebar_block('feedback', icon="bug-ant") }}
+    {{ sidebar_block('share', icon="share") }}
+    {{ sidebar_block('settings', icon="cog-6-tooth") }}
+  </div>
+
+</div>

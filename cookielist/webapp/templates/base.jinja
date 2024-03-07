@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" class="w-full overflow-hidden">
+
+  <!--
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣤⣤⣤⣤⣄⣀⠀⠀⠉⠣⠙⣳⢤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡀⣴⡰⠁⣼⠿⢶⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠋⠶⡀⣤⢺⣿⡯⠶⠧⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡤⠴⠶⠶⠒⠲⠤⠶⢤⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢤⣈⢛⣤⣾⡷⠶⠶⠶⠧⢤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣶⣾⣍⠀⠀⠀⠀⠀⠀⢠⡆⣧⣄⣉⡛⠛⠿⣿⣿⣿⣿⣿⣿⡿⠿⢴⣒⣛⣥⡆⣠⠀⠀⠀⠀⠀⠀⠈⣶⣴⣶⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⡧⡞⣳⣶⢶⡶⢰⣯⢸⢳⡘⣿⣿⣿⣿⡏⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⣤⣳⢡⢿⢈⣷⠀⣴⣧⣀⡀⢿⣿⣿⠛⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢀⡴⠋⠙⣗⣧⣋⡇⠘⢛⣿⣿⠞⢸⣷⡘⣿⣿⡿⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢳⣿⣿⣦⣿⣶⣿⣷⢾⣹⣶⣾⠝⠳⣄⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⣠⠞⠀⠀⠀⣹⠃⠀⠀⠀⠘⠛⠀⢀⣿⣿⣿⣾⣿⣧⣦⣬⣿⣿⣿⣿⣻⣿⣿⣿⣿⣷⣿⣿⣿⠘⢿⣿⣿⡎⢿⣏⠻⣍⠀⠀⠈⢦⡀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢀⡴⠋⠀⠀⠀⡼⠃⠀⠀⠀⠀⠀⠀⠀⣽⢹⣿⣿⣿⡏⢿⣯⣿⠋⠙⠙⠟⠿⣿⣽⡏⣿⣿⡏⣿⣿⡌⣆⠙⢿⣷⠈⣏⢦⣸⣦⠀⠀⠀⠹⣄⠀⠀⠀⠀⠀
+⠀⠀⠀⢠⠞⠀⠀⠀⠀⡼⠁⠀⠀⠀⠀⠀⠀⠀⣸⠃⣸⣿⣿⣿⣷⡘⠛⠉⠀⠀⠀⠀⠀⠙⠋⣸⣿⣿⣿⣿⣿⡇⢿⡄⠀⢹⣀⣸⣿⡇⠙⢧⠀⠀⠀⠈⢣⡀⠀⠀⠀
+⠀⠀⡴⠃⠀⠀⠀⠀⡼⠁⠀⠀⠀⠀⠀⠀⠀⣰⡇⡸⣿⣿⣿⣿⣿⡻⣆⠀⠀⠀⠀⠀⠀⠀⡰⢿⣿⣿⣿⣿⣿⣧⠈⣇⠀⠸⠋⠙⢿⣿⣦⡀⢳⠀⠀⠀⠀⠙⣄⠀⠀
+⠀⠼⠁⠀⠀⠀⠀⡼⠁⠀⠀⠀⠀⠀⠀⠀⢰⢻⢧⢣⣿⣿⣿⣿⣿⣿⣮⣀⠈⠉⠒⠺⠗⣨⣶⣿⣿⣿⣿⣿⣿⣿⠀⠞⡆⠀⠀⠀⠈⣿⣿⡷⡀⢣⠀⠀⠀⠀⠘⣆⠀
+⠀⠀⠀⠀⠀⢀⡴⠓⠦⣄⡀⠀⠀⠀⠀⣠⣏⣸⡏⣼⣿⣿⣿⣿⣿⣿⣿⣿⣙⣲⣤⣖⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⡦⣥⣹⠀⠀⠀⢀⣿⣿⡧⠷⠚⢦⡀⠀⠀⠀⠈⣆
+⠲⠤⣀⠀⠀⠉⠀⠀⠀⠀⠈⠉⠒⠒⢦⠿⣧⠀⠉⠉⠙⢿⠻⣿⣿⣿⠿⣏⡛⠯⠭⠽⢛⡝⢿⣿⣿⣿⣿⡿⠉⠀⢰⣿⡿⠤⠔⠒⠚⠉⠁⠀⠀⠀⠀⠙⠀⠀⣀⡤⠞
+⠀⠀⠈⠑⠢⢄⣀⠀⠀⠀⠀⠀⠀⠀⠘⣆⣼⡆⢀⣀⣠⣼⣶⣿⣿⣿⡦⣵⣍⡓⠒⣚⣭⣮⡾⣽⣿⣿⣿⣃⣠⣤⠾⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⠴⠚⠉⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠈⠙⠒⠤⣀⡀⠀⠀⠀⠹⣿⠛⠉⠉⠉⢹⣹⠺⡏⣿⣷⣷⣯⣿⣿⣫⣿⡯⣲⣿⣿⣿⠏⠉⠀⠀⠀⣟⡟⠀⠀⠀⠀⢀⣠⠴⡞⣩⠄⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠑⠲⣤⣸⣿⡆⠀⠀⢀⣼⡟⢓⡿⢼⣿⣳⡙⠿⡿⠟⣡⠞⣹⣿⣿⡟⠻⣄⠤⠤⣤⣿⣄⣠⠤⣶⣾⣿⣿⣾⣞⣋⡴⠃⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⡏⠀⠀⠤⠶⠿⣧⠼⠇⠀⣿⣇⠻⣶⠬⠘⢁⣞⣿⣿⡿⣶⡞⠁⠀⠀⠀⣼⣿⡌⢣⡹⣿⣿⣿⣭⡭⢟⡁⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⡿⣽⣿⣿⡀⢀⣠⡤⠄⢹⡀⢀⡄⣿⣿⠛⠒⣖⠋⢿⣼⣿⣿⠃⠺⣷⣄⠀⠀⠚⠿⣿⣿⡄⠳⣄⢻⠉⠉⠛⠋⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⡟⣱⣿⣿⣿⡿⠛⠉⠀⣀⢹⢷⣾⣾⣿⣿⠸⡟⠉⣻⠎⣿⣿⣿⠀⠀⠀⠙⢧⣄⢀⣼⣿⡏⢿⡄⠹⣮⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⠋⢠⣿⣿⣿⣿⣷⣀⡤⠞⢁⣈⣷⣿⣿⣿⣿⠀⢳⠟⡟⢠⣿⣿⣿⣆⠀⠀⠀⠈⢻⣿⣿⣿⣿⠘⣷⠀⠹⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⢠⡞⢹⠀⣾⢻⣿⣿⣿⣿⣿⠀⢠⣝⣻⣿⣿⣿⣿⡏⠀⠈⣾⡄⢸⣿⣿⣿⣿⣿⣶⠶⣾⣿⣿⣿⣿⣽⠀⢹⡇⠀⢸⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢠⠏⠀⢸⣸⡏⢸⣿⣿⣿⣿⣿⣿⣾⣭⠿⠿⠟⣻⡿⠀⠀⠀⣷⣧⠈⣿⡻⢿⢿⢿⣿⠟⣿⣿⣿⣿⣿⢸⡄⠈⣷⠀⣸⠙⣧⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢠⡟⠀⠀⣼⣿⠁⡿⣏⣿⣿⣿⣿⣿⣿⣷⣤⣤⣌⣡⣇⣀⠀⠀⣿⣿⣀⣈⣳⣼⣟⣋⡿⢰⣿⣿⣿⣿⡟⢸⠁⠀⣿⢠⡏⠀⢹⡆⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠸⡇⠀⢰⠁⣿⡀⢻⠹⣿⣿⡜⣿⣿⣿⣧⢻⡳⡶⣴⠥⢿⡿⠿⣿⣿⣿⣧⠼⣿⠉⣽⡀⣿⣿⣿⡟⣼⠁⣾⠀⠀⣿⠏⠀⠀⢘⡇⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠻⡀⠈⠀⢹⠻⢾⡀⠈⠻⣷⡈⢿⣿⡏⠀⠳⣟⡙⣇⠸⣷⠀⢸⣿⠏⠀⣠⡏⢰⣿⠀⣹⣿⠟⣴⠃⣰⠇⠀⢠⡿⠀⠀⠀⠘⠃⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠇⠀⠀⠈⠛⠂⠈⠓⢦⣶⣽⣷⣜⣀⣛⣇⣼⣿⣀⣼⣯⣴⣿⣿⡿⠟⣡⠞⠁⠴⠋⠀⠀⠞⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡾⠀⠸⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢟⠟⠀⢷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠔⠃⠀⠀⠙⢦⡉⠉⠙⠛⠛⠛⠛⠛⠉⠉⢀⡴⠋⠀⣴⠀⠓⢤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠴⠋⠀⠀⣀⣤⡀⠈⠀⠙⠷⣄⡀⠀⠀⠀⣀⣤⡶⠋⠀⠀⠀⡏⠦⣀⠀⠈⠳⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠊⠁⠀⠀⢀⣾⠿⠋⠀⢀⢖⡴⠀⠈⠁⠀⣴⣋⠽⠋⠠⣄⡠⡀⠰⠁⠀⠈⠳⣦⡀⠀⠙⠤⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡠⠞⠁⠀⠀⣰⣷⠋⠀⠀⠀⠀⠀⠉⠁⠀⠀⠀⠈⠻⣾⣦⠀⠀⠐⠒⠤⣽⣦⣀⠀⠀⠀⠉⠉⠒⠤⣀⠀⠀⠀⠀⠀⠀
+-->
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap" media="print" onload="this.media='all'" />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap" />
+    </noscript>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-dark.min.css">
+    {% assets 'SASS' %}
+    <link rel="stylesheet" href="$ASSET_URL?$TIME" />{% endassets %}
+    {{ "<style>" }}{% include "style.jinja.css" %}{{ "</style>" }}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/mustache@4.2.0/mustache.js"></script>
+    {# <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> #}
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/markdown.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jsonurl/jsonurl@1.1.7" crossorigin="anonymous"></script>
+    {# <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> #}
+
+    <title>
+      {% block title %}{% endblock title %} - {{ SITE_NAME }}
+    </title>
+
+    {% block styles %}{% endblock styles %}
+
+  </head>
+
+  <body class="font-['Victor_Mono'] bg-slate-50 dark:bg-slate-900 h-full fixed w-full" onload="$('html').addClass(localStorage.getItem('__THEME'))">
+
+    {% include "blocks/notification.jinja" %}
+
+    <noscript>
+      <div class="absolute z-[100] flex items-center justify-center w-full h-full bg-gradient-to-r from-rose-600 to-red-600">
+        <div class="p-2 m-4 text-lg font-bold text-slate-50 md:text-base">
+          <span>We're sorry but <span class="text-2xl italic md:text-xl">{{ SITE_NAME }}</span> requires <a href="https://support.google.com/adsense/answer/12654" target="_blank" class="underline text-slate-100">JavaScript</a> to work.</span>
+        </div>
+      </div>
+    </noscript>
+
+    <template id="[_]-status.progress.null_progress">
+      <span class="mt-1 text-slate-500 dark:text-slate-400">{% icon "arrow-path", class="w-6 h-6 animate-spin"%}</span>
+    </template>
+
+    <template id="[_]-status.progress.progress_bar">
+      <div class="flex w-full h-2 mt-1 rounded-full bg-slate-300/80 dark:bg-slate-950/60">
+        <div class="h-full w-[var(--progress-percentage)] rounded-full bg-green-500/70 transition-all duration-500" id="[_]-status.progress.bar" style="--progress-percentage: 0%;"></div>
+      </div>
+    </template>
+
+
+    <section class="max-w-md p-4 mx-auto bg-white border border-gray-200 dark:bg-gray-800 left-16 bottom-6 dark:border-gray-700 rounded-2xl z-[80] shadow-md hidden md:!mr-4 h-min md:left-4" id="[_]-cookies-notice">
+      <h2 class="flex font-semibold text-gray-800 dark:text-white"><span>{% icon "images/cookie.svg", class="w-6 h-6" %}</span> <span class="ml-2">We use cookies</span></h2>
+      <p class="mt-4 text-sm text-gray-600 dark:text-gray-300">Please, accept these sweeties to continue enjoying {{ SITE_NAME }}!</p>
+      <div class="flex items-center justify-between mt-4 gap-x-4 shrink-0">
+        <button class="text-xs text-gray-800 underline transition-colors duration-300 dark:text-white dark:hover:text-gray-400 hover:text-gray-600 focus:outline-none" onclick="CookiePopup('no')">
+          Nope.. I am on a diet
+        </button>
+        <button class=" text-xs bg-gray-900 font-medium rounded-lg hover:bg-gray-700 text-white px-4 py-2.5 duration-300 transition-colors focus:outline-none" onclick="CookiePopup('yes')">
+          Mmm... Sweet!
+        </button>
+      </div>
+    </section>
+
+    <div class="absolute bottom-0 right-0 z-[90] flex flex-col items-center mr-10 w-[27%] group/1 hidden" id="[_]-search">
+      <template id="[_]-search@template.lock_open">{% icon "lock-open", class="w-5 h-5" %}</template>
+      <template id="[_]-search@template.lock_close">{% icon "lock-closed", class="w-5 h-5" %}</template>
+      <div class="flex items-center justify-center mb-1.5">
+        <button class="flex items-center justify-center p-2 transition bg-white rounded-full opacity-0 cursor-pointer text-slate-400 dark:text-slate-500 dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 group-hover/1:opacity-100 active:scale-95" id="[_]-search.lock">{% icon "lock-open", class="w-5 h-5" %}</button>
+      </div>
+      <div class="flex mb-1.5 w-full text-slate-500 dark:text-slate-400 items-center justify-center px-[10%]">
+        <span class="w-full m-1 px-1 py-2.5 flex items-center justify-center cursor-pointer bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition rounded-md border-2 border-slate-300 dark:border-slate-800 dark:hover:border-slate-700 group/2 data-[search-filter-active='true']:brightness-90 dark:data-[search-filter-active='true']:brightness-[.8] data-[search-filter-active='true']:border-dashed" data-search-filter-class="NOT_WATCHED" data-search-filter-active="false">{% icon "archive-box-x-mark", class="w-6 h-6 transition group-hover/2:scale-110" %}</span>
+        <span class="w-full m-1 px-1 py-2.5 flex items-center justify-center cursor-pointer bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition rounded-md border-2 border-slate-300 dark:border-slate-800 dark:hover:border-slate-700 group/2 data-[search-filter-active='true']:brightness-90 dark:data-[search-filter-active='true']:brightness-[.8] data-[search-filter-active='true']:border-dashed" data-search-filter-class="COMPLETED" data-search-filter-active="false">{% icon "archive-box", class="w-6 h-6 transition group-hover/2:scale-110" %}</span>
+        <span class="w-full m-1 px-1 py-2.5 flex items-center justify-center cursor-pointer bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition rounded-md border-2 border-slate-300 dark:border-slate-800 dark:hover:border-slate-700 group/2 data-[search-filter-active='true']:brightness-90 dark:data-[search-filter-active='true']:brightness-[.8] data-[search-filter-active='true']:border-dashed" data-search-filter-class="NOT_COMPLETED" data-search-filter-active="false">{% icon "archive-box-arrow-down", class="w-6 h-6 transition group-hover/2:scale-110" %}</span>
+      </div>
+      <div class="flex items-center justify-center w-full px-3 mb-8 transition bg-white border-2 rounded-full text-slate-500 dark:text-slate-400 dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 border-slate-300 dark:border-slate-800 dark:hover:border-slate-700" id="[_]-search.search">
+        <span class="mr-1 text-slate-400 dark:text-slate-500">{% icon "magnifying-glass", class="w-6 h-6" %}</span>
+        <input class="w-full h-full py-2 m-1 transition bg-transparent outline-none appearance-none" type="text" autocomplete="off" id="[_]-search.content" />
+        <span class="ml-1 text-sm text-slate-400 dark:text-slate-500" id="[_]-search.fraction"></span>
+      </div>
+    </div>
+
+    <div class="absolute bottom-0 left-0 z-[90] flex items-center justify-center hidden p-3 mb-5 transition rounded-full shadow-md cursor-pointer ml-14 bg-gradient-to-r from-sky-600/90 to-blue-600/90 hover:scale-105" id="[_]-refresh" onclick="$.refresh();">
+      <span>{% icon 'arrow-path', class="w-6 h-6 stroke-slate-50" %}</span>
+      <span class="ml-1 italic font-bold text-slate-50">Refresh Required</span>
+      <span class="p-px ml-2 transition-colors border-2 rounded-full bg-rose-500/80 border-rose-500/90 hover:bg-rose-500" onclick="event.stopPropagation();$.refresh('hide')">{% icon 'x-mark', class="w-6 h-6 stroke-slate-50" %}</span>
+    </div>
+
+    <div class="absolute bottom-0 left-0 h-full w-full bg-black/40 z-[70] backdrop-blur-sm hidden" id="[modal]">
+      <template id="[modal]@template.loading-animate">
+        <div class="flex flex-col items-center justify-center w-full h-full animate-pulse">
+          <span class="mb-2 text-slate-400 dark:text-slate-500">{% icon "arrow-path", class="w-6 h-6 animate-spin" %}</span>
+          <span class="w-2/3 text-sm italic text-center text-slate-400 dark:text-slate-500" style-wordbreak="true"><% title %>...</span>
+        </div>
+      </template>
+      <div class="flex flex-col w-full h-full justify-center items-center cursor-pointer z-[77]" onclick="if ($(event.target).closest('#' + $.escapeSelector('[modal]@container')).length === 0) {HideModal()}">
+        <div class="flex flex-col w-[65%] h-[85%] md:w-[80%] md:h-[90%] bg-white dark:bg-slate-900 cursor-default rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-[79]" id="[modal]@container">
+          <span class="absolute flex self-end -m-4 rounded-full bg-rose-500 dark:bg-rose-600 p-2 cursor-pointer hover:scale-105 transition hover:bg-rose-600 dark:hover:bg-rose-500 shadow-sm z-[79]" onclick="HideModal()">{% icon "x-mark", class="w-6 h-6 stroke-slate-50 dark:stroke-slate-800" %}</span>
+          <div class="w-full h-full md:overflow-hidden z-[78]" id="[modal]-content"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="absolute bottom-0 left-0 h-full w-full bg-black/40 z-[70] backdrop-blur-sm hidden" id="[customize]">
+      <div class="flex flex-col w-full h-full justify-center items-center cursor-pointer z-[77]" onclick="if ($(event.target).closest('#' + $.escapeSelector('[customize]@container')).length === 0) {closeCustomizeWindow()}">
+        <div class="flex flex-col w-[65%] h-[85%] md:w-[80%] md:h-[90%] bg-white dark:bg-slate-900 cursor-default rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-[79]" id="[customize]@container">
+          <span class="absolute flex self-end -m-4 rounded-full bg-rose-500 dark:bg-rose-600 p-2 cursor-pointer hover:scale-105 transition hover:bg-rose-600 dark:hover:bg-rose-500 shadow-sm z-[79]" onclick="closeCustomizeWindow()">{% icon "x-mark", class="w-6 h-6 stroke-slate-50 dark:stroke-slate-800" %}</span>
+          <div class="w-full h-full md:overflow-hidden z-[78]" id="[customize]-content"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="[container]" class="flex w-full h-full m-0 overflow-hidden transition-colors bg-slate-50 dark:bg-slate-900 z-[60]">
+      {% block content %}{% endblock content %}
+    </div>
+
+    {% assets 'JS' %}
+    <script src="$ASSET_URL?$TIME"></script>{% endassets %}
+    {{"<script>"}}{% include "script.jinja.js" %}{{"</script>"}}
+    {% block scripts %}{% endblock scripts %}
+
+  </body>
+
+</html>

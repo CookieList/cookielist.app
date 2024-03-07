@@ -1,0 +1,59 @@
+query ($userId: Int) {
+  User: User(id: $userId) {
+    id
+    name
+    siteUrl
+    about
+    avatar {
+      large
+    }
+    options {
+      profileColor
+    }
+    statistics {
+      anime {
+        count
+        minutesWatched
+        episodesWatched
+      }
+      manga {
+        count
+        chaptersRead
+      }
+    }
+  }
+  _anime_planning_chunk_1: MediaListCollection(userId: $userId, type: ANIME, status: PLANNING, forceSingleCompletedList: true, perChunk: 500, chunk: 1) {
+    ...collection
+  }
+  _anime_planning_chunk_2: MediaListCollection(userId: $userId, type: ANIME, status: PLANNING, forceSingleCompletedList: true, perChunk: 500, chunk: 2) {
+    ...collection
+  }
+  _anime_planning_chunk_3: MediaListCollection(userId: $userId, type: ANIME, status: PLANNING, forceSingleCompletedList: true, perChunk: 500, chunk: 3) {
+    ...collection
+  }
+  _anime_planning_chunk_4: MediaListCollection(userId: $userId, type: ANIME, status: PLANNING, forceSingleCompletedList: true, perChunk: 500, chunk: 4) {
+    ...collection
+  }
+  _anime_planning_chunk_5: MediaListCollection(userId: $userId, type: ANIME, status: PLANNING, forceSingleCompletedList: true, perChunk: 500, chunk: 5) {
+    ...collection
+  }
+  _manga_planning_chunk_1: MediaListCollection(userId: $userId, type: MANGA, status: PLANNING, forceSingleCompletedList: true, perChunk: 500, chunk: 1) {
+    ...collection
+  }
+  _manga_planning_chunk_2: MediaListCollection(userId: $userId, type: MANGA, status: PLANNING, forceSingleCompletedList: true, perChunk: 500, chunk: 2) {
+    ...collection
+  }
+  _manga_planning_chunk_3: MediaListCollection(userId: $userId, type: MANGA, status: PLANNING, forceSingleCompletedList: true, perChunk: 500, chunk: 3) {
+    ...collection
+  }
+}
+
+fragment collection on MediaListCollection {
+  hasNextChunk
+  lists {
+    isCustomList
+    entries {
+      id
+    }
+  }
+}

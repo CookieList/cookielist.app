@@ -1,0 +1,78 @@
+<template id="[container]-queue">
+  <div class="w-full p-2 animate__animated animate__fadeIn" style="--animate-duration: 0.3s;">
+
+    {% set current_users_list = (userInfo.userId | string == session.id) or (session.id is not defined) %}
+
+    {% for queueSectionTitle, queueSection in userQueue.items() %}
+    {% if queueSection.queueSectionMediaCollection %}
+    <div class="m-2 mb-4">
+      <span class="text-xl font-bold dark:text-slate-400 text-slate-500">{{ queueSectionTitle }}</span>
+      {% if queueSection.dueProgressCount %}
+      <span data-category="{{ queueSectionTitle }}-lag">
+        <span class="italic dark:text-yellow-400/40 text-yellow-500/70"><span class="font-bold" data-category="{{ queueSectionTitle }}-duration" data-value="{{ queueSection.dueProgressDurationInMinutes }}">{{ queueSection.dueProgressDurationFormatted }}</span> behind</span>
+        <span class="italic dark:text-yellow-400/40 text-yellow-500/70">(<span class="font-bold" data-category="{{ queueSectionTitle }}-count" data-value="{{ queueSection.dueProgressCount }}">{{ queueSection.dueProgressCount }}</span> Episodes)</span>
+      </span>
+      {% endif %}
+    </div>
+
+    <div class="grid w-full grid-cols-8 gap-4 3xl:grid-cols-7 2xl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3">
+      {% for queueSectionMedia in queueSection.queueSectionMediaCollection %}
+      {% set is_active = ((queueSectionMedia.nextAiringEpisode == 0) or (queueSectionMedia.media.userMediaProgress + 1 < queueSectionMedia.nextAiringEpisode)) %}
+      <div class="relative flex group hover:shadow-lg rounded-md aspect-[2/3] transition{{ 'outline outline-[3px] outline-rose-500 hover:outline-rose-600' if is_active }}" id="[container]-queue.group@{{ queueSectionMedia.media.mediaId }}" data-target-category="{{ queueSectionTitle }}">
+
+        <div class="w-full overflow-hidden cursor-pointer" onclick="ShowModal('{{ queueSectionMedia.media.mediaId }}', `{{ queueSectionMedia.media.mediaTitle }}`)"><img class="object-cover w-full h-full rounded-md" src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/default.jpg" data-src="{{ queueSectionMedia.media.coverImage }}" lazyload></div>
+
+        <div class="absolute bottom-0 left-0 z-30 flex flex-col items-center w-full h-full p-1 pt-4 transition-opacity rounded-md opacity-0 cursor-pointer group-hover:opacity-100 backdrop-blur-sm bg-slate-950/70 md:hidden" onclick="ShowModal('{{ queueSectionMedia.media.mediaId }}', `{{ queueSectionMedia.media.mediaTitle }}`)">
+          <div class="text-sm font-bold leading-none leading-4 tracking-tight text-center text-slate-50 lg:text-xs xl:text-xs">{{ queueSectionMedia.media.mediaTitle }}</div>
+          <div class="absolute bottom-0 flex flex-col items-center p-1 mb-px">
+            <div class="flex">
+              <button class="p-px px-1 mr-1 transition rounded-md bg-slate-950/80 hover:scale-105" onclick="event.stopPropagation();$.popup('{{ queueSectionMedia.media.mediaAniListSiteUrl }}')">{% icon 'images/anilist.svg', class="w-5 h-5" %}</button>
+              {% if queueSectionMedia.media.mediaMyAnimeListSiteUrl is not none %}
+              <button class="p-px px-1 transition  rounded-md bg-[#2e51a2] hover:scale-105" onclick="event.stopPropagation();$.popup('{{ queueSectionMedia.media.mediaMyAnimeListSiteUrl }}')">{% icon 'images/myanimelist.svg', class="w-5 h-5" %}</button>
+              {% endif %}
+            </div>
+            <span class="p-px px-1 mt-1 text-xs italic rounded-md text-slate-300 bg-slate-950/80"><span class="text-green-500" id="[container]-queue.group@{{ queueSectionMedia.media.mediaId }}.progress_text">{{ queueSectionMedia.media.userMediaProgress }}</span>{% if queueSectionMedia.media.mediaEpisodeCount is not none %}/<span class="text-yellow-500">{{ queueSectionMedia.media.mediaEpisodeCount }}</span>{% endif %}</span>
+          </div>
+        </div>
+
+        <div class="absolute left-0 z-40 w-full h-8 p-1 -top-3">
+          <div class="flex flex-col items-center w-full h-full">
+            {% if current_users_list %}
+            <div class="flex justify-center items-center px-1.5 py-0.5 text-xs font-bold rounded-full text-slate-50 bg-rose-500 min-w-[70%] group-hover:bg-rose-600 cursor-pointer hover:scale-105 hover:!bg-rose-700 transition  {{ 'hidden' if not is_active }}" data-progress="{{ queueSectionMedia.media.userMediaProgress }}" data-max-progress="{{ queueSectionMedia.maxPossibleMediaProgress }}" data-media-id="{{ queueSectionMedia.media.mediaId }}" onclick="QueueUpdate('{{ queueSectionMedia.media.mediaId }}')" id="[container]-queue.group@{{ queueSectionMedia.media.mediaId }}.active">
+              <span id="[container]-queue.group@{{ queueSectionMedia.media.mediaId }}.active.progress_text">{{ queueSectionMedia.media.userMediaProgress + 1 }}</span>
+              <span class="mr-px">?</span>
+              <span class="ml-px">{% icon 'check', class="w-4 h-4 stroke-slate-50" %}</span>
+            </div>
+            {% else %}
+            <div class="flex justify-center items-center px-1.5 py-0.5 text-xs font-bold rounded-full text-slate-50 bg-rose-500 min-w-[70%] group-hover:bg-rose-600 hover:!bg-rose-700 transition  {{ 'hidden' if not is_active }}" data-progress="{{ queueSectionMedia.media.userMediaProgress }}" data-max-progress="{{ queueSectionMedia.maxPossibleMediaProgress }}" data-media-id="{{ queueSectionMedia.media.mediaId }}" id="[container]-queue.group@{{ queueSectionMedia.media.mediaId }}.active">
+              <span id="[container]-queue.group@{{ queueSectionMedia.media.mediaId }}.active.progress_text">{{ queueSectionMedia.media.userMediaProgress + 1 }}</span>
+            </div>
+            {% endif %}
+            <div class="flex justify-center px-1.5 py-0.5 text-xs font-bold rounded-full text-slate-600 bg-slate-200 dark:bg-slate-800 min-w-[75%] dark:text-slate-50 transition-colors  dark:group-hover:bg-slate-700 group-hover:bg-slate-100 {{ 'hidden' if is_active }}" id="[container]-queue.group@{{ queueSectionMedia.media.mediaId }}.inactive">
+              <span class="mr-px" id="[container]-queue.group@{{ queueSectionMedia.media.mediaId }}.inactive.progress_text">{{ queueSectionMedia.media.userMediaProgress }}</span>
+            </div>
+            <div class="hidden justify-center items-center px-1.5 py-0.5 text-xs font-bold rounded-full text-slate-50 bg-rose-500 min-w-[70%] group-hover:bg-rose-600 cursor-pointer hover:scale-105 hover:!bg-rose-700 transition " id="[container]-queue.group@{{ queueSectionMedia.media.mediaId }}.spinner">
+              <span>{% icon 'arrow-path', class="w-4 h-4 stroke-slate-50 animate-spin" %}</span>
+            </div>
+
+          </div>
+        </div>
+
+        {% if queueSectionMedia.nextAiringEpisode and queueSectionMedia.timeUntilAiring is not none %}
+        <div class="absolute bottom-0 left-0 w-full p-1 transition-opacity bg-slate-950/70 rounded-b-md lg:group-hover:opacity-0 xl:group-hover:opacity-0 2xl:group-hover:opacity-0 3xl:group-hover:opacity-0 xl:backdrop-blur-sm 2xl:backdrop-blur-sm 3xl:backdrop-blur-sm" onclick="ShowModal('{{ queueSectionMedia.media.mediaId }}', `{{ queueSectionMedia.media.mediaTitle }}`)">
+          <div class="flex flex-col items-center">
+            <span class="text-xs font-bold text-slate-50">Ep {{ queueSectionMedia.nextAiringEpisode }}</span>
+            <span class="text-xs text-slate-50">{{ queueSectionMedia.timeUntilAiring }}</span>
+          </div>
+        </div>
+        {% endif %}
+
+      </div>
+      {% endfor %}
+    </div>
+    <br class="my-2">
+    {% endif %}
+    {% endfor %}
+  </div>
+  <script>HandleQueueViewChange()</script>
+</template>

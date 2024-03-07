@@ -1,0 +1,63 @@
+query ($search: String) {
+  Users: Page(page: 1, perPage: 8) {
+    users(search: $search, sort: [SEARCH_MATCH]) {
+      id
+      name
+      avatar {
+        large
+        medium
+      }
+      isFollowing
+      isFollower
+      isBlocked
+    }
+  }
+  Anime: Page(page: 1, perPage: 8) {
+    media(search: $search, sort: [SEARCH_MATCH], type: ANIME) {
+      id
+      format
+      isFavourite
+      isAdult
+      status
+      startDate {
+        year
+      }
+      mediaListEntry {
+        status
+      }
+      title {
+        english
+        romaji
+        native
+      }
+      coverImage {
+        large
+        medium
+      }
+    }
+  }
+  Manga: Page(page: 1, perPage: 8) {
+    media(search: $search, sort: [SEARCH_MATCH], type: MANGA) {
+      id
+      format
+      isFavourite
+      isAdult
+      status
+      startDate {
+        year
+      }
+      mediaListEntry {
+        status
+      }
+      title {
+        english
+        romaji
+        native
+      }
+      coverImage {
+        large
+        medium
+      }
+    }
+  }
+}

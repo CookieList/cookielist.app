@@ -1,0 +1,29 @@
+{% if _.dynamic_card_colors_enabled == 'true' and not _.anilist_profile_theme_color.startswith('#') %}
+:root {
+    --card-bg: {{ 'var(--color-' + _.anilist_profile_theme_color + '-100)' }};
+    --title-bg: {{ 'var(--color-' + _.anilist_profile_theme_color + '-400)' }};
+    --media-icon-bg: {{ 'var(--color-' + _.anilist_profile_theme_color + '-500)' }};
+    --data-bg: {{ 'var(--color-' + _.anilist_profile_theme_color + '-200)' }};
+    --data-text-bg: {{ 'var(--color-' + _.anilist_profile_theme_color + '-600)' }};
+    --sakura-petal-bg: {{ 'var(--color-' + _.anilist_profile_theme_color + '-200)' }};
+    --sakura-inner-bg: {{ 'var(--color-' + _.anilist_profile_theme_color + '-400)' }};
+    --sakura-border-bg: {{ 'var(--color-' + _.anilist_profile_theme_color + '-600)' }};
+}
+{% else %}
+:root {
+    --card-bg: {{ _.card_bg }};
+    --title-bg: {{ _.title_bg }};
+    --media-icon-bg: {{ _.media_icon_bg }};
+    --data-bg: {{ _.data_bg }};
+    --data-text-bg: {{ _.data_text_bg }};
+    --sakura-petal-bg: {{ _.sakura_petal_bg }};
+    --sakura-inner-bg: {{ _.sakura_inner_bg }};
+    --sakura-border-bg: {{ _.sakura_border_bg }};
+}
+{% endif %}
+
+:root {
+    --circle-opacity: {{ _.circle_opacity }};
+    --circle-spin-speed: {{ _.circle_spin_speed }};
+    --sakura-spin-speed: {{ _.sakura_spin_speed }};
+}

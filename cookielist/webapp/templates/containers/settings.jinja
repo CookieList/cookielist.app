@@ -1,0 +1,135 @@
+<template id="[container]-settings@template.logged_in_user">
+  <span class="p-1 m-1 text-slate-500 dark:text-slate-400">Logged in as <a href="https://anilist.co/user/<% id %>" target="_blank" class="italic dark:text-syk-600 text-sky-500">@<% name %></a></span>
+</template>
+
+<template id="[container]-settings">
+  <div class="flex flex-col w-full animate__animated animate__fadeIn" style="--animate-duration: 0.3s;">
+
+    <div class="flex flex-col w-full p-2 my-2 transition-colors border-2 border-dashed rounded bg-slate-50 dark:bg-slate-800 dark:border-slate-700" id="[container]-settings.login_container">
+      <span class="p-1 m-1 text-slate-500 dark:text-slate-400">Authenticate Using AniList for Access to Private Accounts And Using AniList List Update Features Through {{ SITE_NAME }}.</span>
+      <span id="[container]-settings.login_container.login_button" class="p-2.5 m-1 flex cursor-pointer border-2 rounded bg-gray-100 hover:bg-gray-200 justify-center text-slate-500 hover:border-gray-300 dark:bg-slate-700 hover:dark:bg-slate-600 dark:border-slate-500 hover:dark:border-slate-500 transition">{% icon "images/anilist-bw.svg", class="w-10 h-10 fill-slate-600 dark:fill-slate-400" %}</span>
+      <span id="[container]-settings.login_container.logged_in_as"></span>
+    </div>
+
+    <div class="flex flex-col w-full p-2 my-2 transition-colors border-2 border-dashed rounded bg-slate-50 dark:bg-slate-800 dark:border-slate-700">
+      <span class="p-1 m-2 text-slate-500 dark:text-slate-400">Site Theme <span class="text-slate-400 dark:text-slate-600">[Current Theme: "<span class="before:content-['Light'] dark:before:content-['Dark']"></span>"]</span></span>
+      <div class="flex flex-row">
+        <button class="flex flex-row items-center justify-center p-2 m-2 transition rounded-lg shadow-sm grow bg-slate-300 text-slate-600 hover:bg-slate-200" onclick="SetTheme('light')">
+          <span>{% icon 'sun', class="w-6 h-6 stroke-slate-600" %}</span>
+          <span class="mx-1">Light</span>
+        </button>
+        <button class="flex flex-row items-center justify-center p-2 m-2 mx-0 transition border-2 rounded-lg shadow-sm grow-0 dark:bg-slate-900 hover:dark:bg-slate-800 bg-slate-50 hover:bg-slate-100 dark:border-slate-700 hover:dark:border-slate-600" onclick="SetTheme('toggle')">
+          <span>{% icon 'arrows-right-left', class="w-6 h-6 stroke-slate-800 dark:stroke-slate-400" %}</span>
+        </button>
+        <button class="flex flex-row items-center justify-center p-2 m-2 transition rounded-lg shadow-sm grow bg-slate-700 text-slate-300 hover:bg-slate-600" onclick="SetTheme('dark')">
+          <span>{% icon 'moon', class="w-6 h-6 stroke-slate-300" %}</span>
+          <span class="mx-1">Dark</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="flex flex-col w-full p-2 my-2 transition-colors border-2 border-dashed rounded bg-slate-50 dark:bg-slate-800 dark:border-slate-700">
+      <span class="p-1 m-1 transition-colors text-slate-500 dark:text-slate-400">Interface</span>
+      <div>
+        <span class="p-1 m-1 text-sm transition-colors text-slate-400 dark:text-slate-500">Media Title's Language</span>
+        <select id="[container]-settings.media_language_dropdown" class="bg-white bg-no-repeat dark:[&_option]:text-slate-400 [&_option]:text-slate-600 transition-colors border border-slate-300 text-slate-600 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-600 dark:text-slate-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer m-1 appearance-none outline-none bg-[right_10px_center] bg-[length:auto_50%] [&::-ms-expand]:hidden">
+          <option value="english">English</option>
+          <option value="romaji">Romaji</option>
+          <option value="native">Native</option>
+        </select>
+      </div>
+      <div>
+        <span class="p-1 m-1 text-sm transition-colors text-slate-400 dark:text-slate-500">External Links</span>
+        <select id="[container]-settings.external_link_dropdown" class="bg-white bg-no-repeat dark:[&_option]:text-slate-400 [&_option]:text-slate-600 transition-colors border border-slate-300 text-slate-600 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-600 dark:text-slate-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer m-1 appearance-none outline-none bg-[right_10px_center] bg-[length:auto_50%] [&::-ms-expand]:hidden">
+          <option value="popup">Popup Window</option>
+          <option value="blank">New Tab</option>
+          <option value="parent">Current Tab</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="flex flex-col w-full p-2 my-2 transition-colors border-2 border-dashed rounded bg-slate-50 dark:bg-slate-800 dark:border-slate-700">
+      <span class="p-1 m-1 transition-colors text-slate-500 dark:text-slate-400">Schedule Options</span>
+      <div>
+        <span class="p-1 m-1 text-sm transition-colors text-slate-400 dark:text-slate-500">Timezone</span>
+        <select id="[container]-settings.timezone_dropdown" class="bg-white bg-no-repeat dark:[&_option]:text-slate-400 [&_option]:text-slate-600 transition-colors border border-slate-300 text-slate-600 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-600 dark:text-slate-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer m-1 appearance-none outline-none bg-[right_10px_center] bg-[length:auto_50%] [&::-ms-expand]:hidden">
+          {% for timezone in TZINFO %}
+          <option>{{timezone}}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div>
+        <span class="p-1 m-1 text-sm transition-colors text-slate-400 dark:text-slate-500">Time Format</span>
+        <select id="[container]-settings.time_format_dropdown" class="bg-white bg-no-repeat dark:[&_option]:text-slate-400 [&_option]:text-slate-600 transition-colors border border-slate-300 text-slate-600 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-600 dark:text-slate-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer m-1 appearance-none outline-none bg-[right_10px_center] bg-[length:auto_50%] [&::-ms-expand]:hidden">
+          <option value="hh:mm A">05:30 PM</option>
+          <option value="HH:mm">17:30</option>
+          <option value="h[H] mm[M]">5H 30M</option>
+          <option value="h[h] mm[m]">5h 30m</option>
+          <option value="HH:mm ZZ (ZZZ)">17:30 +07:00 (GMT)</option>
+          <option value="X ZZ">1381685817 +07:00</option>
+        </select>
+      </div>
+
+      <div>
+        <span class="p-1 m-1 text-sm transition-colors text-slate-400 dark:text-slate-500">Date Format</span>
+        <select id="[container]-settings.date_format_dropdown" class="bg-white bg-no-repeat dark:[&_option]:text-slate-400 [&_option]:text-slate-600 transition-colors border border-slate-300 text-slate-600 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-600 dark:text-slate-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer m-1 appearance-none outline-none bg-[right_10px_center] bg-[length:auto_50%] [&::-ms-expand]:hidden">
+          <option value="Do MMMM YYYY">7th April 2023</option>
+          <option value="MMMM D, YYYY">April 7, 2023</option>
+          <option value="MMM D, YYYY">Apr 7, 2023</option>
+          <option value="Do MMM YY">7th Apr 23</option>
+          <option value="D MMM, YYYY">7 April, 2023</option>
+          <option value="MMM D, YYYY">Apr 7, 2023</option>
+          <option value="YYYY, MMMM DD">2023, April 07</option>
+          <option value="DD MMMM YY">07 April 23</option>
+          <option value="DD MMMM YYYY">07 April 2023</option>
+          <option value="DD/MM/YYYY">07/04/2023</option>
+          <option value="D/MM/YYYY">7/04/2023</option>
+          <option value="DD.MM.YYYY">07.04.2023</option>
+          <option value="YYYY-MM-DD">2023-04-07</option>
+          <option value="YYYY/MM/DD">2023/04/07</option>
+          <option value="YYYY-M-D">2023-4-7</option>
+          <option value="MM-DD-YYYY">04-07-2023</option>
+          <option value="M/D/YYYY">4/7/2023</option>
+        </select>
+      </div>
+
+      <div>
+        <span class="p-1 m-1 text-sm transition-colors text-slate-400 dark:text-slate-500">First Day Of Schedule</span>
+        <select id="[container]-settings.start_weekday_dropdown" class="bg-white bg-no-repeat dark:[&_option]:text-slate-400 [&_option]:text-slate-600 transition-colors border border-slate-300 text-slate-600 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-600 dark:text-slate-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer m-1 appearance-none outline-none bg-[right_10px_center] bg-[length:auto_50%] [&::-ms-expand]:hidden">
+          <option>Monday</option>
+          <option>Tuesday</option>
+          <option>Wednesday</option>
+          <option>Thursday</option>
+          <option>Friday</option>
+          <option>Saturday</option>
+          <option>Sunday</option>
+          <option>Today</option>
+          <option>Yesterday</option>
+        </select>
+      </div>
+    </div>
+
+    {# <div class="flex flex-col w-full p-2 my-2 transition-colors border-2 border-dashed rounded bg-slate-50 dark:bg-slate-800 dark:border-slate-700">
+      <span class="p-1 m-1 transition-colors text-slate-500 dark:text-slate-400">Queue Options</span>
+
+      <div class="select-menu">
+        <span class="p-1 m-1 text-sm transition-colors text-slate-400 dark:text-slate-500">List Update Activity</span>
+        <select id="[container]-settings.queue_activity_dropdown">
+          <option value="default">Make Activity (Anilist Default)</option>
+          <option value="private">Make Private Activity (Only Visible To You)</option>
+        </select>
+      </div>
+      
+    </div> #}
+
+    <div class="flex flex-col w-full p-2 my-2 transition-colors border-2 border-dashed rounded bg-slate-50 dark:bg-slate-800 dark:border-slate-700">
+      <span class="p-1 m-1 font-bold text-slate-400 dark:text-slate-600">Version: <span class="text-slate-500 dark:text-slate-400">{% env 'COOKIELIST_VERSION' %}.</span><span class="italic text-pink-500 uppercase">{% env 'COOKIELIST_SUB_VERSION' %}</span>@{{ COOKIEDB_VERSION }}</span>
+    </div>
+
+    <br class="my-2" />
+
+  </div>
+
+  <script>InitializeSettings()</script>
+</template>

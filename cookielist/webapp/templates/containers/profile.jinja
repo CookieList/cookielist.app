@@ -1,0 +1,196 @@
+{% macro code_snippet(language) %}
+<div class="flex flex-col w-full my-2 rounded bg-slate-200 dark:bg-slate-800/90">
+  <div class="flex flex-row justify-between w-full">
+    <span class="p-1 m-1 mb-0 text-xs rounded text-slate-600 bg-slate-100 dark:text-slate-400 dark:bg-slate-900">{{ language }}</span>
+    <button class="p-1 m-1 mb-0 text-xs transition rounded cursor-pointer text-slate-500 bg-slate-100 hover:bg-white dark:text-slate-400 dark:bg-slate-900 hover:dark:brightness-125" data-clipboard-target="#\[snippet\]-language\.code\@{{ language }}" id="[snippet]-language.copy@{{ language }}" cookie-badge><span>{% icon "square-2-stack", class="w-4 h-4" %}</span></button>
+  </div>
+  <div class="w-full p-2 overflow-auto whitespace-pre rounded" id="[snippet]-language.code@{{ language }}" style-hide-scrollbar="true"><code data-badge-snippet="{{ language.lower() }}"></code></div>
+</div>
+{% endmacro %}
+
+<template id="[snippet]-language.template@markdown">
+  <span class="text-slate-500">[</span><span class="text-rose-500">!</span><span class="text-slate-500">[</span><span class="text-slate-500">](</span><span class="text-sky-500"><span id="[snippet]-language.badge_url"><% badgeUrl %></span></span><span class="text-slate-500">)](</span><span class="text-sky-500" id="[snippet]-language.page_url"><% pageUrl %></span><span class="text-slate-500">)</span>
+</template>
+
+<template id="[snippet]-language.template@html">
+  <span class="text-slate-500">&_lt</span><span class="text-rose-500">a </span><span class="text-fuchsia-500">href</span><span class="text-slate-500">=</span><span class="text-green-500" id="[snippet]-language.page_url">"<% pageUrl %>"</span><span class="text-slate-500">&_gt&_lt</span><span class="text-rose-500">img </span><span class="text-fuchsia-500">src</span><span class="text-slate-500">=</span><span class="text-green-500">"<span id="[snippet]-language.badge_url"><% badgeUrl %></span>" </span><span class="text-slate-500">/&_gt&_lt/</span><span class="text-rose-500">a</span><span class="text-slate-500">&_gt</span>
+</template>
+
+<template id="[snippet]-language.template@anilist">
+  <span class="text-slate-500">[ </span><span class="text-rose-500">img</span><span class="text-slate-500">(</span><span class="text-sky-500"><span id="[snippet]-language.badge_url"><% badgeUrl %></span></span><span class="text-slate-500">)</span><span class="text-slate-500"> ](</span><span class="text-sky-500" id="[snippet]-language.page_url"><% pageUrl %></span><span class="text-slate-500">)</span>
+</template>
+
+<template id="[snippet]-language.template@settings">
+  <span class="text-slate-500">[</span><span class="font-bold text-rose-500">//</span><span class="text-slate-500">]:</span> <span class="font-bold text-rose-500">&_lt&_gt</span> <span class="font-bold text-slate-500">(</span><span class="text-fuchsia-500">cookielist</span><span class="font-bold text-slate-500">:</span><span class="italic text-green-500"><% settings %></span><span class="font-bold text-slate-500">)</span>
+</template>
+
+
+<template id="[container]-profile@template.copy_icon_svg">{% icon "square-2-stack", class="w-4 h-4" %}</template>
+<template id="[container]-profile@template.copied_icon_svg">{% icon "clipboard", class="w-4 h-4" %}</template>
+
+<template id="[container]-profile@template.badge_loading">
+  <div class="flex items-center justify-center w-10/12 my-2 md:w-full dark:text-slate-500/80 text-slate-400/90">
+    <span class="mr-1">{% icon "arrow-path", class="w-4 h-4 animate-spin"%}</span>
+    <span>Generating...</span>
+  </div>
+</template>
+
+<template id="[container]-profile">
+  <div class="flex flex-col w-full animate__animated animate__fadeIn" style="--animate-duration: 0.3s;">
+    <div class="w-full">
+
+      <div class="flex justify-center w-full">
+        <div class="flex flex-col items-center w-1/4 m-3 md:w-1/2">
+          <button onclick="$.popup('{{ userInfo.userAniListSiteUrl }}')"><img class="w-full p-3 mb-3 transition border-2 border-dashed rounded-full shadow-xl border-slate-400 md:p-1 hover:scale-105" src="{{ userInfo.userAvatar }}" alt="User Avatar" /></button>
+          <div class="text-3xl text-center text-slate-500 md:text-base">@{{ userInfo.userHandle }}</div>
+        </div>
+      </div>
+
+      <div class="flex flex-col items-center w-full">
+        <div class="advanced-table">
+          <div class="at-header">
+            <div class="at-cell !w-[20%] md:!text-xs">category</div>
+            <div class="at-cell !w-[40%] md:!text-xs">duration</div>
+            <div class="at-cell !w-[20%] md:!text-xs">titles</div>
+            <div class="at-cell !w-[20%] md:!text-xs">series</div>
+          </div>
+          {% for mediaType, mediaGroupCollection in userList.listResults.items() %}
+          <div class="at-row">
+            <div class="at-cell !w-[20%] font-bold cursor-default md:!text-sm" data-title="category">
+              {{ mediaType | capitalize }}
+            </div>
+            <div class="at-cell !w-[40%] font-bold md:!w-full cursor-default md:!text-sm" data-title="duration">
+              {{ human.format_timespan(mediaGroupCollection.categoryDuration) if mediaGroupCollection.categoryDuration != 0 else '-' }}
+            </div>
+            <div class="at-cell !w-[20%] font-bold cursor-default md:!text-sm !text-rose-500" data-title="titles">
+              {{ userBadge['watched_' + mediaType.lower() + '_title_count'] }}
+            </div>
+            <div class="at-cell !w-[20%] font-bold cursor-default md:!text-sm !text-green-500" data-title="series">
+              {{ mediaGroupCollection.categoryGroupCount }}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="flex flex-col items-center w-full p-2 rounded-lg my-9 bg-slate-100 dark:bg-slate-800/50">
+        <div class="flex flex-col items-center justify-center w-4/5 p-8 m-2 shadow rounded-xl bg-slate-900 md:p-3">
+          <div class="w-full [&>img]:h-auto [&>img]:w-10/12 md:[&>img]:w-full flex items-center justify-center" id="[container]-profile.status_badge"></div>
+          <div class="w-11/12 mt-2.5">
+            <select id="[container]-settings.badge_template_dropdown" class="md:!p-1.5 bg-white bg-no-repeat dark:[&_option]:text-slate-400 [&_option]:text-slate-600 transition-colors border border-slate-300 text-slate-600 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-600 dark:text-slate-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer m-1 appearance-none outline-none bg-[right_10px_center] bg-[length:auto_50%] [&::-ms-expand]:hidden">
+              {% for template in BADGE_TEMPLATES %}
+              <option value="{{ template | lower | replace(' ', '-') }}">{{template}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="flex items-center justify-center w-full mt-2">
+            <button class="text-xs px-2 py-1.5 active:scale-90 transition text-slate-400 dark:text-slate-500 bg-slate-950/70 rounded-md hover:bg-slate-950/50" onclick="showCustomizeWindow()">CUSTOMIZE</button>
+          </div>
+        </div>
+
+        <script type="application/json" id="[container]-profile.status_badge_data">{{ userBadge | tojson }}</script>
+        <script type="application/json" id="[container]-profile.user_options">{{ userOptions | tojson }}</script>
+
+        <p class="p-2 my-2 text-sm text-justify rounded text-slate-600 bg-slate-200 dark:bg-slate-800/90 dark:text-slate-400">Enhance your AniList profile with these <span class="font-bold text-pink-400 dark:text-pink-500">dynamic {{ SITE_NAME }} badges</span> that <span class="font-bold text-slate-400 dark:text-slate-100">automatically update</span> whenever you visit <span class="font-bold text-slate-400 dark:text-slate-100">{{ SITE_NAME }}</span>. Simply incorporate these badges into your profile bio and showcase your real-time <span class="font-bold text-transparent uppercase bg-clip-text bg-gradient-to-r from-indigo-500 dark:from-indigo-600 via-purple-500 dark:via-purple-600 to-pink-500 dark:to-pink-600 [-webkit-background-clip:text]">statistics</span>.</p>
+        <div class="w-full">
+          {{ code_snippet('Markdown') }}
+          {{ code_snippet('HTML') }}
+          {{ code_snippet('AniList') }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>InitializeProfilePage();</script>
+</template>
+
+
+<template id="[customize]@template.content">
+  <div class="flex flex-row items-center justify-center w-full h-full md:flex-col">
+    <div class="flex w-[37%] h-[90%] md:w-[95%] md:h-auto flex-col items-center justify-center overflow-hidden">
+      <div class="flex mt-0 mb-1 md:h-[95%] w-full flex-col items-center justify-between p-1 m-2 md:mt-3 md:mb-1 rounded-lg data-[customize-menu-theme='dark']:bg-[#151F2E] data-[customize-menu-theme='light']:bg-[#FAFAFA] data-[customize-menu-theme='contrast']:bg-[#FBFBFB]" data-customize-menu-theme="<% fn.menuTheme %>">
+        <div class="flex items-center justify-center w-full">
+          <span class="cursor-pointer rounded-md m-1 active:scale-90 hover:brightness-90 transition p-1.5 data-[customize-menu-theme='dark']:bg-slate-900 data-[customize-menu-theme='light']:bg-slate-200 data-[customize-menu-theme='contrast']:bg-slate-100 data-[customize-menu-theme='dark']:text-slate-400 data-[customize-menu-theme='light']:text-slate-600 data-[customize-menu-theme='contrast']:text-slate-500" data-customize-menu-theme="<% fn.menuTheme %>" onclick="changeCustomizeWindowTheme('dark')">{% icon "moon", class="w-6 h-6 md:w-5 md:h-5" %}</span>
+          <span class="cursor-pointer rounded-md m-1 active:scale-90 hover:brightness-90 transition p-1.5 data-[customize-menu-theme='dark']:bg-slate-900 data-[customize-menu-theme='light']:bg-slate-200 data-[customize-menu-theme='contrast']:bg-slate-100 data-[customize-menu-theme='dark']:text-slate-400 data-[customize-menu-theme='light']:text-slate-600 data-[customize-menu-theme='contrast']:text-slate-500" data-customize-menu-theme="<% fn.menuTheme %>" onclick="changeCustomizeWindowTheme('light')">{% icon "sun", class="w-6 h-6 md:w-5 md:h-5" %}</span>
+          <span class="cursor-pointer rounded-md m-1 active:scale-90 hover:brightness-90 transition p-1.5 data-[customize-menu-theme='dark']:bg-slate-900 data-[customize-menu-theme='light']:bg-slate-200 data-[customize-menu-theme='contrast']:bg-slate-100 data-[customize-menu-theme='dark']:text-slate-400 data-[customize-menu-theme='light']:text-slate-600 data-[customize-menu-theme='contrast']:text-slate-500" data-customize-menu-theme="<% fn.menuTheme %>" onclick="changeCustomizeWindowTheme('contrast')">{% icon "light-bulb", class="w-6 h-6 md:w-5 md:h-5" %}</span>
+        </div>
+        <span class="flex items-center justify-center w-full px-1.5 py-3 aspect-video overflow-auto" style-hide-scrollbar="true"><img class="w-10/12 md:w-11/12" src="<% fn.badgeUrl %>" id="[customize]-content.badge_image"></span>
+        <span class="mb-1 p-1 px-1.5 text-sm md:text-xs italic font-bold rounded-md data-[customize-menu-theme='dark']:bg-slate-900 data-[customize-menu-theme='light']:bg-slate-200 data-[customize-menu-theme='contrast']:bg-slate-100 data-[customize-menu-theme='dark']:text-slate-400 data-[customize-menu-theme='light']:text-slate-600 data-[customize-menu-theme='contrast']:text-slate-500" data-customize-menu-theme="<% fn.menuTheme %>"><% fn.badgeTemplate %></span>
+      </div>
+      <div class="flex flex-col items-center justify-between w-full h-full m-2 mt-1 mb-0 overflow-hidden text-sm rounded-lg md:hidden md:text-xs md:mb-1 bg-slate-50 dark:bg-slate-800/80">
+        <div class="flex w-full bg-white grow-0 rounded-t-md dark:bg-slate-900/50">
+          <span class="text-slate-500 dark:text-slate-400 w-full flex items-center justify-center m-1 rounded-lg p-2 cursor-pointer hover:dark:bg-slate-950/30 transition-colors hover:bg-slate-300/60 bg-slate-100 dark:bg-slate-950/20 data-[current-snippet-language='markdown']:cursor-default data-[current-snippet-language='markdown']:font-bold data-[current-snippet-language='markdown']:bg-slate-300/70 data-[current-snippet-language='markdown']:dark:bg-slate-950/40" data-current-snippet-language="<% fn.languageMode %>" onclick="changeCustomizeMenuSnippetLanguage('markdown')">Markdown</span>
+          <span class="text-slate-500 dark:text-slate-400 w-full flex items-center justify-center m-1 rounded-lg p-2 cursor-pointer hover:dark:bg-slate-950/30 transition-colors hover:bg-slate-300/60 bg-slate-100 dark:bg-slate-950/20 data-[current-snippet-language='html']:cursor-default data-[current-snippet-language='html']:font-bold data-[current-snippet-language='html']:bg-slate-300/70 data-[current-snippet-language='html']:dark:bg-slate-950/40" data-current-snippet-language="<% fn.languageMode %>" onclick="changeCustomizeMenuSnippetLanguage('html')">HTML</span>
+          <span class="text-slate-500 dark:text-slate-400 w-full flex items-center justify-center m-1 rounded-lg p-2 cursor-pointer hover:dark:bg-slate-950/30 transition-colors hover:bg-slate-300/60 bg-slate-100 dark:bg-slate-950/20 data-[current-snippet-language='anilist']:cursor-default data-[current-snippet-language='anilist']:font-bold data-[current-snippet-language='anilist']:bg-slate-300/70 data-[current-snippet-language='anilist']:dark:bg-slate-950/40" data-current-snippet-language="<% fn.languageMode %>" onclick="changeCustomizeMenuSnippetLanguage('anilist')">Anilist</span>
+        </div>
+        <div class="flex flex-col grow md:grow-0 bg-white dark:bg-slate-900/50 overflow-x-hidden overflow-y-scroll md:overflow-y-hidden md:overflow-x-scroll p-2 m-1.5 rounded-md" style-hide-scrollbar="true">
+          <span class="pb-1 my-1 mb-0 break-all md:whitespace-pre cursor-text" id="[customize]-snippet@badge"></span>
+          <span class="pt-1 my-1 mt-0 break-all md:whitespace-pre cursor-text" id="[customize]-snippet@setting"></span>
+        </div>
+        <div class="flex items-center justify-center w-full rounded-b-md grow-0">
+          <span class="flex items-center justify-center w-full h-full p-2 transition-colors cursor-pointer group text-slate-500 rounded-b-md dark:text-slate-400 hover:dark:bg-slate-950/30 hover:bg-slate-300/60 bg-slate-100 dark:bg-slate-950/20" onclick="copyCustomWindowCode()">
+            <div class="flex transition group-active:scale-90">
+              <span>{% icon "square-2-stack", class="w-4 h-4" %}</span>
+              <span class="ml-1" id="[customize]-snippet.copy_button">Copy Code</span>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="flex w-[57%] h-[90%] md:w-[95%] md:h-[70%] m-2 md:mt-1  overflow-hidden">
+      <div class="flex w-full p-1 overflow-x-hidden overflow-y-auto rounded-lg bg-slate-50 dark:bg-slate-800/80 md:mt-1 md:mb-3" style-hide-scrollbar="true">
+        <div class="flex flex-col items-center justify-start w-full h-full py-2">
+          <div class="flex-col hidden w-11/12 mb-3 text-sm bg-white rounded-md rounded-lg md:flex dark:bg-slate-900/50">
+            <div class="flex items-center justify-center w-full p-1">
+              <div class="w-[60%] text-xs bg-slate-100 dark:bg-slate-900/50 p-1 rounded-md flex items-center justify-center mr-1 text-slate-600 dark:text-slate-400">
+                <span class="group p-1 mx-1.5 rounded-md transition-colors cursor-pointer hover:bg-slate-300/80 hover:dark:bg-slate-950/40 bg-slate-200/80 dark:bg-slate-900" onclick="changeCustomizeMenuSnippetLanguageMobile('previous')">{% icon "chevron-left", class="w-4 h-4 transition group-active:scale-90" %}</span>
+                <span class="hidden w-10/12 text-center data-[current-snippet-language='markdown']:block" data-current-snippet-language="<% fn.languageMode %>">Markdown</span>
+                <span class="hidden w-10/12 text-center data-[current-snippet-language='html']:block" data-current-snippet-language="<% fn.languageMode %>">HTML</span>
+                <span class="hidden w-10/12 text-center data-[current-snippet-language='anilist']:block" data-current-snippet-language="<% fn.languageMode %>">AniList</span>
+                <span class="group p-1 mx-1.5 rounded-md transition-colors cursor-pointer hover:bg-slate-300/80 hover:dark:bg-slate-950/40 bg-slate-200/80 dark:bg-slate-900" onclick="changeCustomizeMenuSnippetLanguageMobile('next')">{% icon "chevron-right", class="w-4 h-4 transition group-active:scale-90" %}</span>
+              </div>
+              <div class="w-[40%] group text-xs hover:bg-slate-300/80 cursor-pointer hover:dark:bg-slate-950/40 bg-slate-100 dark:bg-slate-900/50 p-1 rounded-md flex  text-slate-600 dark:text-slate-400" onclick="copyCustomWindowCode()">
+                <div class="flex items-center justify-center w-full transition group-active:scale-90">
+                  <span class="p-1 ml-0 mr-1 transition-colors rounded-md">{% icon "square-2-stack", class="w-4 h-4" %}</span>
+                  <span>Copy</span>
+                </div>
+              </div>
+            </div>
+            <div class="p-1 pt-0">
+              <div class="flex flex-col w-full p-1 overflow-x-auto overflow-y-hidden rounded-md bg-slate-100 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400" style-hide-scrollbar="true">
+                <span class="pb-1 my-1 mb-0 break-all md:whitespace-pre cursor-text" id="[customize]-snippet@badge"></span>
+                <span class="pt-1 my-1 mt-0 break-all md:whitespace-pre cursor-text" id="[customize]-snippet@setting"></span>
+              </div>
+            </div>
+          </div>
+          <div class="grid w-full grid-cols-1 gap-2 justify-items-center">
+            <% #fn.userTemplateOptions %>
+            <div class="flex flex-col justify-end w-11/12 h-full">
+              <div class="flex items-center ml-2 text-xs text-slate-500 dark:text-slate-400">
+                <span>{% icon "code-bracket", class="w-3.5 h-3.5" %}</span>
+                <span class="ml-1.5"><% description %></span>
+              </div>
+              <div class="flex items-center justify-between my-1 text-sm transition-colors bg-white border rounded-lg hover:dark:bg-slate-900 hover:bg-slate-50 border-slate-300 text-slate-600 dark:text-slate-400 dark:bg-slate-900/50 dark:border-slate-700/70">
+                <input type="text" value="<% value %>" placeholder="<% placeholder %>" data-badge-setting="<% id %>" autocomplete="off" class="block w-full h-10 pl-4 m-0 leading-relaxed bg-transparent rounded-md outline-none placeholder:text-slate-300 dark:placeholder:text-slate-600" />
+              </div>
+            </div>
+            <% /fn.userTemplateOptions %>
+          </div>
+          <div class="grid w-full grid-cols-2 gap-2 mt-4 md:grid-cols-1 justify-items-center">
+            <% #fn.badgeTemplateOptions %>
+            <div class="flex flex-col justify-end w-11/12 h-full">
+              <div class="flex items-center ml-2 text-xs text-slate-500 dark:text-slate-400">
+                <span>{% icon "link", class="w-3.5 h-3.5" %}</span>
+                <span class="ml-1.5"><% description %></span>
+              </div>
+              <div class="flex items-center justify-between my-1 text-sm transition-colors bg-white border rounded-lg hover:dark:bg-slate-900 hover:bg-slate-50 border-slate-300 text-slate-600 dark:text-slate-400 dark:bg-slate-900/50 dark:border-slate-700/70">
+                <input type="text" value="<% fn.optionValue %>" placeholder="<% default %>" data-badge-argument="<% id %>" autocomplete="off" class="block w-full h-10 pl-4 m-0 leading-relaxed bg-transparent rounded-md outline-none placeholder:text-slate-300 dark:placeholder:text-slate-600" />
+              </div>
+            </div>
+            <% /fn.badgeTemplateOptions %>
+          </div>
+          <br class="my-1">
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>InitializeCustomWindow();</script>
+</template>

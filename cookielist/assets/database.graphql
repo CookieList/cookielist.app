@@ -1,0 +1,81 @@
+query DatabaseInfo(
+  $_page_1st: Int
+  $_page_2nd: Int
+  $_page_3rd: Int
+  $_page_4th: Int
+  $_page_5th: Int
+  $_page_6th: Int
+  $media_sort: [MediaSort]
+) {
+  _page_1st: Page(page: $_page_1st) {
+    ..._database_info
+  }
+  _page_2nd: Page(page: $_page_2nd) {
+    ..._database_info
+  }
+  _page_3rd: Page(page: $_page_3rd) {
+    ..._database_info
+  }
+  _page_4th: Page(page: $_page_4th) {
+    ..._database_info
+  }
+  _page_5th: Page(page: $_page_5th) {
+    ..._database_info
+  }
+  _page_6th: Page(page: $_page_6th) {
+    ..._database_info
+  }
+}
+
+fragment _database_info on Page {
+  pageInfo {
+    hasNextPage
+    currentPage
+  }
+  media(sort: $media_sort) {
+    id
+    format
+    status(version: 2)
+    type
+    duration
+    chapters
+    episodes
+    nextAiringEpisode {
+      episode
+    }
+    relations {
+      edges {
+        relationType(version: 2)
+        node {
+          id
+          format
+          type
+        }
+      }
+    }
+    startDate {
+      year
+      month
+      day
+    }
+    title {
+      romaji
+      english
+      native
+    }
+    coverImage {
+      large
+    }
+  }
+}
+
+query LastPageEstimate($page: Int) {
+  Page(page: $page) {
+    pageInfo {
+      hasNextPage
+    }
+    media {
+      id
+    }
+  }
+}

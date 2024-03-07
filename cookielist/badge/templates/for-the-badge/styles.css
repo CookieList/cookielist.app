@@ -1,0 +1,27 @@
+.card-media-icon {
+  stroke: var(--media-icon-bg, var(--color-rose-50));
+}
+
+.card-media-icon-path {
+  fill: var(--media-icon-bg, var(--color-rose-50));
+}
+
+.card-left-bg {
+  fill: var(--left-bg, var(--color-neutral-600))
+}
+
+.card-right-bg {
+  fill: var(--right-bg, var(--color-rose-400))
+}
+
+.font-left {
+  fill: var(--font-left-color, var(--color-neutral-50))
+}
+
+.font-right {
+  fill: var(--font-right-color, var(--color-rose-50))
+}
+
+.data-block {
+  fill: var(--data-block-bg, var(--color-rose-500))
+}

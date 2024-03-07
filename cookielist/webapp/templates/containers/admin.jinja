@@ -1,0 +1,65 @@
+<template id="[container]-admin@template.admin_api_response">
+  <% #html %>
+  <div class="p-1 mx-2 mb-2 border-2 rounded dark:bg-slate-800/40 bg-slate-800 border-slate-900 dark:border-slate-700"><% &html %></div>
+  <% /html %>
+  <% #markdown %>
+  <pre class="p-1 mx-2 mb-2 border-2 rounded dark:bg-slate-800/40 bg-slate-800 border-slate-900 dark:border-slate-700"><code class="language-markdown rounded !bg-transparent"><% &markdown %></code></pre>
+  <% /markdown %>
+  <% #json %>
+  <pre class="p-1 mx-2 mb-2 border-2 rounded dark:bg-slate-800/40 bg-slate-800 border-slate-900 dark:border-slate-700"><code class="rounded !bg-transparent"><% &json %></code></pre>
+  <% /json %>
+</template>
+
+<template id="[container]-admin@template.loading">
+  <span class="flex justify-center w-full m-1">{% icon "arrow-path", class="w-8 h-8 stroke-slate-500 dark:stroke-slate-400 animate-spin" %}</span>
+</template>
+
+
+
+{% macro admin_content_fetch_block(endpoint, description, method='GET') %}
+{% if method == 'GET' %}
+{% set icon_name = "cloud-arrow-down" %}
+{% set icon_theme = "text-slate-400 dark:text-slate-600" %}
+{% set button_theme = "bg-slate-100 dark:bg-slate-800/40 hover:bg-slate-100/60 dark:hover:bg-slate-800/60 border-slate-200 dark:border-slate-700" %}
+{% set text_theme = "text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/40 border-slate-200 dark:border-slate-700" %}
+{% else %}
+{% set icon_name = "cloud-arrow-up" %}
+{% set icon_theme = "text-rose-500/80" %}
+{% set button_theme = "bg-rose-500/20 hover:bg-rose-500/30 border-rose-500/70" %}
+{% set text_theme = "text-rose-500/80 bg-rose-500/20 border-rose-500/70" %}
+{% endif %}
+<div class="flex flex-col justify-center w-full p-1 m-1 mb-2 border-2 border-dashed rounded dark:border-slate-700">
+  <div class="flex mx-2 my-2">
+    <span class="active:scale-95 transition mr-1 p-0.5 rounded px-3 transition cursor-pointer border-2 flex {{ button_theme }}" onclick="AdminContentFetch(`{{ url_for('AdminView:' + endpoint) }}`, '{{ endpoint }}', method='{{ method }}')">
+      <span class="self-center {{ icon_theme }}">{% icon icon_name, class="w-8 h-8" %}</span>
+    </span>
+    <span class="italic font-bold ml-1 p-0.5 rounded px-3 w-full border-2 flex {{ text_theme }}"><span class="self-center">{{ description }}</span></span>
+  </div>
+  <div class="w-full text-slate-400" id="[container]-admin@response.{{ endpoint }}"></div>
+</div>
+{% endmacro %}
+
+<template id="[container]-admin">
+  <div class="flex flex-col items-center w-full h-full animate__animated animate__fadeIn" style="--animate-duration: 0.3s;">
+    <div class="flex flex-col items-center w-1/3 mb-4">
+      <img class="p-4 border border-dashed rounded-full w-52 border-slate-500 dark:border-slate-600 background-animate dark:!background-animate-dark md:p-2" src="{{ url_for('static', filename='images/favicon.webp') }}" />
+      <span class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 [-webkit-background-clip:text] text-center">{{ SITE_NAME }}</span>
+      <button class="flex flex-row text-sm leading-4 transition text-slate-400 hover:text-slate-500 hover:font-bold hover:dark:text-slate-300" onclick="$.popup('https://anilist.co/user/{{ session.id }}')">{% icon "link", size=16 %}<span>#{{ session.id }}</span></button>
+    </div>
+    {% if session.CL_USERNAME == CL_USERNAME and session.CL_PASSWORD == CL_PASSWORD and session.CL_ADMIN_TOKEN == CL_ADMIN_TOKEN %}
+
+    {{ admin_content_fetch_block('in_memory_badges_size', 'In memory cookielist-badge content archive status.') }}
+    {{ admin_content_fetch_block('about_system_statistics', "Webapp running system information and statistics")}}
+
+    <br class="m-2">
+    {% else %}
+    <div class="flex flex-col w-3/4 p-3">
+      <input type="text" name="username" placeholder="Username" id="[container]-admin.username" class="w-full px-5 my-1 transition rounded-full cursor-pointer h-14 bg-slate-200/50 text-slate-600 dark:bg-slate-800 dark:text-slate-400 hover:brightness-95 focus:cursor-text focus:outline focus:outline-2 focus:outline-slate-500/30 focus:outline-offset-0 focus:brightness-95">
+      <input type="password" name="password" placeholder="Password" id="[container]-admin.password" class="w-full px-5 my-1 transition rounded-full cursor-pointer h-14 bg-slate-200/50 text-slate-600 dark:bg-slate-800 dark:text-slate-400 hover:brightness-95 focus:cursor-text focus:outline focus:outline-2 focus:outline-slate-500/30 focus:outline-offset-0 focus:brightness-95">
+      <input type="password" name="key" placeholder="Key" id="[container]-admin.key" class="w-full px-5 my-1 transition rounded-full cursor-pointer h-14 bg-slate-200/50 text-slate-600 dark:bg-slate-800 dark:text-slate-400 hover:brightness-95 focus:cursor-text focus:outline focus:outline-2 focus:outline-slate-500/30 focus:outline-offset-0 focus:brightness-95">
+    </div>
+
+    <span class="flex p-3 px-6 italic font-bold text-pink-100 transition border rounded-full cursor-pointer bg-pink-500/70 border-pink-500/90 hover:scale-105 text-md" onclick="AdminLogin()">Submit</span>
+    {% endif %}
+  </div>
+</template>

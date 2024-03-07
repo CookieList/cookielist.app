@@ -1,0 +1,9 @@
+query UserInfo {
+  Viewer {
+    id
+    name
+    avatar {
+      large
+    }
+  }
+}

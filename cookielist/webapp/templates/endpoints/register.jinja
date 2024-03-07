@@ -1,0 +1,36 @@
+{% extends "base.jinja" %}
+
+{% block title %}Authorizing{% endblock title %}
+
+{% block content %}
+<div class="flex items-center justify-center w-full h-full">
+  <div id="content" class="flex flex-col justify-center w-1/2 p-8 shadow-lg bg-slate-50 rounded-xl h-1/2 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+    <div id="[_]-register.success" class="flex flex-col justify-center h-full bg-slate-500/10 rounded-xl">
+      <span class="flex justify-center h-full"><img class="object-contain h-full p-2 rounded-full aspect-square" src="{{ url_for('static', filename='images/favicon.webp') }}" /></span>
+      <span class="flex justify-center w-full m-1 text-xl italic">Authorizing</span>
+    </div>
+    <div id="[_]-register.failed" class="flex-col justify-center hidden">
+      <p class="text-xl font-bold text-slate-600 dark:text-slate-400">
+        No Acces Token Provided.
+      </p>
+      <p class="mt-3 text-slate-500 dark:text-slate-400">
+        This route is intended for automated processes and is not meant to be accessed directly.
+      </p>
+
+      <p class="mt-3 underline text-sky-300 dark:text-sky-400">
+        {% if request.referrer %}
+        <a href="{{ request.referrer }}">[Go Back]</a>
+        {% else %}
+        <a href="{{ url_for('AboutView:index') }}">[Go Back]</a>
+        {% endif %}
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script>
+  RegisterUser()
+</script>
+{% endblock scripts %}

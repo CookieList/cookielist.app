@@ -1,0 +1,58 @@
+.flDebugPanelContentParent {
+  overflow: scroll;
+}
+
+select {
+  background-image: url("{% icon 'chevron-down', datauri=True, stroke='rgb(148 163 184)' %}");
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.dark input[type="date"] {
+  color-scheme: dark;
+}
+
+.dark input[type="checkbox"] {
+  color-scheme: dark;
+}
+
+.dark input[type="date"] {
+  color-scheme: dark;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  background-image: url("{% icon 'calendar', datauri=True, stroke='rgb(148 163 184)' %}");
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+[style-hide-scrollbar="true"] {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+[style-hide-scrollbar="true"]::-webkit-scrollbar {
+  display: none;
+}
+
+[style-wordbreak="true"] {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
