@@ -19,7 +19,7 @@ echo -e "${CYAN}[${NC}${GREEN}CookieList${NC}${CYAN}] Project Setup Script.${NC}
 
 REPOSITORY=$1
 if [ -z "$REPOSITORY" ]; then
-    DEFAULT_REPOSITORY="CookieList/cookielist.test"
+    DEFAULT_REPOSITORY="CookieList/cookielist.app"
     echo -e -n "${CYAN}Enter CookieList Repository Name${NC} [${GREEN}$DEFAULT_REPOSITORY${NC}]: "
     read REPOSITORY
     if [ -z "$REPOSITORY" ]; then
@@ -103,8 +103,8 @@ if [ $? -eq 0 ]; then
         echo ""
     } > $DIRECTORY/app.py
     
-    echo -e "${CYAN}Info:${NC} Removing .git"
-    rm -rf $DIRECTORY/.git
+    echo -e "${CYAN}Info:${NC} Removing Unnecessary Files."
+    rm -rf $DIRECTORY/.git $DIRECTORY/.github $DIRECTORY/requirements.dev.txt $DIRECTORY/requirements.txt $DIRECTORY/setup.sh $DIRECTORY/run.sh $DIRECTORY/README.md $DIRECTORY/.gitignore # $DIRECTORY/LICENSE $DIRECTORY/docs
     
     echo -e "${GREEN}Success:${NC} Setup Completed Successfully."
     

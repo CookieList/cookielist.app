@@ -1,7 +1,7 @@
 import re
 from collections import defaultdict, deque
 from dataclasses import dataclass, field
-from typing import Literal, LiteralString
+from typing import Literal
 from urllib import parse
 
 from cookielist.environment import env
@@ -59,10 +59,10 @@ class AniListUser:
     )
 
     userId: Types.TUniqueIdentifier
-    userHandle: LiteralString
+    userHandle: str
     userAniListSiteUrl: Types.TUniversalResourceLocator
     userAvatar: Types.TUniversalResourceLocator
-    profileColor: LiteralString
+    profileColor: str
     animeCount: int
     animeMinutesWatched: int
     animeEpisodesWatched: int
@@ -85,10 +85,10 @@ class CookieListOptions:
         "isBadgeServerCustom",
         "userOptionFormatted",
     )
-    timezoneName: LiteralString
+    timezoneName: str
     timeFormatString: str
     dateFormatString: str
-    firstDayOfWeek: LiteralString
+    firstDayOfWeek: str
     mediaTitleLanguage: Literal["english", "romaji", "native"]
     badgeTemplate: str | None
     commentSection: int
