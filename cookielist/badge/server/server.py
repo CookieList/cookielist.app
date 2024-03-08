@@ -20,18 +20,27 @@ app.config["COMPRESS_MIMETYPES"] = [
     "text/html",
 ]
 app.config["COMPRESS_BR_LEVEL"] = 10
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
+app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["FLASK_DEBUG"] = env.bool("FLASK_DEBUG")
+
+if env.bool("COOKIELIST_USE_MYSQL"):
+    pa_user = env.string('USER', env.string("PA_MYSQL_USERNAME", env.string("PA_USERNAME")))
+    app.config["SQLALCHEMY_DATABASE_URI"] = (
+        f"mysql+mysqlconnector://{pa_user}:{env.string('PA_MYSQL_PASSWORD')}@{pa_user}.mysql.pythonanywhere-services.com/{pa_user}$default"
+    )
+else:
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
+
 app.url_map.strict_slashes = False
 
 flask_compress.Compress(app)
 db.init_app(app)
-CORS(app, resources={r"/*": {"origins": ["http://localhost:5500"]}})
+CORS(app)
 
 response = ResponseFormats()
 
 with app.app_context():
-    # db.drop_all() # TODO
     db.create_all()
 
 
@@ -96,10 +105,12 @@ def post(id: int):
         "success": True,
     }
 
+
 @app.before_request
 def before_request():
     g.request_start_time = time()
-    
+
+
 @app.after_request
 def after_request_func(response):
     if env.bool("RESPONSE_LOGGER"):

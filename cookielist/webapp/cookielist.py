@@ -66,7 +66,7 @@ else:
     app.config["SEND_FILE_MAX_AGE_DEFAULT"] = datetime.timedelta(days=7)
 
 flask_compress.Compress(app)
-CORS(app, origins=["*", *env.list("COOKIELIST_BADGE_SERVERS")], send_wildcard=True)
+CORS(app, origins=env.list("COOKIELIST_BADGE_SERVERS"))
 flask_minify.Minify(app)
 app.json = ORJSONProvider(app)
 

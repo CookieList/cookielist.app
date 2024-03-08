@@ -11,7 +11,6 @@ import py7zr
 from arrow import Arrow
 from flask import abort, request, session
 from flask_classful import FlaskView, route
-from pympler import asizeof
 
 from cookielist.environment import env
 

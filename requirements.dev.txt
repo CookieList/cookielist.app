@@ -2,4 +2,4 @@ playwright
 Flask-DebugToolbar
 javascript
 nodejs-bin
-watchdog
+wcmatch

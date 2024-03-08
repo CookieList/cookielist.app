@@ -18,5 +18,6 @@ function run_cookielist {
 
 while :
 do
-    run_cookielist && sleep 1
+    run_cookielist 
+    sleep 1
 done

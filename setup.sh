@@ -7,6 +7,7 @@
 # $3 == Empty Directory Warning (e.g. "Yes" or "No")
 # $4 == DotEnv Key (e.g. dotenv://:key_dotenv_project_hash_id@dotenv.org/vault/.env.vault?environment=environment_id)
 
+
 CYAN='\033[0;36m'
 YELLOW='\033[1;33m'
 RED='\033[0;31m'
