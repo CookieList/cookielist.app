@@ -96,9 +96,9 @@ if [ $? -eq 0 ]; then
         echo "# with the github repository https://github.com/$REPOSITORY.git"
         echo ""
         echo "import os"
-        echo "from cookielist.__main__ import get_app"
-        echo ""
         echo "os.environ['DOTENV_KEY'] = '$DOTENV_KEY'"
+        echo ""
+        echo "from cookielist.__main__ import get_app"
         echo "app = get_app('$COOKIELIST_APP')"
         echo ""
     } > $DIRECTORY/app.py

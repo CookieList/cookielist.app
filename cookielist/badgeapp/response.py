@@ -4,7 +4,7 @@ import re
 import orjson
 
 from cookielist.badge import BadgeTemplates
-from cookielist.badge.server.model import CookielistBadge
+from cookielist.badgeapp.model import CookielistBadge
 from cookielist.environment import env
 
 BADGE = BadgeTemplates()

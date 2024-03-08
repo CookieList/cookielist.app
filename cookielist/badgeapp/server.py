@@ -6,8 +6,8 @@ from flask import Flask, abort, request, send_file, g
 from flask_cors import CORS
 from cookielist.utils import WebAppLogger
 
-from cookielist.badge.server.model import CookielistBadge, db
-from cookielist.badge.server.response import ResponseFormats
+from cookielist.badgeapp.model import CookielistBadge, db
+from cookielist.badgeapp.response import ResponseFormats
 from cookielist.environment import env
 from cookielist.utils import JsonToken
 

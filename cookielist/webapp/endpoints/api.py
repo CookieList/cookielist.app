@@ -4,7 +4,7 @@ import dotted_dict
 from flask import abort, request, session, stream_template, redirect
 from flask_classful import FlaskView, route
 
-from cookielist.badge import calculate_badge
+from cookielist.badge.process import calculate as calculate_badge
 from cookielist.environment import env
 from cookielist.processors import _pre_process
 from cookielist.processors.lists import ListProcessor

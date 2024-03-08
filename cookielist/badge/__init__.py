@@ -1,6 +1,5 @@
 from pathlib import Path
 
-from cookielist.badge.process import calculate as calculate_badge
 from cookielist.badge.template import BadgeTemplates
 
 TEMPLATES = list(

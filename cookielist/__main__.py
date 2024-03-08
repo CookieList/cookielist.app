@@ -119,13 +119,13 @@ def _get_cookielist_core() -> Flask:
 
 def _get_cookielist_badge() -> Flask:
     return __import__(
-        "cookielist.badge.server", globals(), locals(), ["cookielist_badge"], 0
+        "cookielist.badgeapp", globals(), locals(), ["cookielist_badge"], 0
     ).cookielist_badge
 
 
 def _get_cookielist_stub() -> Flask:
     return __import__(
-        "cookielist.stub_webapp", globals(), locals(), ["cookielist_stub"], 0
+        "cookielist.stubapp", globals(), locals(), ["cookielist_stub"], 0
     ).cookielist_stub
 
 
