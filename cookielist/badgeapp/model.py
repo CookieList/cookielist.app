@@ -70,9 +70,9 @@ class CookielistBadge(db.Model):
 
     anilist_user_id: Mapped[int] = mapped_column(primary_key=True, unique=True)
     anilist_username: Mapped[str] = mapped_column(String(20), unique=True)
-    anilist_avatar_url: Mapped[str]
-    anilist_avatar_image = mapped_column(LargeBinary(), default=b"")
-    anilist_profile_theme_color: Mapped[str]
+    anilist_avatar_url: Mapped[str] = mapped_column(String(200))
+    anilist_avatar_image = mapped_column(LargeBinary(1204 * 5), default=b"")
+    anilist_profile_theme_color: Mapped[str] = mapped_column(String(20))
 
     watched_anime_title_count: Mapped[int]
     watched_manga_title_count: Mapped[int]

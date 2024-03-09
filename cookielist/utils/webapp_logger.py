@@ -132,7 +132,7 @@ def make_stats_log(response: Response):
             request.method,  # Request Method
             request.environ.get("SERVER_PROTOCOL"),  # Request Server Protocol
             response.status_code,  # Response Status-Code
-            request.url_rule.rule,  # Request Endpoint
+            request.url_rule.rule if request.url_rule is not None else request.path,  # Request Endpoint
             request.view_args,  # Endpoint Arguments
             request.args,  # Url Arguments
             round(time() - g.request_start_time, 3),  # Time Taken To Respond
@@ -165,7 +165,7 @@ def make_badge_log(response: Response):
                 request.headers.get("X-Real-IP", default=request.remote_addr), # Request IP Address
                 request.method, # Request Method
                 response.status_code, # # Response Status-Code
-                request.url_rule.rule, # Request Endpoint
+                request.url_rule.rule if request.url_rule is not None else request.path, # Request Endpoint
                 request.view_args, # Request Arguments
                 round(time() - g.request_start_time, 3),  # Time Taken To Respond
                 response.content_length, # Response Data Size In Bytes
