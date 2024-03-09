@@ -4,32 +4,45 @@ import time
 
 import graphql
 import orjson
-import requests_cache
 from rich import live, print, spinner
 
 from cookielist.environment import env
 
 
+try:
+    import requests_cache
+    _CACHED_REQUESTS = True
+except Exception:
+    import requests
+    _CACHED_REQUESTS = False
+    
+
 class AnilistClient:
     ANILIST_API = "https://graphql.anilist.co/"
     ANILIST_AUTH = "https://anilist.co/api/v2/oauth/token"
 
-    _session: requests_cache.CachedSession = None
+    if _CACHED_REQUESTS:
+        _session: requests_cache.CachedSession = None
+    else:
+        _session: requests.Session = None
 
     @property
     def session(self):
         if AnilistClient._session:
             return AnilistClient._session
-
-        _session = requests_cache.CachedSession(
-            str(
-                env.path("COOKIELIST_STATE_FOLDER")
-                .joinpath("httpcache.sqlite")
-                .resolve()
-            ),
-            allowable_methods=("GET", "HEAD", "POST"),
-            backend="sqlite",
-        )
+    
+        if _CACHED_REQUESTS:
+            _session = requests_cache.CachedSession(
+                str(
+                    env.path("COOKIELIST_STATE_FOLDER")
+                    .joinpath("httpcache.sqlite")
+                    .resolve()
+                ),
+                allowable_methods=("GET", "HEAD", "POST"),
+                backend="sqlite",
+            )
+        else:
+            _session = requests.Session()
 
         AnilistClient._session = _session
         return _session

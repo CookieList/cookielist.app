@@ -59,5 +59,6 @@ def stub_synchronize():
 def after_request_func(response):
     if env.bool("RESPONSE_LOGGER"):
         WebAppLogger.make_request_log(response)
+    return response
         
 cookielist_stub = app

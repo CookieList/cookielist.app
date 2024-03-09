@@ -162,7 +162,9 @@ def get_app(_app: str):
     port = env.int("APP_PORT")
     if _app == "cookielist-badge-app":
         port = env.int("BADGE_APP_PORT")
-    return initialize_partial_app(app, port)
+    if DEBUG:
+        return initialize_partial_app(app, port)
+    return app
 
 
 if __name__ == "__main__":

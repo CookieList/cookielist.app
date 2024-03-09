@@ -76,7 +76,7 @@ if [ $? -eq 0 ]; then
     echo -e "${CYAN}Info:${NC} Cloned Repository 'https://github.com/$REPOSITORY.git' At '$(pwd)'"
     
     if [ -f "$DIRECTORY/requirements.txt" ]; then
-        python -m pip install -r $DIRECTORY/requirements.txt
+        python -m pip install --no-cache-dir -r $DIRECTORY/requirements.txt
         
         if [ $? -eq 0 ]; then
             echo -e "${CYAN}Info:${NC} Dependencies Installed Successfully."
