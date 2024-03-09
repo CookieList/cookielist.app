@@ -53,7 +53,7 @@ on:
 
   push:
     branches:
-      - development
+      - staging
       - main
     paths:
       - "cookielist/**"
