@@ -202,13 +202,13 @@ jobs:
 
           DOTENV: STAGING
 
-      - name: Test
-        if: always()
-        run: |
-          sudo apt install tree
-          tree /opt/hostedtoolcache/Python/3.10.13/x64/lib/python3.10/site-packages/javascript
-          cat /opt/hostedtoolcache/Python/3.10.13/x64/lib/python3.10/site-packages/javascript/js/package-lock.json
-          cat /opt/hostedtoolcache/Python/3.10.13/x64/lib/python3.10/site-packages/javascript/js/package.json
+      # - name: Test
+      #   if: always()
+      #   run: |
+      #     sudo apt install tree
+      #     tree /opt/hostedtoolcache/Python/3.10.13/x64/lib/python3.10/site-packages/javascript
+      #     cat /opt/hostedtoolcache/Python/3.10.13/x64/lib/python3.10/site-packages/javascript/js/package-lock.json
+      #     cat /opt/hostedtoolcache/Python/3.10.13/x64/lib/python3.10/site-packages/javascript/js/package.json
 
       - name: Write Job Summary
         uses: actions/github-script@v7
