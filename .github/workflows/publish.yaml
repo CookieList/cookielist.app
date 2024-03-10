@@ -202,6 +202,12 @@ jobs:
 
           DOTENV: STAGING
 
+      - name: Test
+        if: always()
+        run: |
+          apt-get install tree
+          tree /opt/hostedtoolcache/Python/3.10.13/x64/lib/python3.10/site-packages/javascript
+
       - name: Write Job Summary
         uses: actions/github-script@v7
         if: always()
