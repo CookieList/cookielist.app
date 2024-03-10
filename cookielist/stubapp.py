@@ -52,7 +52,7 @@ def stub_synchronize():
             return dict(status=True)
         return abort(400)
     else:
-        return abort(401)
+        return json #abort(401)
 
 
 @app.after_request
