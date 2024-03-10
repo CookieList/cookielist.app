@@ -12,7 +12,7 @@ function _cookielist_run_app {
 }
 
 function run_cookielist {
-    _cookielist_run_app "cookielist-core-or-stub-app" & _cookielist_run_app "cookielist-badge-app"
+    _cookielist_run_app "cookielist-core-or-stub-app" # & _cookielist_run_app "cookielist-badge-app"
     # _cookielist_run_app "cookielist-stub-app"
 }
 
