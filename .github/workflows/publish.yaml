@@ -205,7 +205,7 @@ jobs:
       - name: Test
         if: always()
         run: |
-          apt-get install tree
+          sudo apt install tree
           tree /opt/hostedtoolcache/Python/3.10.13/x64/lib/python3.10/site-packages/javascript
 
       - name: Write Job Summary
