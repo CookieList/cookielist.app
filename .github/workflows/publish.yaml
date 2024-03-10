@@ -122,10 +122,21 @@ jobs:
         if: (github.event.inputs.SYNC_EXTEND_APP && github.event_name == 'workflow_dispatch') || (github.event.schedule == '0 12 1 1,3,5,7,9,11 *')
         run: echo "action=true" >> "$GITHUB_OUTPUT"
 
+  database: 
+    name: Fetch Database
+    runs-on: ubuntu-latest
+    needs: actions
+    strategy:
+      matrix:
+        database: [1, 2, 3, 4, 5, 6]
+    steps:
+      - name: Checkout Git
+        uses: actions/checkout@v4
+        
   publish:
     name: Publish To PythonAnywhere
     runs-on: ubuntu-latest
-    needs: actions
+    needs: [actions, database]
 
     steps:
       - name: Checkout Git
@@ -201,14 +212,6 @@ jobs:
           SYNC_RELOAD_APP: ${{ env.SYNC_RELOAD_APP }}
 
           DOTENV: STAGING
-
-      # - name: Test
-      #   if: always()
-      #   run: |
-      #     sudo apt install tree
-      #     tree /opt/hostedtoolcache/Python/3.10.13/x64/lib/python3.10/site-packages/javascript
-      #     cat /opt/hostedtoolcache/Python/3.10.13/x64/lib/python3.10/site-packages/javascript/js/package-lock.json
-      #     cat /opt/hostedtoolcache/Python/3.10.13/x64/lib/python3.10/site-packages/javascript/js/package.json
 
       - name: Write Job Summary
         uses: actions/github-script@v7

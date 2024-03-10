@@ -117,7 +117,7 @@ class CookieListSynchronizer:
 
         if sync_code or sync_database or sync_env or sync_static:
             requests.post(
-                f"https://{self.PA_HOST}/api/v0/user/{self.PA_USERNAME}/files/path/home/{self.PA_USERNAME}/app/{archive_name}",
+                f"https://{self.PA_HOST}/api/v0/user/{self.PA_USERNAME}/files/path/home/{self.PA_USERNAME}/{env.string('PA_SOURCE_FOLDER')}/{archive_name}",
                 files={"content": cl_folder.joinpath(archive_name).open("rb")},
                 headers={"Authorization": f"Token {self.PA_TOKEN}"},
             )

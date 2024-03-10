@@ -6,6 +6,7 @@ notebooks/
 .vscode/
 dotenv.sh
 .dotenv.previous/
+run.sh
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
