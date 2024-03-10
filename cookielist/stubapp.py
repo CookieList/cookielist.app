@@ -32,7 +32,7 @@ def stub_page():
 @app.route("/_/synchronize", methods=["POST"])
 def stub_synchronize():
     json: dict = request.get_json(force=True)
-    path = Path(f"/home/{env.string('PA_USERNAME')}/app/.synchronize.archive.7z")
+    path = Path(f"/home/{env.string('PA_USERNAME')}/{env.string('PA_SOURCE_FOLDER')}/.synchronize.archive.7z")
     state = Path(env.string("COOKIELIST_STATE_FOLDER")).resolve()
     if (
         json.get("CL_USERNAME") == env["CL_USERNAME"]
