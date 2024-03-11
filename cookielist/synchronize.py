@@ -135,7 +135,8 @@ class CookieListSynchronizer:
                     CL_ADMIN_TOKEN=env["CL_ADMIN_TOKEN"],
                 ),
             )
-            print(response.status_code, response.content)
+            if response.status_code != 200:
+                raise Exception(response.content.decode())
 
         if extend_app:
             self.pa_run_app_until_next_3_months()
@@ -170,14 +171,13 @@ def prefetch(group: int, count: int):
     pages = [
         total[c * div + min(c, mod) : (c + 1) * div + min(c + 1, mod)]
         for c in range(PREFETCH_GROUP_COUNT)
-    ][group - 1]
-    env.path("COOKIELIST_STATE_FOLDER").joinpath(".prefetch").mkdir(parents=True, exist_ok=True)
+    ][group]
+    prefetch_dir = env.path("COOKIELIST_STATE_FOLDER").joinpath(".prefetch")
+    prefetch_dir.mkdir(parents=True, exist_ok=True)
     with progress_bar as pbar:
         for page in pbar.track(pages):
             factor = (page - 1) * 6
-            artifact = env.path("COOKIELIST_STATE_FOLDER").joinpath(
-                ".prefetch", f"database.fetch.{page}.json"
-            )
+            artifact = prefetch_dir.joinpath(f"database.fetch.{page}.json")
             response = client.query(
                 "DatabaseInfo",
                 sort="ID",

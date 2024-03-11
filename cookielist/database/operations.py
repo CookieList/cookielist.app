@@ -1,7 +1,6 @@
 import typing
 from collections import namedtuple
 from dataclasses import dataclass
-from pathlib import Path
 
 import numpy
 from numpy.typing import NDArray
@@ -77,7 +76,7 @@ class DataBaseOperations:
         with progress_bar as pbar:
             for page in pbar.track(range(1, int(last_al_page / 6) + 1)):
                 factor = (page - 1) * 6
-                artifact = Path(".prefetch").joinpath(f"database.fetch.{page}.json")
+                artifact = env.path("COOKIELIST_STATE_FOLDER").joinpath(".prefetch", f"database.fetch.{page}.json")
                 if artifact.exists():
                     _response = orjson.loads(artifact.read_bytes())
                 else:
