@@ -6,7 +6,8 @@ from rich import pretty, traceback
 
 from cookielist.environment import env
 
-pretty.print(dict(os.environ))
+from rich import print
+print(dict(os.environ))
 env.path("COOKIELIST_STATE_FOLDER").mkdir(parents=True, exist_ok=True)
 
 if os.getenv("COOKIELIST_DEBUG").lower() == "true":
