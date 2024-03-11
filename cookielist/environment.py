@@ -18,8 +18,6 @@ class Env:
 
         if env_path.exists() and env_path.is_file():
             dotenv_vault.load_dotenv(stream=Path(".env").open("r", encoding="utf-8"))
-        else:
-            dotenv_vault.load_dotenv()
 
     @property
     def environ(self):
