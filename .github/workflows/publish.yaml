@@ -147,7 +147,7 @@ jobs:
 
       - name: Set Pre-fetch estimate
         id: PRE_FETCH_ESTIMATE
-        run: python -m cookielist github_action_set_estimate
+        run: python -m cookielist github-action-set-estimate
         env:
           DOTENV_KEY_CI: "${{ secrets.DOTENV_CI }}"
           DOTENV_KEY_STAGING: "${{ secrets.DOTENV_STAGING }}"

@@ -10,7 +10,7 @@ import arrow
 from pathlib import Path
 import time
 from time import time as timestamp
-import click
+import rich_click as click
 
 import flask.cli
 import werkzeug._reloader
