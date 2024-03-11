@@ -1,4 +1,5 @@
 import logging
+import re
 import socket
 import argparse
 from typing import Callable
@@ -9,6 +10,7 @@ import arrow
 from pathlib import Path
 import time
 from time import time as timestamp
+import click
 
 import flask.cli
 import werkzeug._reloader
@@ -166,15 +168,38 @@ def get_app(_app: str):
         return initialize_partial_app(app, port)
     return app
 
+@click.group()
+@click.pass_context
+def cli(ctx):
+    pass
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--app", default="cookielist-core-or-stub-app", type=str)
-    args = parser.parse_args()
-    app = get_app(args.app)
+@cli.command()
+@click.option('-a', '--app', default="cookielist-core-or-stub-app", type=str)
+def run(app: str):
+    cookie_app = get_app(app)
     while True:
         try:
-            app.run()
+            cookie_app.run()
         except:
             time.sleep(1)
-            app.run()
+            cookie_app.run()
+            
+@cli.command()
+def synchronize():
+    from cookielist.synchronize import CookieListSynchronizer
+    CookieListSynchronizer().synchronize()
+    
+@cli.command()
+def github_action_set_estimate():
+    from cookielist.synchronize import set_last_database_page_github_output
+    set_last_database_page_github_output()
+    
+@cli.command()
+@click.option('-g', '--group', type=int, required=True)
+@click.option('-t', '--total', type=int, required=True)
+def prefetch(group: int, total: int):
+    from cookielist.synchronize import prefetch
+    prefetch(group, total)
+
+if __name__ == "__main__":
+    cli()

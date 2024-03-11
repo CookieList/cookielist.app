@@ -122,21 +122,83 @@ jobs:
         if: (github.event.inputs.SYNC_EXTEND_APP && github.event_name == 'workflow_dispatch') || (github.event.schedule == '0 12 1 1,3,5,7,9,11 *')
         run: echo "action=true" >> "$GITHUB_OUTPUT"
 
-  database: 
-    name: Fetch Database
+  db_setup:
+    name: Setup Pre-fetch
     runs-on: ubuntu-latest
-    needs: actions
-    strategy:
-      matrix:
-        database: [1, 2, 3, 4, 5, 6]
+    outputs:
+      LAST_PRE_FETCH_PAGE: ${{ steps.PRE_FETCH_ESTIMATE.outputs.cookielist__database_last_page_estimate }}
     steps:
       - name: Checkout Git
         uses: actions/checkout@v4
-        
+
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          cache: "pip"
+          cache-dependency-path: |
+            requirements.txt
+            requirements.dev.txt
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Set Pre-fetch estimate
+        id: PRE_FETCH_ESTIMATE
+        run: python -m cookielist github_action_set_estimate
+
+  database:
+    name: Pre-fetch Database
+    runs-on: ubuntu-latest
+    needs: [db_setup, actions]
+    if: needs.actions.outputs.SYNC_DATABASE == 'true'
+    strategy:
+      matrix:
+        database: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    steps:
+      - name: Checkout Git
+        uses: actions/checkout@v4
+
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          cache: "pip"
+          cache-dependency-path: |
+            requirements.txt
+            requirements.dev.txt
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Pre-fetch Database Portion
+        run: python -m cookielist prefetch --group ${{ matrix.database }} --total ${{ needs.db_setup.outputs.LAST_PRE_FETCH_PAGE }}
+
+      - name: Test
+        if: always()
+        run: |
+          sudo apt install tree
+          tree .
+
+      - name: Upload Pre-fetch data
+        uses: actions/upload-artifact@v4
+        with:
+          name: prefetch-${{ matrix.database }}
+          if-no-files-found: warn
+          retention-days: 1
+          compression-level: 9
+          path: |
+            .cookielist.*/.prefetch/*.json
+            .cookielist/.prefetch/*.json
+
   publish:
     name: Publish To PythonAnywhere
     runs-on: ubuntu-latest
-    needs: [actions, database]
+    needs: [database, actions]
 
     steps:
       - name: Checkout Git
@@ -192,13 +254,22 @@ jobs:
           pip install -r requirements.dev.txt
           python -m playwright install --with-deps firefox
 
-      - name: Publish
-        shell: xvfb-run python {0}
+      - name: Download Pre-fetch data
+        if: needs.actions.outputs.SYNC_DATABASE == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          pattern: prefetch-*
+          merge-multiple: true
+          path: .prefetch
+
+      - name: Test
+        if: always()
         run: |
-          import sys, os
-          sys.path.append(os.getcwd())
-          from cookielist.synchronize import CookieListSynchronizer
-          CookieListSynchronizer().synchronize()
+          sudo apt install tree
+          tree .
+
+      - name: Publish
+        run: xvfb-run python -m cookielist synchronize
         env:
           DOTENV_KEY_CI: "${{ secrets.DOTENV_CI }}"
           DOTENV_KEY_STAGING: "${{ secrets.DOTENV_STAGING }}"

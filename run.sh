@@ -8,7 +8,7 @@ if [[ -z "$VIRTUAL_ENV" ]]; then
 fi
 
 function _cookielist_run_app {
-    python -m cookielist --app "$1"
+    python -m cookielist run --app "$1"
 }
 
 function run_cookielist {
