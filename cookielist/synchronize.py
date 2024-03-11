@@ -171,13 +171,13 @@ def prefetch(group: int, count: int):
         total[c * div + min(c, mod) : (c + 1) * div + min(c + 1, mod)]
         for c in range(PREFETCH_GROUP_COUNT)
     ][group - 1]
+    env.path("COOKIELIST_STATE_FOLDER").joinpath(".prefetch").mkdir(parents=True, exist_ok=True)
     with progress_bar as pbar:
         for page in pbar.track(pages):
             factor = (page - 1) * 6
             artifact = env.path("COOKIELIST_STATE_FOLDER").joinpath(
                 ".prefetch", f"database.fetch.{page}.json"
             )
-            print(str(artifact))
             response = client.query(
                 "DatabaseInfo",
                 sort="ID",
