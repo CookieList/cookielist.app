@@ -168,7 +168,6 @@ class AnilistClient:
         authorization: str = None,
         **variables,
     ) -> int:
-        return 100
         _has_next_page = True
         page = 0
 
