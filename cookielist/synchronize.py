@@ -172,19 +172,21 @@ def prefetch(group: int, count: int):
         for c in range(PREFETCH_GROUP_COUNT)
     ][group - 1]
     env.path("COOKIELIST_STATE_FOLDER").joinpath(".artifacts").mkdir(exist_ok=True)
-    for page in progress_bar.track(pages):
-        factor = (page - 1) * 6
-        artifact = env.path("COOKIELIST_STATE_FOLDER").joinpath(
-            ".artifacts", f"database.fetch.{page}.json"
-        )
-        response = client.query(
-            "DatabaseInfo",
-            sort="ID",
-            _page_1st=factor + 1,
-            _page_2nd=factor + 2,
-            _page_3rd=factor + 3,
-            _page_4th=factor + 4,
-            _page_5th=factor + 5,
-            _page_6th=factor + 6,
-        )
-        artifact.write_bytes(orjson.dumps(response))
+    with progress_bar as pbar:
+        for page in pbar.track(pages):
+            factor = (page - 1) * 6
+            artifact = env.path("COOKIELIST_STATE_FOLDER").joinpath(
+                ".artifacts", f"database.fetch.{page}.json"
+            )
+            print(str(artifact))
+            response = client.query(
+                "DatabaseInfo",
+                sort="ID",
+                _page_1st=factor + 1,
+                _page_2nd=factor + 2,
+                _page_3rd=factor + 3,
+                _page_4th=factor + 4,
+                _page_5th=factor + 5,
+                _page_6th=factor + 6,
+            )
+            artifact.write_bytes(orjson.dumps(response))
