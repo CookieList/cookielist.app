@@ -21,12 +21,14 @@
     </div>
     <i id="[_]-status" class="mt-px text-slate-500 dark:text-slate-400 md:text-sm">Initializing...</i>
     <div id="[_]-status.progress" class="flex items-center justify-center w-11/12"></div>
+    <span class="text-sm mt-1 text-slate-400 dark:text-slate-500" id="[_]-status.time_elapsed"></span>
   </div>
 </div>
 {% endblock content %}
 
 {% block scripts %}
 <script>
+  ElapseTimer()
   AnimateSparkle()
   $(document).ready(() => { FetchAndShowContent($.state.page.id) })
 </script>

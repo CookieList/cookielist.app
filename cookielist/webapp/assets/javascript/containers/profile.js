@@ -157,6 +157,10 @@ const custom_window_mustache_functions = {
 };
 
 function showCustomizeWindow() {
+  if ($.state.__is_badge_loading) {
+    $.notification("tell", "Please wait for the badge to be generated.");
+    return;
+  }
   $.id("[customize]-content").mustache($.id("[customize]@template.content"), {
     badge: $.state.__page_badge_data,
     options: $.state.__page_user_options,
@@ -228,6 +232,9 @@ function getCustomWindowArguments() {
 
 function updateBadgeArguments() {
   let arguments = getCustomWindowArguments();
+  $.id("[customize]-content.badge_image").html(
+    $.id("[customize]@template.loading_badge").html()
+  );
   $.state.__badge_ajax_request = $.ajax({
     url: _badge_uri($.state.options.badge_template, arguments),
     method: "GET",
@@ -239,7 +246,9 @@ function updateBadgeArguments() {
     },
     success: (response) => {
       $.state.__badge_ajax_request = null;
-      $.id("[customize]-content.badge_image").attr("src", response);
+      $.id("[customize]-content.badge_image").html(
+        $("<img>").attr("src", response)
+      );
     },
   });
   UpdateCustomizeWindowSnippet(arguments);

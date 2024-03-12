@@ -14,7 +14,7 @@
     <defs>
         {% if show_avatar == 'true' or show_avatar_glow == 'true' %}
         <pattern id="anilist-profile-picture" patternUnits="userSpaceOnUse" width="{{ _.avatar_size }}" height="{{ _.avatar_size }}">
-            <image href="{{ _.anilist_avatar_base_64 }}" x="0" y="0" width="{{ _.avatar_size }}" height="{{ _.avatar_size }}" />
+            <image href="{{ _.anilist_avatar_base_64() }}" x="0" y="0" width="{{ _.avatar_size }}" height="{{ _.avatar_size }}" />
         </pattern>
         {% endif %}
 

@@ -9,9 +9,10 @@
 <div class="flex flex-col justify-between h-full p-2 transition-colors bg-white dark:bg-slate-900">
 
   <div class="flex flex-col items-center mt-3">
-    <a href="{{ url_for('AboutView:index') }}">
-      <img src="{{ url_for('static', filename='images/favicon.webp') }}" class="p-1 mb-2 transition border border-dashed rounded-full bg-slate-50 dark:bg-slate-800 hover:shadow-md hover:bg-slate-100 hover:dark:bg-slate-700 hover:border-slate-500 w-11 border-slate-400 dark:border-slate-700 hover:dark:border-slate-600" alt="{{ SITE_NAME }} favicon" />
-    </a>
+    <span class="group rounded-full overflow-hidden w-11 h-11 cursor-pointer" onclick="searchUser('{{ session.id}}' || $.state.cookielist.ANILIST_DEV_ID, null)">
+      <img src="{{ url_for('static', filename='images/favicon.webp') }}" class="group-hover:hidden object-cover p-1 mb-2 transition border border-dashed rounded-full bg-slate-50 dark:bg-slate-800 hover:shadow-md hover:bg-slate-100 hover:dark:bg-slate-700 hover:border-slate-500 w-full h-full border-slate-400 dark:border-slate-700 hover:dark:border-slate-600"/>
+      <img src="{{ session.avatar or url_for('static', filename='images/favicon.webp') }}" class="hidden object-cover group-hover:block p-1 mb-2 transition border border-dashed rounded-full bg-slate-50 dark:bg-slate-800 hover:shadow-md hover:bg-slate-100 hover:dark:bg-slate-700 hover:border-slate-500 w-full h-full border-slate-400 dark:border-slate-700 hover:dark:border-slate-600"/>
+    </span>
 
     <hr class="m-[3px] transition-colors dark:border-slate-800 border-slate-200 w-8" />
 

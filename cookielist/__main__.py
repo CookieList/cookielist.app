@@ -1,3 +1,4 @@
+from email.policy import default
 import logging
 import re
 import socket
@@ -185,7 +186,10 @@ def run(app: str):
             cookie_app.run()
             
 @cli.command()
-def synchronize():
+@click.option('--db-last-page', type=int, default=None)
+def synchronize(db_last_page: int):
+    if db_last_page is None:
+        env.environ["DATABASE_LAST_PAGE_ESTIMATE"] = str(db_last_page)
     from cookielist.synchronize import CookieListSynchronizer
     CookieListSynchronizer().synchronize()
     

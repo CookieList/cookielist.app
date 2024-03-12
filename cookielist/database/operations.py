@@ -69,9 +69,12 @@ class DataBaseOperations:
             progress.TimeRemainingColumn(),
             refresh_per_second=1 / 8 if env.bool("GITHUB_ACTIONS", False) else 10,
         )
-        last_al_page = self.anilist.estimate_end_page_of_query(
-            "LastPageEstimate", "page"
-        )
+        
+        last_al_page = env.int("DATABASE_LAST_PAGE_ESTIMATE", None)
+        if last_al_page is None:
+            last_al_page = self.anilist.estimate_end_page_of_query(
+                "LastPageEstimate", "page"
+            )
 
         with progress_bar as pbar:
             for page in pbar.track(range(1, int(last_al_page / 6) + 1)):

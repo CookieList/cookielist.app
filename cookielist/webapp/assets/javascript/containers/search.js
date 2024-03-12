@@ -117,8 +117,11 @@ function searchUser(id, name) {
     $.id("[container]-search@template.pre_search_view"),
     {
       user: name,
+      id: id,
     }
   );
+  $.state.__LASTContainerID = null;
+  ElapseTimer();
   AnimateSparkle();
   FetchAndShowContent(id);
 }

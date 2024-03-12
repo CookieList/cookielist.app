@@ -28,17 +28,17 @@ function calculateFetchPages(response) {
 }
 
 function FetchAndShowContent(pageUserId) {
-  if (true) {
-    $.get({
-      url: '/data.json',
-      success: (cookielistData) => {
-        $.cookielist($.state.endpoints.api, cookielistData, (result) => {
-          $.id("[container]").html(result);
-        });
-      }
-    })
-    return;
-  }
+  // if (true) {
+  //   $.get({
+  //     url: '/data.json',
+  //     success: (cookielistData) => {
+  //       $.cookielist($.state.endpoints.api, cookielistData, (result) => {
+  //         $.id("[container]").html(result);
+  //       });
+  //     }
+  //   })
+  //   return;
+  // }
   var cookielistData = {
     user: null,
     list: [],
@@ -55,10 +55,13 @@ function FetchAndShowContent(pageUserId) {
   $.id("[_]-status").html("Accruing Task Information");
   $.anilist($.state.graphql.initialize, { userId: pageUserId }, (response) => {
     cookielistData.user = response.data.User;
+    if ($.type($.state.page.user) == "null") {
+      $.state.page.user = response.data.User.name;
+    }
     $.id("[_]-status").html("Fetching Media Lists");
     $.id("[_]-status.name").html("@" + response.data.User.name);
 
-    document.title = response.data.User.name + " - " + $.state.cookielist.SITE
+    document.title = response.data.User.name + " - " + $.state.cookielist.SITE;
 
     const fetch_page_count = calculateFetchPages(response);
     const current_page = 1;
@@ -109,4 +112,28 @@ function FetchAndShowContent(pageUserId) {
     }
     fetch_page(current_page);
   });
+}
+
+function ElapseTimer() {
+  const timer = $.id("[_]-status.time_elapsed");
+  var start = new Date().getTime();
+  const increment = (amount_ms) => {
+    var seconds = String(Math.round((amount_ms / 1000) * 100) / 100);
+    if (!seconds.includes(".")) {
+      seconds += ".00";
+    }
+    if (seconds.split(".")[1].length == 1) {
+      seconds += "0";
+    }
+    if ($.id("[_]@elapsed").length > 0) {
+      $.id("[_]@elapsed").html("generated in " + seconds + " seconds");
+      clearInterval(timer_interval);
+      return;
+    }
+    timer.html(seconds + " seconds elapsed");
+  };
+  const timer_interval = setInterval(() => {
+    var now = new Date().getTime();
+    increment(now - start);
+  }, 50);
 }

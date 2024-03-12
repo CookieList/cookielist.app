@@ -212,7 +212,7 @@ jobs:
   publish:
     name: Publish To PythonAnywhere
     runs-on: ubuntu-latest
-    needs: [database, actions]
+    needs: [db_setup, database, actions]
 
     steps:
       - name: Checkout Git
@@ -282,7 +282,7 @@ jobs:
           tree -a
 
       - name: Publish
-        run: xvfb-run python -m cookielist synchronize
+        run: xvfb-run python -m cookielist synchronize --db-last-page ${{ needs.db_setup.outputs.LAST_PRE_FETCH_PAGE }}
         env:
           DOTENV_KEY_CI: "${{ secrets.DOTENV_CI }}"
           DOTENV_KEY_STAGING: "${{ secrets.DOTENV_STAGING }}"

@@ -20,7 +20,8 @@ app.config["COMPRESS_MIMETYPES"] = [
     "text/html",
 ]
 app.config["COMPRESS_BR_LEVEL"] = 10
-app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
+app.config["SQLALCHEMY_POOL_RECYCLE"] = 280
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle' : 280}
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["FLASK_DEBUG"] = env.bool("FLASK_DEBUG")
 
@@ -41,6 +42,8 @@ CORS(app)
 response = ResponseFormats()
 
 with app.app_context():
+    if env.bool("COOKIELIST_DEBUG"):
+        db.drop_all()
     db.create_all()
 
 
