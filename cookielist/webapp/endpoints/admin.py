@@ -61,8 +61,8 @@ class AdminView(FlaskView):
     @route("synchronize", methods=["POST"])
     @authorize
     def synchronize(self):
-        path = Path(f"/home/{env.string('PA_USERNAME')}/app/.synchronize.archive.7z")
-        if path.is_file():
+        path = Path(f"/home/{env.string('PA_USERNAME')}/{env.string('PA_SOURCE_FOLDER')}/.synchronize.archive.7z")
+        if path.is_file() and path.exists():
             state = Path(env.string("COOKIELIST_STATE_FOLDER")).resolve()
             if state.exists():
                 shutil.rmtree(str(state), ignore_errors=True)
