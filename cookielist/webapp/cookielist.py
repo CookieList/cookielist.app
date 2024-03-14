@@ -9,7 +9,7 @@ import flask_compress
 import flask_debugtoolbar
 import humanfriendly
 import orjson
-from flask import Flask, g, render_template, session
+from flask import Flask, g, render_template, session, abort, request
 from flask.json.provider import JSONProvider
 from flask_cors import CORS
 from jinja2_env import EnvExtension
@@ -35,7 +35,7 @@ class ORJSONProvider(JSONProvider):
 
 app = Flask(
     "cookielist",
-    static_url_path="",
+    static_url_path="/static",
     static_folder=env.path("COOKIELIST_STATE_FOLDER").resolve().joinpath("assets"),
     template_folder=Path(__file__).parent.joinpath("templates"),
 )
@@ -70,7 +70,7 @@ CORS(app, origins=env.list("COOKIELIST_BADGE_SERVERS"))
 flask_minify.Minify(app)
 app.json = ORJSONProvider(app)
 
-if env.bool('FLASK_DEBUG'):
+if env.bool("FLASK_DEBUG"):
     flask_debugtoolbar.DebugToolbarExtension(app)
 
 asset = WebAppAssets(app, Path(__file__).parent.joinpath("assets"))
@@ -101,6 +101,7 @@ app.jinja_env.globals.update(
         human=humanfriendly,
         static=WebAppJinjaTags.static_resource_read,
         any=any,
+        env=env,
         SITE_NAME=env.string("WEBAPP_NAME"),
         COOKIEDB_VERSION="1234939792",
         TZINFO=sorted(zoneinfo.available_timezones()),
@@ -111,7 +112,6 @@ app.jinja_env.globals.update(
         CL_ADMIN_TOKEN=env["CL_ADMIN_TOKEN"],
     )
 )
-
 
 endpoints.UserPageView.register(app)
 endpoints.BadgeView.register(app)
@@ -137,6 +137,18 @@ def before_request():
             session["session"] = "anonymous-" + str(uuid.uuid4()).replace("-", "")
 
     g.session_id = session["session"]
+
+    if env.bool("COOKIELIST_DEBUG") and env.string(
+        "COOKIELIST_DEBUG_PASSWORD"
+    ) != session.get("__debug_password__", ""):
+        if request.endpoint not in [
+            "static",
+            "AdminView:access_debug_mode",
+            "AboutView:favicon_ico",
+            "AboutView:robots_txt",
+        ]:
+            return
+            return abort(401)
 
 
 @app.after_request
@@ -188,4 +200,4 @@ app.register_error_handler(Exception, error)
 app.register_error_handler(500, error)
 
 if app.debug:
-    asset.build() 
+    asset.build()

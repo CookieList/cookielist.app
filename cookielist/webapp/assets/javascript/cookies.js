@@ -1,6 +1,6 @@
 function CookiePopup(choice) {
   if (choice === "yes") {
-    $.storage("__COOKIES", "allowed");
+    $.storage("__cookies", "allowed");
     if ($.id("[container]").length) {
       $.id("[_]-cookies-notice").addClass(
         "animate__animated animate__fadeOutLeft animate__faster"
@@ -12,7 +12,7 @@ function CookiePopup(choice) {
       $.refresh();
     }
   } else if (choice === "no") {
-    $.storage("__COOKIES", "no");
+    $.storage("__cookies", "no");
     $.id("[container]").remove();
     $.id("[_]-cookies-notice")
       .removeClass("hidden")

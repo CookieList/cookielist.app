@@ -830,18 +830,6 @@ function ShowModal(mediaId, modalTitle, index = null) {
         setModalContent(mediaId, "overview");
       }, 50);
     });
-
-    // $.state._modal_response[mediaId] = __response.data.Media;
-    // $.id("[modal]-content").mustache(
-    //   $.id("[container]-lists@template.modal_view"),
-    //   {
-    //     fn: $.state._modal_mustache_functions,
-    //     media: $.state._modal_response[mediaId],
-    //     history: $.state._modal_window_history.slice(0, -1),
-    //     current: $.state._modal_window_history.at(-1),
-    //   }
-    // );
-    // setModalContent(mediaId, "overview");
   }
 }
 

@@ -114,6 +114,30 @@ function InitializeCommentsSection(activity_id) {
       { activity: activity_id, page: $.state.__comments.page + 1 },
       (response) => {
         $.state.__comments.details = response.data.activity;
+        if (response.data.activity.type === "MESSAGE") {
+          $.state.__comments.details.userId =
+            response.data.activity.messengerId;
+          $.state.__comments.details.text = response.data.activity.message;
+          $.state.__comments.details.user = response.data.activity.messenger;
+        }
+        if (
+          response.data.activity.type === "ANIME_LIST" ||
+          response.data.activity.type === "MANGA_LIST" ||
+          response.data.activity.type === "MEDIA_LIST"
+        ) {
+          response.data.activity["_fn_mediaTitle"] = function () {
+            return $.state._modal_mustache_media_title_functions[
+              $.state.options.media_language
+            ](this.media.title);
+          };
+          response.data.activity["_fn_mediaStatus"] = function () {
+            return this.status.charAt(0).toUpperCase() + this.status.slice(1)
+          }
+          $.state.__comments.details.text = $.mustache(
+            $.id("[container]-comments@template.list_activity"),
+            response.data.activity
+          );
+        }
         $.state.__comments.comments.push(
           ...response.data.replies.activityReplies
         );

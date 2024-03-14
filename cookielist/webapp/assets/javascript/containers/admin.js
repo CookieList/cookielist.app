@@ -1,3 +1,6 @@
+$.state.__admin_editor = null;
+$.state.__admin_option_yaml_mapping = {};
+
 function AdminLogin() {
   const username = $.id("[container]-admin.username");
   const password = $.id("[container]-admin.password");
@@ -47,40 +50,144 @@ function AdminLogin() {
   }
 }
 
-function AdminContentFetch(URL, ResponseId, method = "GET") {
-  var __allowed = true;
+ADMIN_OPTIONS = [
+  {
+    route: "/ping",
+    description: "Ping Server",
+    yaml:
+      "# Method 'GET'\n" +
+      "# This is a test to check if the server is up and running.\n",
+  },
+  {
+    route: "/about_system_statistics",
+    description: "System Statistics",
+    yaml:
+      "# Method 'GET'\n" +
+      "# This will return the statistics of the system on which server is running.\n",
+  },
+  {
+    route: "/access_debug_mode",
+    description: "Set Debug Mode Password",
+    yaml:
+      "# Method 'GET'\n" +
+      "# This will set the password for debug mode in current session.\n" +
+      "\n" +
+      "# Method 'POST'\n" +
+      "# This will check password.\n" +
+      "\n" +
+      'password: "<NEW_PASSWORD>"\n' +
+      "\n" + 
+      "# Method 'DELETE'\n" +
+      "# This will remove the password for debug mode in current session.\n",
+  },
+];
 
-  if (method !== "GET") {
-    __allowed = confirm("POST:  " + window.location.origin + URL);
-  }
+function InitializeAdminSystem() {
+  $.state.__admin_editor = ace.edit($.id("[container]-admin.editor").get(0));
+  $.state.__admin_editor.setTheme("ace/theme/one_dark");
+  $.state.__admin_editor.session.setMode("ace/mode/yaml");
+  $.state.__admin_editor.setShowPrintMargin(false);
 
-  if (__allowed) {
-    const output = $.id("[container]-admin@response." + ResponseId);
-    output.html($.id("[container]-admin@template.loading").html());
-    $.cookielist(
-      window.location.origin + URL,
-      {},
-      (response) => {
-        if (response.json) {
-          response["json"] = hljs.highlight(
-            JSON.stringify(response.json, null, "  "),
-            { language: "json", ignoreIllegals: true }
-          ).value;
-        }
-        if (response.markdown) {
-          response["markdown"] = hljs.highlight(response.markdown, {
-            language: "markdown",
-            ignoreIllegals: true,
-          }).value;
-        }
-        output.mustache(
-          $.id("[container]-admin@template.admin_api_response"),
-          response
-        );
-      },
-      (method = method)
+  var servers = [window.location.host];
+  servers.push(...$.state.cookielist.BADGE_SERVERS);
+  const server_selection = $.id("[container]-admin.servers");
+  $.each(servers, (index, server) => {
+    server_selection.append(
+      $("<option></option>")
+        .attr("value", window.location.protocol + "//" + server + "/_")
+        .text(server)
     );
+  });
+
+  const option_selection = $.id("[container]-admin.options");
+  $.each(ADMIN_OPTIONS, (index, option) => {
+    $.state.__admin_option_yaml_mapping[option.route] = option.yaml.trim();
+    option_selection.append(
+      $("<option></option>")
+        .attr("value", option.route)
+        .text("Preset: " + option.description)
+    );
+  });
+
+  option_selection.on("change", () => {
+    const route = option_selection.val();
+    const yaml = $.state.__admin_option_yaml_mapping[route];
+    $.id("[container]-admin.route").val(route);
+    $.state.__admin_editor.setValue(yaml, -1);
+    $.storage("__last_select_admin_option", route);
+  });
+
+  option_selection
+    .val(
+      $.storage("__last_select_admin_option")
+        ? $.storage("__last_select_admin_option")
+        : ADMIN_OPTIONS[0].route
+    )
+    .trigger("change");
+}
+
+function AdminContentFetch(method) {
+  var __allowed = true;
+  var URL = $.id("[container]-admin.servers").val();
+  const route = $.id("[container]-admin.route").val().trim();
+  if (route) {
+    URL += route.startsWith("/") ? route : "/" + route;
   } else {
-    $.notification('inform', 'Operation Canceled')
+    $.notification("failed", "Route can't be empty");
+    return;
   }
+  var parameters = {};
+  try {
+    var yaml = $.state.__admin_editor.getValue().trim();
+    if (yaml) {
+      parameters = jsyaml.load(yaml, {
+        schema: jsyaml.JSON_SCHEMA,
+        json: true,
+      });
+    }
+  } catch (error) {
+    $.notification("failed", "Invalid YAML data");
+    return;
+  }
+  if (method === "GET") {
+    if (!route.includes("?")) {
+      URL += "?";
+    } else {
+      if (!route.endsWith("&")) {
+        URL += "&";
+      }
+    }
+    URL += $.param(parameters);
+  }
+
+  const output = $.id("[container]-admin@response");
+  output.html($.id("[container]-admin@template.loading").html());
+  $.cookielist(
+    URL,
+    method === "GET" ? {} : parameters,
+    (response) => {
+      if (response.json) {
+        response["json"] = hljs.highlight(
+          JSON.stringify(response.json, null, "  "),
+          { language: "json", ignoreIllegals: true }
+        ).value;
+      }
+      if (response.markdown) {
+        response["markdown"] = hljs.highlight(response.markdown, {
+          language: "markdown",
+          ignoreIllegals: true,
+        }).value;
+      }
+      output.mustache(
+        $.id("[container]-admin@template.admin_api_response"),
+        response
+      );
+    },
+    (jqXHR) => {
+      output.mustache($.id("[container]-admin@template.admin_api_error"), {
+        status: jqXHR.status,
+      });
+    },
+    method
+  );
 }

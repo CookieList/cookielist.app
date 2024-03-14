@@ -111,12 +111,12 @@
   </div>
   <div class="w-full mt-[285px] md:mt-[200px] md:text-sm text-pretty px-6 py-2 dark:[&_i]:text-pink-400/90 [&_i]:text-pink-500/90 [&_i]:font-bold [&>i]:italic [&_i]:px-px">
     The <i class="lowercase"><% #fn.toHeading %><% media.type %><% /fn.toHeading %></i> (<i><% #fn.toHeading %><% media.format %><% /fn.toHeading %></i>) <i><% fn.mediaTitle %></i>
-    <span style-hidden="<% #fn.styleHidden %><% media.startDate.month %><% media.startDate.day %><% media.startDate.year %><% /fn.styleHidden %>">started on <% #media.season.length %><i><% #fn.toHeading %><% media.season %><% /fn.toHeading %></i> of<% /media.season.length %> <i><% #fn.monthIntToName %><% media.startDate.month %><% /fn.monthIntToName %><% #media.startDate.day %> <% media.startDate.day %><% /media.startDate.day %><% #media.startDate.year %>, <% media.startDate.year %><% /media.startDate.year %></i></span>
+    <span style-hidden="<% #fn.styleHidden %><% media.startDate.month %><% media.startDate.day %><% media.startDate.year %><% /fn.styleHidden %>"> started on <% #media.season.length %><i><% #fn.toHeading %><% media.season %><% /fn.toHeading %></i> of<% /media.season.length %> <i><% #fn.monthIntToName %><% media.startDate.month %><% /fn.monthIntToName %><% #media.startDate.day %> <% media.startDate.day %><% /media.startDate.day %><% #media.startDate.year %>, <% media.startDate.year %><% /media.startDate.year %></i></span>
     is <i><% #fn.toHeading %><% media.status %><% /fn.toHeading %></i>
     <span style-hidden="<% #fn.styleHidden %><% media.nextAiringEpisode.airingAt %><% /fn.styleHidden %>">with its next episode <i>#<% media.nextAiringEpisode.episode %></i> airing in <i><% fn._context_nextAiring_timeRemaining %></i></span>.
     its a <% #media.isAdult %><i>R-18</i><% /media.isAdult %> series
     <% #media.averageScore %>with the average scroe of <i><% media.averageScore %>%</i><% /media.averageScore %>
-    , under the Genres of <i class="last:[&_span]:hidden"><% #media.genres %><span><% . %></span><span>, </span><% /media.genres %></i>
+    <% #media.genres.length %>, under the Genres of <% /media.genres.length %><i class="last:[&_span]:hidden"><% #media.genres %><span><% . %></span><span>, </span><% /media.genres %></i>
     <% #media.source %>addapted from a <i><% #fn.toHeading %><% media.source %><% /fn.toHeading %></i><% /media.source %>
     <% #media.episodes %>and has <i><% media.episodes %></i> episodes<% /media.episodes %> <% #media.duration %> <% ^media.episodes %>and has episodes<% /media.episodes %> of duration <i><% media.duration %> minutes</i> each<% /media.duration %>
     <% #media.chapters %>and has <i><% media.chapters %></i> chapters<% /media.chapters %> <% #media.volumes %>comprising of <i><% media.volumes %></i> volumes<% /media.volumes %>

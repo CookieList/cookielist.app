@@ -8,7 +8,7 @@ function AjaxError(jqXHR, textStatus, errorThrown) {
   } else if (jqXHR.status === 500) {
     msg = "Internal Server Error";
   } else if (textStatus === "parsererror") {
-    msg = "Requested JSON Parse Failed";
+    msg = "Request JSON Parse Failed";
   } else if (textStatus === "timeout") {
     msg = "Request Timed Out, Slow Internet Connection";
   } else if (jqXHR.status === 401) {

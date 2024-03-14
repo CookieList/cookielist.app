@@ -49,6 +49,10 @@
   <div class="flex items-center justify-center w-full pb-12 mt-4" id="[container]-comments.loading">{% icon "arrow-path", class="w-8 h-8 md:w-6 md:h-6 animate-spin stroke-slate-400 dark:stroke-slate-500" %}</div>
 </template>
 
+<template id="[container]-comments@template.list_activity">
+  <p><i><% _fn_mediaStatus %></i> <b><% progress %></b> <i>of</i> <a href="<% media.siteUrl %>"><% _fn_mediaTitle %></a></p>
+</template>
+
 
 <template id="[container]-comments">
   <div class="flex flex-col w-full animate__animated animate__fadeIn" style="--animate-duration: 0.3s;">

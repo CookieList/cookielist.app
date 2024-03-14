@@ -24,7 +24,7 @@ function SwapContainer(ContainerID) {
         !$.id("[_]-search").hasClass("animate__fadeInUp")
       ) {
         $.id("[_]-search")
-          .removeClass("animate__animated animate__fadeOutDown")
+          .removeClass("animate__animated animate__fadeOutDown hidden")
           .addClass("animate__animated animate__fadeInUp");
       }
     } else {
@@ -35,7 +35,7 @@ function SwapContainer(ContainerID) {
       ) {
         $.state.__search_activated = true;
         $.id("[_]-search")
-          .removeClass("animate__animated animate__fadeInUp")
+          .removeClass("animate__animated animate__fadeInUp hidden")
           .addClass("animate__animated animate__fadeOutDown");
       } else {
         $.state.__search_activated = false || $.state.__search_activated;
@@ -197,7 +197,6 @@ function createSearchDatabase() {
     $.state.__search_database = {};
     const raw_db = JSON.parse($.id("[search]@data").html());
     for (const [mediaType, nameIdPair] of Object.entries(raw_db)) {
-      console.log(mediaType);
       $.state.__search_database[mediaType.toLowerCase()] = new Fuse(
         nameIdPair,
         {
@@ -252,15 +251,15 @@ function initializeListSearch() {
         .removeClass("hidden");
     }
 
-    $.id("[_]-search.content").on("focus", () => {
+    $.id("[_]-search.content").on("focus.search", () => {
       $.state.__search_session.focus = true;
     });
 
-    $.id("[_]-search.content").on("blur", () => {
+    $.id("[_]-search.content").on("blur.search", () => {
       $.state.__search_session.focus = false;
     });
 
-    $.id("[_]-search.lock").on("click", () => {
+    $.id("[_]-search.lock").on("click.search", () => {
       if ($.state.__search_locked === "locked") {
         $.state.__search_locked = false;
       } else {
@@ -278,12 +277,12 @@ function initializeListSearch() {
       }
       if ($.state.__search_session.update === null) {
         $.id("[_]-search")
-          .removeClass("animate__animated animate__fadeInUp")
+          .removeClass("animate__animated animate__fadeInUp hidden")
           .addClass("animate__animated animate__fadeOutDown");
       }
     });
 
-    $("[data-search-filter-class]").on("click", function () {
+    $("[data-search-filter-class]").on("click.search", function () {
       const element = $(this);
       const active_filter =
         element.attr("data-search-filter-active") === "true" ? false : true;
@@ -297,7 +296,7 @@ function initializeListSearch() {
       element.attr("data-search-filter-active", String(active_filter));
     });
 
-    $(document).on("keyup", function (e) {
+    $(document).on("keyup.search", function (e) {
       if (
         ($.state.__LASTContainerID === "anime" ||
           $.state.__LASTContainerID === "manga" ||
@@ -340,7 +339,6 @@ function initializeListSearch() {
             }
           }
         } else {
-          // console.log(e.which, e.key);
           if (
             !!!~"ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 =-,.'[] \":*!@#&_?(){}".indexOf(
               e.key
@@ -383,7 +381,7 @@ function initializeListSearch() {
           const _search_menu = $.id("[_]-search");
           if (!_search_menu.hasClass("animate__fadeOutDown")) {
             _search_menu
-              .removeClass("animate__animated animate__fadeInUp")
+              .removeClass("animate__animated animate__fadeInUp hidden")
               .addClass("animate__animated animate__fadeOutDown");
           }
           return;
@@ -453,6 +451,11 @@ function initializeListSearch() {
               _search_menu
                 .removeClass("animate__animated animate__fadeInUp")
                 .addClass("animate__animated animate__fadeOutDown");
+              if (_search_menu.hasClass("hidden")) {
+                setTimeout(() => {
+                  _search_menu.removeClass("hidden")
+                }, 220)
+              }
             } else {
               if (_is_menu_hovered || $.state.__search_session.focus) {
                 $.state.__search_session.update = _timestamp - THRESHOLD / 2;

@@ -124,7 +124,7 @@
     </div> #}
 
     <div class="flex flex-col w-full p-2 my-2 transition-colors border-2 border-dashed rounded bg-slate-50 dark:bg-slate-800 dark:border-slate-700">
-      <span class="p-1 m-1 font-bold text-slate-400 dark:text-slate-600">Version: <span class="text-slate-500 dark:text-slate-400">{% env 'COOKIELIST_VERSION' %}.</span><span class="italic text-pink-500 uppercase">{% env 'COOKIELIST_SUB_VERSION' %}</span>@{{ COOKIEDB_VERSION }}</span>
+      <span class="p-1 m-1 font-bold text-slate-400 dark:text-slate-600">Version: <span class="text-slate-500 dark:text-slate-400">{{ env.string('COOKIELIST_VERSION') }}.</span><span class="italic text-pink-500 uppercase">{{ env.string('COOKIELIST_SUB_VERSION') }}</span>@{{ COOKIEDB_VERSION }}</span>
     </div>
 
     <br class="my-2" />

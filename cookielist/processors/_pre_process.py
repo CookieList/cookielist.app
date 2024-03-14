@@ -84,6 +84,7 @@ class CookieListOptions:
         "badgeOptions",
         "isBadgeServerCustom",
         "userOptionFormatted",
+        "siteTheme"
     )
     timezoneName: str
     timeFormatString: str
@@ -96,6 +97,7 @@ class CookieListOptions:
     isBadgeServerCustom: bool
     badgeOptions: dict[str, dict[str, str]]
     userOptionFormatted: None | dict[str, str]
+    siteTheme: Literal["light", "dark"]
 
 
 @dataclass(repr=False, eq=False, frozen=True)
@@ -143,7 +145,7 @@ def _format_user_settings(options: CookieListOptions, data: dict[str, dict]) -> 
 
 def _sanitize_options(data: dict[str, dict]) -> dict:
     options: dict[str, str | int | list[int | str]] = JsonToken.find_and_decode(
-        data["user"]["about"]
+        data["user"]["about"] or ""
     )
     sanitized = {}
 
@@ -171,7 +173,7 @@ def _sanitize_options(data: dict[str, dict]) -> dict:
     sanitized["badgeOptions"] = defaultdict(list)
     for query in re.findall(
         rf"https?://(?:{sanitized['badgeServer']})/(?:{data['user']['id']}).svg(?:\?|/\?)(.*?)[\)|\s]",
-        data["user"]["about"],
+        data["user"]["about"] or "",
     ):
         query_parsed = parse.parse_qsl(query)
         query_dict = dict(query_parsed)
@@ -195,6 +197,7 @@ def process(
         dateFormatString=data["options"]["dateFormatString"],
         firstDayOfWeek=data["options"]["firstDayOfWeek"],
         mediaTitleLanguage=data["options"]["mediaTitleLanguage"],
+        siteTheme=data["options"]["siteTheme"],
         **_sanitize_options(data),
     )
     Options.userOptionFormatted = _format_user_settings(Options, data)

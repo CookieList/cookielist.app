@@ -142,7 +142,7 @@
       data: JSON.stringify({ query: query, variables: variables }),
       error: (jqXHR, textStatus, errorThrown) => {
         AjaxError(jqXHR, textStatus, errorThrown);
-        onerror();
+        onerror(jqXHR);
       },
       success: onsuccess,
     });
@@ -168,7 +168,7 @@
       data: JSON.stringify(data),
       error: (jqXHR, textStatus, errorThrown) => {
         AjaxError(jqXHR, textStatus, errorThrown);
-        onerror();
+        onerror(jqXHR);
       },
       success: onsuccess,
     });

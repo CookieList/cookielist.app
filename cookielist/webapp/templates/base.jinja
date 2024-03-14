@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="w-full overflow-hidden">
+<html lang="en" class="w-full overflow-hidden {{ session['__site_theme'] }}">
 
   <!--
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣤⣤⣤⣤⣄⣀⠀⠀⠉⠣⠙⣳⢤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -49,16 +49,17 @@
     <noscript>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap" />
     </noscript>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-dark.min.css">
     {% assets 'SASS' %}
     <link rel="stylesheet" href="$ASSET_URL?$TIME" />{% endassets %}
     {{ "<style>" }}{% include "style.jinja.css" %}{{ "</style>" }}
+    <link rel="manifest" href="{{ url_for('AboutView:webmanifest') }}" crossorigin="use-credentials">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://unpkg.com/mustache@4.2.0/mustache.js"></script>
     {# <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> #}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
@@ -66,6 +67,9 @@
     <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jsonurl/jsonurl@1.1.7" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.32.7/src-min-noconflict/ace.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.32.7/src-min-noconflict/theme-one_dark.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.32.7/src-min-noconflict/mode-yaml.js" crossorigin="anonymous"></script>
     {# <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> #}
 
     <title>

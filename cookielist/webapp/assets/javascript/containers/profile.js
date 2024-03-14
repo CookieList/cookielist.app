@@ -32,11 +32,11 @@ function InitializeProfilePage() {
   if ($.state.__page_user_options.badgeTemplate) {
     badge_template_selection.val($.state.__page_user_options.badgeTemplate);
     changeBadgeTemplate($.state.__page_user_options.badgeTemplate);
-  } else if ($.storage("__badge_template")) {
-    var template = $.storage("__badge_template");
+  } else if ($.storage("__last_select_badge_template")) {
+    var template = $.storage("__last_select_badge_template");
     badge_template_selection.val(template);
     changeBadgeTemplate(template);
-    $.storage("__badge_template", template);
+    $.storage("__last_select_badge_template", template);
   } else {
     badge_template_selection.val($.state.cookielist.BADGE_DEFAULT);
     changeBadgeTemplate($.state.cookielist.BADGE_DEFAULT);
@@ -217,8 +217,8 @@ function _delay_badge_update(fn, ms = 500) {
 
 function getCustomWindowArguments() {
   var arguments = {};
-  arguments["template"] = $.storage("__BADGE_TEMPLATE")
-    ? $.storage("__BADGE_TEMPLATE")
+  arguments["template"] = $.storage("__last_select_badge_template")
+    ? $.storage("__last_select_badge_template")
     : $.state.cookielist.BADGE_DEFAULT;
 
   $("[data-badge-argument]").each((index, element) => {

@@ -15,9 +15,12 @@ $.state.page = {
 };
 
 $.state.cookielist = {
-  AL_CLIENT_ID: "{% env 'AL_CLIENT_ID' %}",
-  ANILIST_DEV_ID: "{% env 'ANILIST_DEV_ID' %}",
-  BADGE_DEFAULT: "cookielist-default",
+  AL_CLIENT_ID: "{{ env.int('AL_CLIENT_ID') }}",
+  ANILIST_DEV_ID: "{{ env.int('ANILIST_DEV_ID') }}",
+  BADGE_DEFAULT: "{{ env.string('COOKIELIST_DEFAULT_BADGE_TEMPLATE') }}",
+  BADGE_SERVERS: "{{ env.string('COOKIELIST_BADGE_SERVERS') }}"
+    .replace(/\s/g, "")
+    .split(","),
   SITE: "{{ SITE_NAME }}",
 };
 
@@ -41,15 +44,16 @@ $.state.options = {
   popup_method: $.storage("__popup_method")
     ? $.storage("__popup_method")
     : "popup",
-  badge_template: $.storage("__badge_template")
-    ? $.storage("__badge_template")
+  badge_template: $.storage("__last_select_badge_template")
+    ? $.storage("__last_select_badge_template")
     : $.state.cookielist.BADGE_DEFAULT,
 };
 
 $.state.endpoints = {
-  api: window.location.origin + "{{ url_for('ApiView:process_data') }}",
-  register: window.location.origin + "{{ url_for('ApiView:register_user') }}",
+  api: window.location.origin + "{{ url_for('ApiView:process') }}",
+  register: window.location.origin + "{{ url_for('ApiView:login') }}",
   index: window.location.origin + "{{ url_for('AboutView:index') }}",
+  manifest: window.location.origin + "{{ url_for('AboutView:webmanifest') }}",
 };
 
 $.state.graphql = {
@@ -72,18 +76,18 @@ if ($.storage("__FLASH_MODE")) {
   $.storage("__FLASH_MESSAGE", null);
 }
 
-CookiePopup($.storage("__COOKIES"));
+CookiePopup($.storage("__cookies"));
 
-if (!$.storage("__THEME")) {
+if (!$.storage("__site_theme")) {
   if (
     window.matchMedia &&
     window.matchMedia("(prefers-color-scheme: dark)").matches
   ) {
-    $.storage("__THEME", "dark");
+    $.storage("__site_theme", "dark");
   } else {
-    $.storage("__THEME", "light");
+    $.storage("__site_theme", "light");
   }
-  SetTheme($.storage("__THEME"));
+  SetTheme($.storage("__site_theme"));
 }
 
 if (!$.storage("__timezone")) {
@@ -95,3 +99,9 @@ $(document).keydown(function (e) {
     SetTheme("toggle");
   }
 });
+
+if (navigator.serviceWorker) {
+  $(document).ready(() => {
+    navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}", { scope: "/" });
+  });
+}

@@ -54,7 +54,7 @@ function SetTheme(Theme) {
   } else {
     change = Theme;
   }
-  $.storage("__THEME", change);
+  $.storage("__site_theme", change);
   if (change === "dark") {
     HTML.addClass("dark");
   } else {
