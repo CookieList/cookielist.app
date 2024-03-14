@@ -24,9 +24,9 @@
               <span class="w-full text-xs font-bold text-slate-800 dark:text-slate-300">{{ media.mediaTitle }}</span>
               <div class="flex">
                 <span class="px-1.5 mx-px my-1 text-xs font-bold rounded text-slate-500 bg-slate-50 dark:bg-slate-800 w-fit">EP{{ media.nextAiringEpisode }}</span>
-                <a class="p-px px-1 my-1 mr-1 transition ease-in rounded-md opacity-0 group-hover:opacity-100 md:opacity-100 bg-slate-950/80" onclick="event.stopPropagation();$.popup('{{ media.mediaAniListSiteUrl }}')">{% icon 'images/anilist.svg', class="w-4 h-4" %}</a>
+                <a class="p-px px-1 my-1 mr-1 transition ease-in rounded-md opacity-0 group-hover:opacity-100 md:opacity-100 bg-slate-950/80" onclick="event.stopPropagation();$.popup('{{ media.mediaAniListSiteUrl }}')">{% icon 'images/vectors/anilist.svg', class="w-4 h-4" %}</a>
                 {% if media.mediaMyAnimeListSiteUrl is not none %}
-                <a class="transition ease-in opacity-0 group-hover:opacity-100 md:opacity-100 p-px px-1 rounded-md bg-[#2e51a2] my-1" onclick="event.stopPropagation();$.popup('{{ media.mediaMyAnimeListSiteUrl }}')">{% icon 'images/myanimelist.svg', class="w-4 h-4" %}</a>
+                <a class="transition ease-in opacity-0 group-hover:opacity-100 md:opacity-100 p-px px-1 rounded-md bg-[#2e51a2] my-1" onclick="event.stopPropagation();$.popup('{{ media.mediaMyAnimeListSiteUrl }}')">{% icon 'images/vectors/myanimelist.svg', class="w-4 h-4" %}</a>
                 {% endif %}
               </div>
               <span class="mx-px text-xs italic dark:text-slate-400 text-slate-700">{{ media.timeUntilAiring }}</span>

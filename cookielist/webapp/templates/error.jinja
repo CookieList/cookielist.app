@@ -7,8 +7,7 @@
 {% block content %}
 <div class="flex items-center justify-center w-full h-full !bg-purple-100 dark:!bg-slate-900 background-animate dark:!background-animate-dark">
   <div class="flex flex-col items-center justify-center w-1/2 p-5 overflow-hidden bg-purple-200 border-2 border-purple-300 dark:bg-slate-800 md:w-2/3 xl:w-2/3 rounded-xl h-1/2 dark:border-slate-700" id="[exception]-view">
-    <span class="flex-none text-transparent text-9xl italic bg-clip-text bg-gradient-to-bl from-indigo-500 via-purple-500 to-pink-500 align-bottom m-0 p-0 [-webkit-background-clip:text] dark:from-indigo-600 dark:via-purple-600 dark:to-pink-600 md:text-7xl">{{
-    error.error_code }}</span>
+    <span class="flex-none text-transparent text-9xl italic bg-clip-text bg-gradient-to-bl from-indigo-500 via-purple-500 to-pink-500 align-bottom m-0 p-0 [-webkit-background-clip:text] dark:from-indigo-600 dark:via-purple-600 dark:to-pink-600 md:text-7xl">{{ error.error_code }}</span>
     <span class="flex-none p-0 text-2xl italic font-extrabold text-center text-slate-800 dark:text-slate-400 md:text-xl">{{ error.error_name }}</span>
     <a href="{{ request.referrer or url_for('AboutView:index') }}" class="flex-none p-3 mt-3 text-white transition-all duration-300 rounded cursor-pointer hover:drop-shadow-2xl drop-shadow-xl hover:scale-110 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-blue-500 hover:to-cyan-500">{{
     "Lets Take You Back" if request.referrer else "Lets Go Home" }}</a>

@@ -102,7 +102,7 @@ function FetchAndShowContent(pageUserId) {
       document.title =
         response.data.User.name + " - " + $.state.cookielist.SITE;
 
-      var _searched_user_history;
+      var _searched_user_history = [];
       if ($.storage("__searched_users_history")) {
         _searched_user_history = JSON.parse(
           $.storage("__searched_users_history")

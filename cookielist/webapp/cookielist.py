@@ -4,7 +4,7 @@ import zoneinfo
 from pathlib import Path
 from time import time
 import flask_minify
-
+from cookielist.__version__ import __version_string__
 import flask_compress
 import flask_debugtoolbar
 import humanfriendly
@@ -80,6 +80,7 @@ asset.add_asset(
     "sass/*.sass",
     content_type="css",
     content_filters="sass | tailwind | cssmin",
+    output_file_name="main.css"
 )
 asset.add_asset(
     "JS",
@@ -87,6 +88,7 @@ asset.add_asset(
     "javascript/**/*.js",
     content_type="js",
     content_filters="jsmin",
+    output_file_name="main.js"
 )
 
 app.jinja_env.add_extension(WebAppJinjaTags.IconTag)
@@ -96,6 +98,11 @@ app.jinja_env.policies["json.dumps_function"] = (
     lambda dictionary, **kwargs: orjson.dumps(dictionary).decode()
 )
 
+if env.path('').joinpath('.cookielist.db.version').exists():
+    COOKIEDB_VERSION = env.path('').joinpath('.cookielist.db.version').read_text().strip()
+else:
+    COOKIEDB_VERSION = "unknown"
+
 app.jinja_env.globals.update(
     dict(
         human=humanfriendly,
@@ -104,7 +111,8 @@ app.jinja_env.globals.update(
         any=any,
         env=env,
         SITE_NAME=env.string("WEBAPP_NAME"),
-        COOKIEDB_VERSION="1234939792",
+        COOKIEDB_VERSION=COOKIEDB_VERSION,
+        COOKIE_VERSION=__version_string__,
         TZINFO=sorted(zoneinfo.available_timezones()),
         BADGE_TEMPLATES=TEMPLATES,
         ADMIN_ID=env.string("ANILIST_DEV_ID"),

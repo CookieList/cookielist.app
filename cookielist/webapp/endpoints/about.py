@@ -1,4 +1,12 @@
-from flask import redirect, request, send_file, url_for, session
+from flask import (
+    redirect,
+    request,
+    send_file,
+    url_for,
+    session,
+    stream_template,
+    make_response,
+)
 from flask_classful import FlaskView, route
 from functools import cache
 import orjson
@@ -1071,3 +1079,9 @@ class AboutView(FlaskView):
                 }
             )
         return manifest
+
+    @route("/service-worker.js")
+    def service_worker_js(self):
+        worker = make_response(stream_template("sw.jinja.js"))
+        worker.mimetype = "application/javascript"
+        return worker

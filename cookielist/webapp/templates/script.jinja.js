@@ -23,6 +23,7 @@ $.state.cookielist = {
     .split(","),
   SITE: "{{ SITE_NAME }}",
   manifest: "{{ url_for('AboutView:webmanifest') }}",
+  version: "{{ COOKIE_VERSION }}"
 };
 
 $.state.options = {
@@ -103,11 +104,20 @@ $(document).keydown(function (e) {
   }
 });
 
-if (navigator.serviceWorker) {
+if (navigator && navigator.serviceWorker) {
   $(document).ready(() => {
-    navigator.serviceWorker.register(
-      "{{ url_for('static', filename='sw.js') }}",
-      { scope: "/" }
-    );
+    if (navigator.serviceWorker.controller) {
+      console.log("Active service worker found");
+    }
+      navigator.serviceWorker
+        .register("{{ url_for('AboutView:service_worker_js') }}", {
+          scope: "/",
+        })
+        .then(() => {
+          console.log("Service worker registered successfully");
+        })
+        .catch(() => {
+          console.log("Service worker did not registered");
+        });
   });
 }
