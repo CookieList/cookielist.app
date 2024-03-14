@@ -55,6 +55,7 @@ function SetTheme(Theme) {
     change = Theme;
   }
   $.storage("__site_theme", change);
+  document.cookie = "theme=" + change + ";path=/;SameSite=Lax";
   if (change === "dark") {
     HTML.addClass("dark");
   } else {

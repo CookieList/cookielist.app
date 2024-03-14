@@ -83,8 +83,7 @@ class CookieListOptions:
         "badgeServer",
         "badgeOptions",
         "isBadgeServerCustom",
-        "userOptionFormatted",
-        "siteTheme"
+        "userOptionFormatted"
     )
     timezoneName: str
     timeFormatString: str
@@ -97,7 +96,6 @@ class CookieListOptions:
     isBadgeServerCustom: bool
     badgeOptions: dict[str, dict[str, str]]
     userOptionFormatted: None | dict[str, str]
-    siteTheme: Literal["light", "dark"]
 
 
 @dataclass(repr=False, eq=False, frozen=True)
@@ -197,7 +195,6 @@ def process(
         dateFormatString=data["options"]["dateFormatString"],
         firstDayOfWeek=data["options"]["firstDayOfWeek"],
         mediaTitleLanguage=data["options"]["mediaTitleLanguage"],
-        siteTheme=data["options"]["siteTheme"],
         **_sanitize_options(data),
     )
     Options.userOptionFormatted = _format_user_settings(Options, data)

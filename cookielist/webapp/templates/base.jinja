@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="w-full overflow-hidden {{ session['__site_theme'] }}">
+<html lang="en" class="w-full overflow-hidden {{ request.cookies.get('theme', '') }}">
 
   <!--
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣤⣤⣤⣤⣄⣀⠀⠀⠉⠣⠙⣳⢤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -54,7 +54,7 @@
     {% assets 'SASS' %}
     <link rel="stylesheet" href="$ASSET_URL?$TIME" />{% endassets %}
     {{ "<style>" }}{% include "style.jinja.css" %}{{ "</style>" }}
-    <link rel="manifest" href="{{ url_for('AboutView:webmanifest') }}" crossorigin="use-credentials">
+    <link rel="manifest" href="{{ url_for('AboutView:webmanifest', version=random()) }}" crossorigin="use-credentials">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://unpkg.com/mustache@4.2.0/mustache.js"></script>
@@ -80,7 +80,7 @@
 
   </head>
 
-  <body class="font-['Victor_Mono'] bg-slate-50 dark:bg-slate-900 h-full fixed w-full flex" onload="$('html').addClass(localStorage.getItem('__THEME'))">
+  <body class="font-['Victor_Mono'] bg-slate-50 dark:bg-slate-900 h-full fixed w-full flex" onload="if (localStorage.getItem('__THEME') === 'dark') { $('html').addClass('dark') } else { $('html').removeClass('dark') }">
 
     {% include "blocks/notification.jinja" %}
 

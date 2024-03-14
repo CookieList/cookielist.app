@@ -22,6 +22,7 @@ $.state.cookielist = {
     .replace(/\s/g, "")
     .split(","),
   SITE: "{{ SITE_NAME }}",
+  manifest: "{{ url_for('AboutView:webmanifest') }}",
 };
 
 $.state.options = {
@@ -88,6 +89,8 @@ if (!$.storage("__site_theme")) {
     $.storage("__site_theme", "light");
   }
   SetTheme($.storage("__site_theme"));
+  document.cookie =
+    "theme=" + $.storage("__site_theme") + ";path=/;SameSite=Lax";
 }
 
 if (!$.storage("__timezone")) {
@@ -102,6 +105,9 @@ $(document).keydown(function (e) {
 
 if (navigator.serviceWorker) {
   $(document).ready(() => {
-    navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}", { scope: "/" });
+    navigator.serviceWorker.register(
+      "{{ url_for('static', filename='sw.js') }}",
+      { scope: "/" }
+    );
   });
 }

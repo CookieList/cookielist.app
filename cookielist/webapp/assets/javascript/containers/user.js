@@ -59,7 +59,6 @@ function FetchAndShowContent(pageUserId) {
       firstDayOfWeek: $.state.options.week_start_day,
       mediaTitleLanguage: $.state.options.media_language,
       badgeTemplate: $.state.options.badge_template,
-      siteTheme: $.storage("__site_theme"),
     },
   };
 
@@ -120,7 +119,7 @@ function FetchAndShowContent(pageUserId) {
         }
         $.storage(
           "__searched_users_history",
-          JSON.stringify(_searched_user_history.slice(0, 5))
+          JSON.stringify(_searched_user_history.slice(0, 6))
         );
       } else {
         $.storage(
@@ -145,7 +144,7 @@ function FetchAndShowContent(pageUserId) {
 
       const _expire_date = new Date();
       _expire_date.setTime(_expire_date.getTime() + (7*24*60*60*1000));
-      document.cookie = "history=" + JSON.stringify(_searched_user_history.slice(0, 5)) + ";expires=" + _expire_date.toUTCString() + ";path=" + $.state.endpoints.manifest
+      document.cookie = "history=" + JSON.stringify(_searched_user_history.slice(0, 6)) + ";expires=" + _expire_date.toUTCString() + ";path=" + $.state.cookielist.manifest + ";SameSite=Lax"
 
       const fetch_page_count = calculateFetchPages(response);
       const current_page = 1;

@@ -1,14 +1,13 @@
 from flask import redirect, request, send_file, url_for, session
 from flask_classful import FlaskView, route
 from functools import cache
-
+import orjson
 from cookielist.environment import env
 from cookielist.assets import asset
 
 
 @cache
 def generate_web_manifest():
-    theme = "#1e293b"
     return {
         "short_name": env.string("WEBAPP_NAME"),
         "name": f"{env.string('WEBAPP_NAME')} - Better statistics for AniList.",
@@ -926,7 +925,7 @@ def generate_web_manifest():
         ],
         "id": "/?source=pwa",
         "start_url": "/?source=pwa",
-        "background_color": theme,
+        "background_color": None,
         "dir": "ltr",
         "lang": "en",
         "edge_side_panel": {"preferred_width": 480},
@@ -937,25 +936,85 @@ def generate_web_manifest():
             "minimal-ui",
             "browser",
         ],
-        "theme_color": theme,
+        "theme_color": None,
         "display": "standalone",
         "scope": "/",
         "shortcuts": [],
         "description": f"{env.string('WEBAPP_NAME')}: Simplifying media counts on AniList. Unlike AniList's individual title count, {env.string('WEBAPP_NAME')} tallies by series. Watching multiple seasons, movies, and OVAs of a series only counts as one entry.",
-        # "screenshots": [  # TODO
-        #     {
-        #         "src": url_for("static", filename="images/application/icon-1024.png"),
-        #         "type": "image/png",
-        #         "sizes": "540x720",
-        #         "form_factor": "narrow",
-        #     },
-        #     {
-        #         "src": url_for("static", filename="images/application/icon-1024.png"),
-        #         "type": "image/jpg",
-        #         "sizes": "720x540",
-        #         "form_factor": "wide",
-        #     },
-        # ],
+        "screenshots": [
+            {
+                "src": url_for("static", filename="images/screenshots/narrow-1.png"),
+                "type": "image/png",
+                "sizes": "1284x2778",
+                "form_factor": "narrow",
+            },
+            {
+                "src": url_for("static", filename="images/screenshots/narrow-2.png"),
+                "type": "image/png",
+                "sizes": "1284x2778",
+                "form_factor": "narrow",
+            },
+            {
+                "src": url_for("static", filename="images/screenshots/narrow-3.png"),
+                "type": "image/png",
+                "sizes": "1284x2778",
+                "form_factor": "narrow",
+            },
+            {
+                "src": url_for("static", filename="images/screenshots/narrow-4.png"),
+                "type": "image/png",
+                "sizes": "1284x2778",
+                "form_factor": "narrow",
+            },
+            {
+                "src": url_for("static", filename="images/screenshots/narrow-5.png"),
+                "type": "image/png",
+                "sizes": "1284x2778",
+                "form_factor": "narrow",
+            },
+            {
+                "src": url_for("static", filename="images/screenshots/wide-1.png"),
+                "type": "image/png",
+                "sizes": "1920x913",
+                "form_factor": "wide",
+            },
+            {
+                "src": url_for("static", filename="images/screenshots/wide-2.png"),
+                "type": "image/png",
+                "sizes": "1920x913",
+                "form_factor": "wide",
+            },
+            {
+                "src": url_for("static", filename="images/screenshots/wide-3.png"),
+                "type": "image/png",
+                "sizes": "1920x913",
+                "form_factor": "wide",
+            },
+            {
+                "src": url_for("static", filename="images/screenshots/wide-4.png"),
+                "type": "image/png",
+                "sizes": "1920x913",
+                "form_factor": "wide",
+            },
+            {
+                "src": url_for("static", filename="images/screenshots/wide-5.png"),
+                "type": "image/png",
+                "sizes": "1920x913",
+                "form_factor": "wide",
+            },
+            {
+                "src": url_for("static", filename="images/screenshots/wide-5.png"),
+                "type": "image/png",
+                "sizes": "1920x913",
+                "form_factor": "wide",
+            },
+            {
+                "src": url_for("static", filename="images/screenshots/wide-5.png"),
+                "type": "image/png",
+                "sizes": "1920x913",
+                "form_factor": "wide",
+            },
+        ],
     }
 
 
@@ -989,18 +1048,26 @@ class AboutView(FlaskView):
     @route("/manifest.webmanifest")
     def webmanifest(self):
         manifest = generate_web_manifest()
-        from rich import print
-        print("\n\n", request.cookies.get('history'), "\n\n")
-        for username, id in zip(
-            request.args.getlist("name"),
-            request.args.getlist("id"),
-        ):
+
+        theme = (
+            request.cookies.get("theme")
+            if request.cookies.get("theme") in {"light", "dark"}
+            else "light"
+        )
+        theme = {
+            "dark": "#252627",
+            "light": "#e2e8f0",
+        }[theme]
+        manifest["background_color"] = theme
+        manifest["theme_color"] = theme
+
+        for history in orjson.loads(request.cookies.get("history", "{}")):
             manifest["shortcuts"].append(
                 {
-                    "name": f"{username}'s CookieList",
-                    "short_name": username,
-                    "description": f"View @{username}'s CookieList page",
-                    "url": f"/{id}?source=pwa",
+                    "name": f"{history['name']}'s CookieList",
+                    "short_name": history["name"],
+                    "description": f"View @{history['name']}'s CookieList page",
+                    "url": f"/{history['id']}?source=pwa",
                 }
             )
         return manifest

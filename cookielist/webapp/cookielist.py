@@ -100,6 +100,7 @@ app.jinja_env.globals.update(
     dict(
         human=humanfriendly,
         static=WebAppJinjaTags.static_resource_read,
+        random=lambda: str(time()).replace(".", ""),
         any=any,
         env=env,
         SITE_NAME=env.string("WEBAPP_NAME"),

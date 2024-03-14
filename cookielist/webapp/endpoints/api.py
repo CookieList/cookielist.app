@@ -29,8 +29,6 @@ class ApiView(FlaskView):
 
     def process(self):
         Media, User, Options = _pre_process.process(request.get_json(force=True))
-        
-        session['__site_theme'] = Options.siteTheme
 
         parsedUserList = self._list.calculate(Media, User, Options)
         parsedUserSchedule = self._schedule.calculate(Media, User, Options)
