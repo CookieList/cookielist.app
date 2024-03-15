@@ -98,7 +98,7 @@ app.jinja_env.policies["json.dumps_function"] = (
     lambda dictionary, **kwargs: orjson.dumps(dictionary).decode()
 )
 
-if env.path('').joinpath('.cookielist.db.version').exists():
+if env.path('COOKIELIST_STATE_FOLDER').joinpath('.cookielist.db.version').exists():
     COOKIEDB_VERSION = env.path('').joinpath('.cookielist.db.version').read_text().strip()
 else:
     COOKIEDB_VERSION = "unknown"
