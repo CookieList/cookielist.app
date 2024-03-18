@@ -55,7 +55,9 @@ class WebAppAssets:
             )
         return content
 
-    def __asset_glob(self, globs) -> Generator[tuple[pathlib.Path, pathlib.Path], None, None]:
+    def __asset_glob(
+        self, globs
+    ) -> Generator[tuple[pathlib.Path, pathlib.Path], None, None]:
         for pattern in globs:
             for match in wcmatch.WcMatch(
                 str(self.__asset_folder), pattern, flags=GLOB_FLAGS

@@ -1,17 +1,19 @@
+from functools import cache
+
+import orjson
 from flask import (
+    make_response,
     redirect,
     request,
     send_file,
-    url_for,
     session,
     stream_template,
-    make_response,
+    url_for,
 )
 from flask_classful import FlaskView, route
-from functools import cache
-import orjson
-from cookielist.environment import env
+
 from cookielist.assets import asset
+from cookielist.environment import env
 
 
 @cache

@@ -83,7 +83,7 @@ class CookieListOptions:
         "badgeServer",
         "badgeOptions",
         "isBadgeServerCustom",
-        "userOptionFormatted"
+        "userOptionFormatted",
     )
     timezoneName: str
     timeFormatString: str

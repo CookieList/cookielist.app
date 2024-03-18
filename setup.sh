@@ -102,6 +102,19 @@ if [ $? -eq 0 ]; then
         echo "app = get_app('$COOKIELIST_APP')"
         echo ""
     } > $DIRECTORY/app.py
+
+    echo -e "${CYAN}Info:${NC} Creating update.sh"
+    {
+        echo "#!/usr/bin/env bash"
+        echo ""
+        echo "# This file is part of the 'CookieList' project."
+        echo "# automatically created by setup.sh on '$(date)'."
+        echo "# with the github repository https://github.com/$REPOSITORY.git"
+        echo ""
+        echo "cd $DIRECTORY"
+        echo "curl -L https://raw.githubusercontent.com/$REPOSITORY/main/setup.sh | bash -s -- $REPOSITORY $COOKIELIST_APP yes $DOTENV_KEY"
+        echo ""
+    } > $DIRECTORY/update.sh
     
     echo -e "${CYAN}Info:${NC} Removing Unnecessary Files."
     rm -rf $DIRECTORY/.git $DIRECTORY/.github $DIRECTORY/requirements.dev.txt $DIRECTORY/requirements.txt $DIRECTORY/setup.sh $DIRECTORY/run.sh $DIRECTORY/README.md $DIRECTORY/.gitignore # $DIRECTORY/LICENSE $DIRECTORY/docs

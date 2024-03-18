@@ -3,8 +3,8 @@ from collections import namedtuple
 from dataclasses import dataclass
 
 import numpy
-from numpy.typing import NDArray
 import orjson
+from numpy.typing import NDArray
 from rich import progress
 
 from cookielist.assets import asset
@@ -69,7 +69,7 @@ class DataBaseOperations:
             progress.TimeRemainingColumn(),
             refresh_per_second=1 / 8 if env.bool("GITHUB_ACTIONS", False) else 10,
         )
-        
+
         last_al_page = env.int("DATABASE_LAST_PAGE_ESTIMATE", None)
         if last_al_page is None:
             last_al_page = self.anilist.estimate_end_page_of_query(
@@ -79,7 +79,9 @@ class DataBaseOperations:
         with progress_bar as pbar:
             for page in pbar.track(range(1, int(last_al_page / 6) + 1)):
                 factor = (page - 1) * 6
-                artifact = env.path("COOKIELIST_STATE_FOLDER").joinpath(".prefetch", f"database.fetch.{page}.json")
+                artifact = env.path("COOKIELIST_STATE_FOLDER").joinpath(
+                    ".prefetch", f"database.fetch.{page}.json"
+                )
                 if artifact.exists():
                     _response = orjson.loads(artifact.read_bytes())
                 else:

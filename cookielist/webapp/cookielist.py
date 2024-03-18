@@ -147,7 +147,7 @@ def before_request():
 
     g.session_id = session["session"]
 
-    if env.bool("COOKIELIST_DEBUG") and env.string(
+    if env.bool("FLASK_DEBUG") and env.string(
         "COOKIELIST_DEBUG_PASSWORD"
     ) != session.get("__debug_password__", ""):
         if request.endpoint not in [
@@ -156,7 +156,6 @@ def before_request():
             "AboutView:favicon_ico",
             "AboutView:robots_txt",
         ]:
-            return
             return abort(401)
 
 

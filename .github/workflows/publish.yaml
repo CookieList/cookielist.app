@@ -55,15 +55,12 @@ on:
     branches:
       - staging
       - main
-    paths:
-      - "cookielist/**"
-      - ".env.vault"
-      - ".github/**"
 
 jobs:
   actions:
     name: Define Synchronization Needs
     runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'PUBLISH')
     outputs:
       SYNC_DATABASE: ${{ steps.SYNC_DATABASE.outputs.action }}
       SYNC_STATIC: ${{ steps.SYNC_STATIC.outputs.action }}
@@ -125,6 +122,7 @@ jobs:
   db_setup:
     name: Setup Pre-fetch
     runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'PUBLISH')
     outputs:
       LAST_PRE_FETCH_PAGE: ${{ steps.PRE_FETCH_ESTIMATE.outputs.cookielist__database_last_page_estimate }}
     steps:
@@ -160,7 +158,7 @@ jobs:
     name: Pre-fetch Database
     runs-on: ubuntu-latest
     needs: [db_setup, actions]
-    if: needs.actions.outputs.SYNC_DATABASE == 'true'
+    if: needs.actions.outputs.SYNC_DATABASE == 'true' && contains(github.event.head_commit.message, 'PUBLISH')
     strategy:
       matrix:
         database: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -192,12 +190,6 @@ jobs:
           DOTENV_KEY_DEVELOPMENT: "${{ secrets.DOTENV_DEVELOPMENT }}"
           DOTENV: ${{ needs.actions.outputs.DOTENV_KEY_NAME || 'STAGING' }}
 
-      - name: Test
-        if: always()
-        run: |
-          sudo apt install tree
-          tree -a
-
       - name: Upload Pre-fetch data
         uses: actions/upload-artifact@v4
         with:
@@ -213,6 +205,7 @@ jobs:
     name: Publish To PythonAnywhere
     runs-on: ubuntu-latest
     needs: [db_setup, database, actions]
+    if: contains(github.event.head_commit.message, 'PUBLISH')
 
     steps:
       - name: Checkout Git
@@ -274,12 +267,6 @@ jobs:
         with:
           pattern: prefetch-*
           merge-multiple: true
-
-      - name: Test
-        if: always()
-        run: |
-          sudo apt install tree
-          tree -a
 
       - name: Publish
         run: xvfb-run python -m cookielist synchronize --db-last-page ${{ needs.db_setup.outputs.LAST_PRE_FETCH_PAGE }}
@@ -346,17 +333,3 @@ jobs:
           compression-level: 9
           path: |
             ./**
-
-  cleanup:
-    name: Cleanup Artifacts
-    needs: publish
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Git
-        uses: actions/checkout@v4
-
-      - name: Remove Pre-fetch data
-        uses: geekyeggo/delete-artifact@v4
-        with:
-            name: prefetch-*
-            failOnError: false

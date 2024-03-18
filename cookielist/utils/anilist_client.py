@@ -8,14 +8,15 @@ from rich import live, print, spinner
 
 from cookielist.environment import env
 
-
 try:
     import requests_cache
+
     _CACHED_REQUESTS = True
 except Exception:
     import requests
+
     _CACHED_REQUESTS = False
-    
+
 
 class AnilistClient:
     ANILIST_API = "https://graphql.anilist.co/"
@@ -30,7 +31,7 @@ class AnilistClient:
     def session(self):
         if AnilistClient._session:
             return AnilistClient._session
-    
+
         if _CACHED_REQUESTS:
             _session = requests_cache.CachedSession(
                 str(

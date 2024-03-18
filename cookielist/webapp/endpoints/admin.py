@@ -1,4 +1,3 @@
-import html
 import platform
 import re
 import shutil
@@ -10,8 +9,8 @@ from pathlib import Path
 import psutil
 import py7zr
 from arrow import Arrow
-from flask import abort, request, session, url_for, redirect
-from flask_classful import FlaskView, route, method
+from flask import abort, redirect, request, session, url_for
+from flask_classful import FlaskView, method, route
 
 from cookielist.environment import env
 
@@ -61,7 +60,9 @@ class AdminView(FlaskView):
     @route("synchronize", methods=["POST"])
     @authorize
     def synchronize(self):
-        path = Path(f"/home/{env.string('PA_USERNAME')}/{env.string('PA_SOURCE_FOLDER')}/.synchronize.archive.7z")
+        path = Path(
+            f"/home/{env.string('PA_USERNAME')}/{env.string('PA_SOURCE_FOLDER')}/.synchronize.archive.7z"
+        )
         if path.is_file() and path.exists():
             state = Path(env.string("COOKIELIST_STATE_FOLDER")).resolve()
             if state.exists():
@@ -177,7 +178,7 @@ class AdminView(FlaskView):
                 ),
             )
         )
-        
+
     @route("/_/cookielist-stub", methods=["GET"])
     def cookielist_stub_redirect(self):
-        return redirect(url_for('AboutView:index'))
+        return redirect(url_for("AboutView:index"))

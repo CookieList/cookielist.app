@@ -1,19 +1,16 @@
-from email.policy import default
 import logging
-import re
 import socket
-import argparse
-from typing import Callable
+import time
 import warnings
 from contextlib import suppress
 from functools import partial
-import arrow
 from pathlib import Path
-import time
 from time import time as timestamp
-import rich_click as click
+from typing import Callable
 
+import arrow
 import flask.cli
+import rich_click as click
 import werkzeug._reloader
 from flask import Flask
 from rich import print

@@ -11,12 +11,9 @@ from cookielist.assets import asset
 from cookielist.environment import env
 
 NULL_IMAGE = brotli.compress(b"", quality=11)
-DEFAULT_AVATAR = (
-    "data:image/png;base64,"
-    + base64.encodebytes(asset.path("favicon.png").read_bytes())
-    .decode()
-    .replace("\n", "")
-)
+DEFAULT_AVATAR = "data:image/png;base64," + base64.encodebytes(
+    asset.path("favicon.png").read_bytes()
+).decode().replace("\n", "")
 AVATAR_FOLDER = env.path("COOKIELIST_STATE_FOLDER").joinpath("avatars")
 AVATAR_FOLDER.mkdir(exist_ok=True)
 

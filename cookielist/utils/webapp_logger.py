@@ -1,10 +1,10 @@
 import string
 from time import time
 
+import arrow
 import jsonurl_py as jsonurl
 import orjson
 from flask import Response, g, request
-import arrow
 from rich.console import Console
 from rich.highlighter import Highlighter
 from yurl import URL
@@ -94,7 +94,9 @@ CODES = {
 if env.bool("COOKIELIST_DEBUG"):
     __log_file = env.path("STATISTICS_LOG_FILE").open("a", encoding="utf-8")
     __flush = lambda string, __file=__log_file: print(
-        arrow.now().format("YYYY-MM-DD HH:mm:ss ") + string.replace("\n", "<?:br!>"), flush=True, file=__file
+        arrow.now().format("YYYY-MM-DD HH:mm:ss ") + string.replace("\n", "<?:br!>"),
+        flush=True,
+        file=__file,
     )
 else:
     __flush = lambda string: print(string.replace("\n", "<?:br!>"))
@@ -132,7 +134,9 @@ def make_stats_log(response: Response):
             request.method,  # Request Method
             request.environ.get("SERVER_PROTOCOL"),  # Request Server Protocol
             response.status_code,  # Response Status-Code
-            request.url_rule.rule if request.url_rule is not None else request.path,  # Request Endpoint
+            (
+                request.url_rule.rule if request.url_rule is not None else request.path
+            ),  # Request Endpoint
             request.view_args,  # Endpoint Arguments
             request.args,  # Url Arguments
             round(time() - g.request_start_time, 3),  # Time Taken To Respond
@@ -162,14 +166,20 @@ def make_badge_log(response: Response):
         "{|} "
         + orjson.dumps(
             [
-                request.headers.get("X-Real-IP", default=request.remote_addr), # Request IP Address
-                request.method, # Request Method
-                response.status_code, # # Response Status-Code
-                request.url_rule.rule if request.url_rule is not None else request.path, # Request Endpoint
-                request.view_args, # Request Arguments
+                request.headers.get(
+                    "X-Real-IP", default=request.remote_addr
+                ),  # Request IP Address
+                request.method,  # Request Method
+                response.status_code,  # # Response Status-Code
+                (
+                    request.url_rule.rule
+                    if request.url_rule is not None
+                    else request.path
+                ),  # Request Endpoint
+                request.view_args,  # Request Arguments
                 round(time() - g.request_start_time, 3),  # Time Taken To Respond
-                response.content_length, # Response Data Size In Bytes
-                request.origin, #  Request Referrer
+                response.content_length,  # Response Data Size In Bytes
+                request.origin,  #  Request Referrer
             ]
         ).decode()
     )

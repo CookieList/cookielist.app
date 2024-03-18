@@ -1,7 +1,7 @@
 import pathlib
 
 import dotted_dict
-from flask import abort, request, session, stream_template, g
+from flask import abort, request, session, stream_template
 from flask_classful import FlaskView, route
 
 from cookielist.badge.process import calculate as calculate_badge
@@ -10,8 +10,7 @@ from cookielist.processors import _pre_process
 from cookielist.processors.lists import ListProcessor
 from cookielist.processors.queue import QueueProcessor
 from cookielist.processors.schedule import ScheduleProcessor
-from cookielist.utils import AnilistClient
-from cookielist.utils import WebAppLogger
+from cookielist.utils import AnilistClient, WebAppLogger
 
 anilist = AnilistClient(
     pathlib.Path(__file__).parent.parent.parent.joinpath("assets", "register.graphql")
@@ -101,4 +100,3 @@ class ApiView(FlaskView):
 
         else:
             return abort(404)
-

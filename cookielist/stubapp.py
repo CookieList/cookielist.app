@@ -2,10 +2,19 @@ import shutil
 from pathlib import Path
 
 import py7zr
-from flask import Flask, abort, render_template_string, request, send_file, redirect, url_for
-from cookielist.utils import WebAppLogger
+from flask import (
+    Flask,
+    abort,
+    redirect,
+    render_template_string,
+    request,
+    send_file,
+    url_for,
+)
+
 from cookielist.assets import asset
 from cookielist.environment import env
+from cookielist.utils import WebAppLogger
 
 app = Flask("cookielist-stub")
 
@@ -15,9 +24,11 @@ app = Flask("cookielist-stub")
 def stub_catchall(path="/"):
     return redirect(url_for("stub_page"))
 
+
 @app.route("/favicon.ico", methods=["GET"])
 def stub_favicon():
     return send_file(asset.path("favicon.ico"))
+
 
 @app.route("/_/cookielist-stub", methods=["GET"])
 def stub_page():
@@ -32,7 +43,9 @@ def stub_page():
 @app.route("/_/synchronize", methods=["POST"])
 def stub_synchronize():
     json: dict = request.get_json(force=True)
-    path = Path(f"/home/{env.string('PA_USERNAME')}/{env.string('PA_SOURCE_FOLDER')}/.synchronize.archive.7z")
+    path = Path(
+        f"/home/{env.string('PA_USERNAME')}/{env.string('PA_SOURCE_FOLDER')}/.synchronize.archive.7z"
+    )
     state = Path(env.string("COOKIELIST_STATE_FOLDER")).resolve()
     if (
         json.get("CL_USERNAME") == env["CL_USERNAME"]
@@ -52,7 +65,7 @@ def stub_synchronize():
             return dict(status=True)
         return abort(400)
     else:
-        return json #abort(401)
+        return abort(401)
 
 
 @app.after_request
@@ -60,5 +73,6 @@ def after_request_func(response):
     if env.bool("RESPONSE_LOGGER"):
         WebAppLogger.make_request_log(response)
     return response
-        
+
+
 cookielist_stub = app

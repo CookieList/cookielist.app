@@ -2,15 +2,14 @@ from io import BytesIO
 from time import time
 
 import flask_compress
-from flask import Flask, abort, request, send_file, g, redirect
+from flask import Flask, abort, g, redirect, request, send_file
 from flask_cors import CORS
-from cookielist.utils import WebAppLogger
 
+from cookielist.assets import asset
 from cookielist.badgeapp.model import CookielistBadge, db
 from cookielist.badgeapp.response import ResponseFormats
 from cookielist.environment import env
-from cookielist.utils import JsonToken
-from cookielist.assets import asset
+from cookielist.utils import JsonToken, WebAppLogger
 
 app = Flask(__name__)
 app.config["COMPRESS_MIMETYPES"] = [

@@ -42,7 +42,9 @@ class DataBaseParser:
 
     @staticmethod
     @__generator_to_list
-    def __merge_lists_with_common_elements(data: list[str]) -> Generator[str, None, None]:
+    def __merge_lists_with_common_elements(
+        data: list[str],
+    ) -> Generator[str, None, None]:
         neighbors = collections.defaultdict(set)
         seen = set()
         for each in data:

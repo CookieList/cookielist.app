@@ -3,14 +3,15 @@ import sys
 from pathlib import Path
 
 import orjson
-from cookielist.assets import asset
 import py7zr
-from rich import progress
 import requests
 from playwright.sync_api import sync_playwright
-from cookielist.utils import AnilistClient
+from rich import progress
+
+from cookielist.assets import asset
 from cookielist.database import CookieListDatabase
 from cookielist.environment import env
+from cookielist.utils import AnilistClient
 
 PREFETCH_GROUP_COUNT = 10
 
