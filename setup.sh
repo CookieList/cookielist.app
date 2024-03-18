@@ -93,6 +93,14 @@ if [ -z "$DEV_VERSION" ]; then
         ;;
     esac
 fi
+case $DEV_VERSION in
+    "YES" | "yes" | "Yes" | "Y" | "y" | "true")
+        DEV_VERSION="true"
+    ;;
+    "NO" | "no" | "No" | "N" | "n" | "false")
+        DEV_VERSION="false"
+    ;;
+esac
 
 DOTENV_KEY=$6
 if [ -z "$DOTENV_KEY" ]; then
