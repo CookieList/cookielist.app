@@ -5,7 +5,8 @@
 # $1 == CookieList Repository Name (e.g. gh_username/repo_name)
 # $2 == CookieList Project App Id (e.g. cookielist-core-or-stub-app)
 # $3 == Empty Directory Warning (e.g. "Yes" or "No")
-# $4 == DotEnv Key (e.g. dotenv://:key_dotenv_project_hash_id@dotenv.org/vault/.env.vault?environment=environment_id)
+# $4 == Is Developent version? (e.g. "Yes" or "No")
+# $5 == DotEnv Key (e.g. dotenv://:key_dotenv_project_hash_id@dotenv.org/vault/.env.vault?environment=environment_id)
 
 
 CYAN='\033[0;36m'
@@ -64,7 +65,25 @@ if [[ -d $DIRECTORY && -n "$(ls -A $DIRECTORY)" ]]; then
     esac
 fi
 
-DOTENV_KEY=$4
+DEV_VERSION=$4
+if [ -z "$DEV_VERSION" ]; then
+    echo -e -n "${CYAN}Is Dev version${NC}: "
+    read DEV_VERSION
+    case $DEV_VERSION in
+        "YES" | "yes" | "Yes" | "Y" | "y")
+            DEV_VERSION="true"
+        ;;
+        "NO" | "no" | "No" | "N" | "n")
+            DEV_VERSION="false"
+        ;;
+        *)
+            echo -e "${RED}Error:${NC} Invalid Input, Terminated Setup."
+            exit 1
+        ;;
+    esac
+fi
+
+DOTENV_KEY=$5
 if [ -z "$DOTENV_KEY" ]; then
     echo -e -n "${CYAN}Enter DotEnv Key${NC}: "
     read DOTENV_KEY
@@ -83,6 +102,19 @@ if [ $? -eq 0 ]; then
         else
             echo -e "${RED}Error:${NC} Failed To Install Dependencies."
         fi
+
+        case $DEV_VERSION in
+            "true")
+                DEV_VERSION="true"
+            ;;
+            "false")
+                DEV_VERSION="false"
+            ;;
+            *)
+                echo -e "${RED}Error:${NC} Invalid Input, Terminated Setup."
+                exit 1
+            ;;
+    esac
     else
         echo -e "${YELLOW}Warning:${NC} No requirements.txt Found In The Repository."
     fi
