@@ -10,6 +10,16 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, MappedAsDataclass, mapped_co
 from cookielist.assets import asset
 from cookielist.environment import env
 
+NULL_IMAGE = brotli.compress(b"", quality=11)
+DEFAULT_AVATAR = (
+    "data:image/png;base64,"
+    + base64.encodebytes(asset.path("favicon.png").read_bytes())
+    .decode()
+    .replace("\n", "")
+)
+AVATAR_FOLDER = env.path("COOKIELIST_STATE_FOLDER").joinpath("avatars")
+AVATAR_FOLDER.mkdir(exist_ok=True)
+
 
 def get_avatar_id(url: str) -> str:
     return url.split("/")[-1].split(".")[0].split("-")[-1]
@@ -20,10 +30,10 @@ def avatar_url_to_binary(url: str) -> bytes:
     if response.status_code == 200:
         return brotli.compress(
             base64.encodebytes(response.content).decode().replace("\n", "").encode(),
-            quality=8,
+            quality=11,
         )
     else:
-        return brotli.compress(b"")
+        return NULL_IMAGE
 
 
 class Base(DeclarativeBase, MappedAsDataclass):
@@ -39,8 +49,6 @@ class Base(DeclarativeBase, MappedAsDataclass):
 
 
 db = SQLAlchemy(model_class=Base)
-images_path = env.path("COOKIELIST_STATE_FOLDER").joinpath("avatars")
-DEFAULT_AVATAR = asset.content("avatar.base64.txt")
 
 
 class CookielistBadge(db.Model):
@@ -71,7 +79,7 @@ class CookielistBadge(db.Model):
     anilist_user_id: Mapped[int] = mapped_column(primary_key=True, unique=True)
     anilist_username: Mapped[str] = mapped_column(String(20), unique=True)
     anilist_avatar_url: Mapped[str] = mapped_column(String(200))
-    anilist_avatar_image = mapped_column(LargeBinary(1204 * 5), default=b"")
+    anilist_avatar_image = mapped_column(LargeBinary(1204 * 5), default=NULL_IMAGE)
     anilist_profile_theme_color: Mapped[str] = mapped_column(String(20))
 
     watched_anime_title_count: Mapped[int]
@@ -107,11 +115,16 @@ class CookielistBadge(db.Model):
     def anilist_avatar_base_64(self):
         if get_avatar_id(self.anilist_avatar_url) == "default":
             return DEFAULT_AVATAR
-        image_base_64 = brotli.decompress(self.anilist_avatar_image).decode()
+
+        try:
+            image_base_64 = brotli.decompress(self.anilist_avatar_image).decode()
+        except brotli.error:
+            return DEFAULT_AVATAR
+
         if image_base_64 == "":
             return DEFAULT_AVATAR
         return (
-            f"data:image/"
+            "data:image/"
             + self.anilist_avatar_url.split(".")[-1]
             + ";base64,"
             + image_base_64
@@ -132,7 +145,7 @@ class CookielistBadge(db.Model):
                     self.anilist_avatar_url
                 )
             else:
-                self.anilist_avatar_image = b""
+                self.anilist_avatar_image = NULL_IMAGE
 
     @classmethod
     def create_badge(cls, data: dict):
@@ -150,4 +163,4 @@ class CookielistBadge(db.Model):
         if get_avatar_id(self.anilist_avatar_url) != "default":
             self.anilist_avatar_image = avatar_url_to_binary(self.anilist_avatar_url)
         else:
-            self.anilist_avatar_image = b""
+            self.anilist_avatar_image = NULL_IMAGE

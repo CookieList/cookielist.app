@@ -2,12 +2,17 @@ import importlib
 import sys
 from pathlib import Path
 
+import orjson
+from cookielist.assets import asset
 import py7zr
+from rich import progress
 import requests
 from playwright.sync_api import sync_playwright
-
+from cookielist.utils import AnilistClient
 from cookielist.database import CookieListDatabase
 from cookielist.environment import env
+
+PREFETCH_GROUP_COUNT = 10
 
 
 class CookieListSynchronizer:
@@ -117,7 +122,7 @@ class CookieListSynchronizer:
 
         if sync_code or sync_database or sync_env or sync_static:
             requests.post(
-                f"https://{self.PA_HOST}/api/v0/user/{self.PA_USERNAME}/files/path/home/{self.PA_USERNAME}/app/{archive_name}",
+                f"https://{self.PA_HOST}/api/v0/user/{self.PA_USERNAME}/files/path/home/{self.PA_USERNAME}/{env.string('PA_SOURCE_FOLDER')}/{archive_name}",
                 files={"content": cl_folder.joinpath(archive_name).open("rb")},
                 headers={"Authorization": f"Token {self.PA_TOKEN}"},
             )
@@ -130,10 +135,57 @@ class CookieListSynchronizer:
                     CL_ADMIN_TOKEN=env["CL_ADMIN_TOKEN"],
                 ),
             )
-            print(response.status_code, response.content)
+            if response.status_code != 200:
+                raise Exception(response.content.decode())
 
         if extend_app:
             self.pa_run_app_until_next_3_months()
 
         if reload_app:
             self.pa_reload_app()
+
+
+def set_last_database_page_github_output():
+    client = AnilistClient(asset.path("database.graphql"))
+    estimate = client.estimate_end_page_of_query("LastPageEstimate", "page")
+    env.path("GITHUB_OUTPUT").open("a").write(
+        f"cookielist__database_last_page_estimate={estimate}\n"
+    )
+
+
+def prefetch(group: int, count: int):
+    progress_bar = progress.Progress(
+        progress.TextColumn("[red]FETCHING[/red]"),
+        progress.TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+        progress.BarColumn(),
+        progress.MofNCompleteColumn(),
+        progress.TextColumn("•"),
+        progress.TimeElapsedColumn(),
+        progress.TextColumn("•"),
+        progress.TimeRemainingColumn(),
+        refresh_per_second=1 / 8 if env.bool("GITHUB_ACTIONS", False) else 10,
+    )
+    client = AnilistClient(asset.path("database.graphql"))
+    total = list(range(1, int(count / 6) + 1))
+    div, mod = divmod(len(total), PREFETCH_GROUP_COUNT)
+    pages = [
+        total[c * div + min(c, mod) : (c + 1) * div + min(c + 1, mod)]
+        for c in range(PREFETCH_GROUP_COUNT)
+    ][group]
+    prefetch_dir = env.path("COOKIELIST_STATE_FOLDER").joinpath(".prefetch")
+    prefetch_dir.mkdir(parents=True, exist_ok=True)
+    with progress_bar as pbar:
+        for page in pbar.track(pages):
+            factor = (page - 1) * 6
+            artifact = prefetch_dir.joinpath(f"database.fetch.{page}.json")
+            response = client.query(
+                "DatabaseInfo",
+                sort="ID",
+                _page_1st=factor + 1,
+                _page_2nd=factor + 2,
+                _page_3rd=factor + 3,
+                _page_4th=factor + 4,
+                _page_5th=factor + 5,
+                _page_6th=factor + 6,
+            )
+            artifact.write_bytes(orjson.dumps(response))

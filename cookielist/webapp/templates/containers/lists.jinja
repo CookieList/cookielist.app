@@ -26,7 +26,7 @@
             <div class="flex-col w-full m-1 p-1 md:p-0.5">
               <div class="text-slate-500 dark:text-slate-400 transition leading-4 md:leading-3 text-sm md:text-xs m-1 data-[media-action='unavailable']:!text-emerald-700 data-[media-action='available']:!text-rose-700 data-[media-action='not\_watching']:!text-sky-700 data-[media-action='unavailable']:dark:!text-emerald-200 data-[media-action='available']:dark:!text-rose-200 data-[media-action='not\_watching']:dark:!text-sky-200 group-hover:font-bold" data-media-action="<% fn.mediaStatusAction %>" style-wordbreak="true"><% mediaTitle %></div>
               <div class="flex m-1">
-                <button class="py-1 px-1.5 rounded-md bg-slate-950/80 mr-1 my-1" onclick="event.stopPropagation();$.popup('https://anilist.co/<% mediaCategory %>/<% mediaId %>')">{% icon 'images/anilist.svg', class="w-4 h-4" %}</button>
+                <button class="py-1 px-1.5 rounded-md bg-slate-950/80 mr-1 my-1" onclick="event.stopPropagation();$.popup('https://anilist.co/<% mediaCategory %>/<% mediaId %>')">{% icon 'images/vectors/anilist.svg', class="w-4 h-4" %}</button>
                 <% #mediaListStatus.length %>
                 <span class="py-1 px-1.5 rounded-md bg-slate-300/70 mr-1 my-1 text-xs text-slate-500 dark:bg-slate-500/40 dark:text-slate-400"><% mediaListStatus %></span>
                 <% /mediaListStatus.length %>
@@ -111,12 +111,12 @@
   </div>
   <div class="w-full mt-[285px] md:mt-[200px] md:text-sm text-pretty px-6 py-2 dark:[&_i]:text-pink-400/90 [&_i]:text-pink-500/90 [&_i]:font-bold [&>i]:italic [&_i]:px-px">
     The <i class="lowercase"><% #fn.toHeading %><% media.type %><% /fn.toHeading %></i> (<i><% #fn.toHeading %><% media.format %><% /fn.toHeading %></i>) <i><% fn.mediaTitle %></i>
-    <span style-hidden="<% #fn.styleHidden %><% media.startDate.month %><% media.startDate.day %><% media.startDate.year %><% /fn.styleHidden %>">started on <% #media.season.length %><i><% #fn.toHeading %><% media.season %><% /fn.toHeading %></i> of<% /media.season.length %> <i><% #fn.monthIntToName %><% media.startDate.month %><% /fn.monthIntToName %><% #media.startDate.day %> <% media.startDate.day %><% /media.startDate.day %><% #media.startDate.year %>, <% media.startDate.year %><% /media.startDate.year %></i></span>
+    <span style-hidden="<% #fn.styleHidden %><% media.startDate.month %><% media.startDate.day %><% media.startDate.year %><% /fn.styleHidden %>"> started on <% #media.season.length %><i><% #fn.toHeading %><% media.season %><% /fn.toHeading %></i> of<% /media.season.length %> <i><% #fn.monthIntToName %><% media.startDate.month %><% /fn.monthIntToName %><% #media.startDate.day %> <% media.startDate.day %><% /media.startDate.day %><% #media.startDate.year %>, <% media.startDate.year %><% /media.startDate.year %></i></span>
     is <i><% #fn.toHeading %><% media.status %><% /fn.toHeading %></i>
     <span style-hidden="<% #fn.styleHidden %><% media.nextAiringEpisode.airingAt %><% /fn.styleHidden %>">with its next episode <i>#<% media.nextAiringEpisode.episode %></i> airing in <i><% fn._context_nextAiring_timeRemaining %></i></span>.
     its a <% #media.isAdult %><i>R-18</i><% /media.isAdult %> series
     <% #media.averageScore %>with the average scroe of <i><% media.averageScore %>%</i><% /media.averageScore %>
-    , under the Genres of <i class="last:[&_span]:hidden"><% #media.genres %><span><% . %></span><span>, </span><% /media.genres %></i>
+    <% #media.genres.length %>, under the Genres of <% /media.genres.length %><i class="last:[&_span]:hidden"><% #media.genres %><span><% . %></span><span>, </span><% /media.genres %></i>
     <% #media.source %>addapted from a <i><% #fn.toHeading %><% media.source %><% /fn.toHeading %></i><% /media.source %>
     <% #media.episodes %>and has <i><% media.episodes %></i> episodes<% /media.episodes %> <% #media.duration %> <% ^media.episodes %>and has episodes<% /media.episodes %> of duration <i><% media.duration %> minutes</i> each<% /media.duration %>
     <% #media.chapters %>and has <i><% media.chapters %></i> chapters<% /media.chapters %> <% #media.volumes %>comprising of <i><% media.volumes %></i> volumes<% /media.volumes %>
@@ -156,9 +156,9 @@
             <div class="text-sm font-bold leading-none tracking-tighter text-center text-slate-50 lg:text-xs xl:text-xs"><% fn._context_relationMediaTitle %></div>
             <div class="absolute bottom-0 flex flex-col items-center p-1 mb-px">
               <div class="flex">
-                <button class="p-px px-1 mr-1 transition rounded-md bg-slate-950/80 hover:scale-105" onclick="event.stopPropagation();$.popup('<% node.siteUrl %>')">{% icon 'images/anilist.svg', class="w-5 h-5" %}</button>
+                <button class="p-px px-1 mr-1 transition rounded-md bg-slate-950/80 hover:scale-105" onclick="event.stopPropagation();$.popup('<% node.siteUrl %>')">{% icon 'images/vectors/anilist.svg', class="w-5 h-5" %}</button>
                 <% #node.idMal %>
-                <button class="p-px px-1 transition  rounded-md bg-[#2e51a2] hover:scale-105" onclick="event.stopPropagation();$.popup('https://myanimelist.net/<% #fn.toLowerCase %><% node.type %><% /fn.toLowerCase %>/<% node.idMal %>')">{% icon 'images/myanimelist.svg', class="w-5 h-5" %}</button>
+                <button class="p-px px-1 transition  rounded-md bg-[#2e51a2] hover:scale-105" onclick="event.stopPropagation();$.popup('https://myanimelist.net/<% #fn.toLowerCase %><% node.type %><% /fn.toLowerCase %>/<% node.idMal %>')">{% icon 'images/vectors/myanimelist.svg', class="w-5 h-5" %}</button>
                 <% /node.idMal %>
               </div>
             </div>
@@ -263,9 +263,9 @@
             <div class="text-sm font-bold leading-none tracking-tighter text-center text-slate-50 lg:text-xs xl:text-xs"><% fn._context_recommendationMediaTitle %></div>
             <div class="absolute bottom-0 flex flex-col items-center p-1 mb-px">
               <div class="flex">
-                <button class="p-px px-1 mr-1 transition rounded-md bg-slate-950/80 hover:scale-105" onclick="event.stopPropagation();$.popup('<% mediaRecommendation.siteUrl %>')">{% icon 'images/anilist.svg', class="w-5 h-5" %}</button>
+                <button class="p-px px-1 mr-1 transition rounded-md bg-slate-950/80 hover:scale-105" onclick="event.stopPropagation();$.popup('<% mediaRecommendation.siteUrl %>')">{% icon 'images/vectors/anilist.svg', class="w-5 h-5" %}</button>
                 <% #mediaRecommendation.idMal %>
-                <button class="p-px px-1 transition  rounded-md bg-[#2e51a2] hover:scale-105" onclick="event.stopPropagation();$.popup('https://myanimelist.net/<% #fn.toLowerCase %><% mediaRecommendation.type %><% /fn.toLowerCase %>/<% mediaRecommendation.idMal %>')">{% icon 'images/myanimelist.svg', class="w-5 h-5" %}</button>
+                <button class="p-px px-1 transition  rounded-md bg-[#2e51a2] hover:scale-105" onclick="event.stopPropagation();$.popup('https://myanimelist.net/<% #fn.toLowerCase %><% mediaRecommendation.type %><% /fn.toLowerCase %>/<% mediaRecommendation.idMal %>')">{% icon 'images/vectors/myanimelist.svg', class="w-5 h-5" %}</button>
                 <% /mediaRecommendation.idMal %>
               </div>
             </div>
@@ -750,9 +750,9 @@
       <div class="hover:dark:bg-slate-900 hover:bg-slate-50 transition-colors flex bg-white justify-between items-center transition-colors border border-slate-300 text-slate-600 text-sm rounded-lg dark:text-slate-400 dark:bg-slate-900/50 dark:border-slate-700/70 my-1 p-px h-[41.6px]">
         <span></span>
         <span></span>
-        <span class="cursor-pointer hover:scale-105 transition grayscale data-[score-smile='active']:grayscale-0 data-[score-smile='active']:scale-125" data-score-smile="<% fn._context_convert_POINT_3_HAPPY %>" data-smile-type="HAPPY">{% icon "images/face-happy.svg", class="w-6 h-6" %}</span>
-        <span class="cursor-pointer hover:scale-105 transition grayscale data-[score-smile='active']:grayscale-0 data-[score-smile='active']:scale-125" data-score-smile="<% fn._context_convert_POINT_3_NEUTRAl %>" data-smile-type="NEUTRAL">{% icon "images/face-neutral.svg", class="w-6 h-6" %}</span>
-        <span class="cursor-pointer hover:scale-105 transition grayscale data-[score-smile='active']:grayscale-0 data-[score-smile='active']:scale-125" data-score-smile="<% fn._context_convert_POINT_3_SAD %>" data-smile-type="SAD">{% icon "images/face-sad.svg", class="w-6 h-6" %}</span>
+        <span class="cursor-pointer hover:scale-105 transition grayscale data-[score-smile='active']:grayscale-0 data-[score-smile='active']:scale-125" data-score-smile="<% fn._context_convert_POINT_3_HAPPY %>" data-smile-type="HAPPY">{% icon "images/vectors/face-happy.svg", class="w-6 h-6" %}</span>
+        <span class="cursor-pointer hover:scale-105 transition grayscale data-[score-smile='active']:grayscale-0 data-[score-smile='active']:scale-125" data-score-smile="<% fn._context_convert_POINT_3_NEUTRAl %>" data-smile-type="NEUTRAL">{% icon "images/vectors/face-neutral.svg", class="w-6 h-6" %}</span>
+        <span class="cursor-pointer hover:scale-105 transition grayscale data-[score-smile='active']:grayscale-0 data-[score-smile='active']:scale-125" data-score-smile="<% fn._context_convert_POINT_3_SAD %>" data-smile-type="SAD">{% icon "images/vectors/face-sad.svg", class="w-6 h-6" %}</span>
         <span></span>
         <span></span>
       </div>
@@ -877,8 +877,8 @@
         <div class="w-full mr-1 md:p-2 md:mb-0 my-1.5 md:mt-0 bg-slate-100 dark:bg-slate-800/60 ml-0 rounded-md p-3 text-slate-500 dark:text-slate-400 flex items-center cursor-pointer hover:bg-slate-200/70 hover:dark:bg-slate-800/80 transition italic md:mr-1 md:w-40 md:justify-center" id="[container]-lists@template.modal_view.section.schedule" onclick="setModalContent('<% media.id %>', 'schedule')" style-hidden="<% #fn.styleHidden %><% media.airingSchedule.nodes.length %><% /fn.styleHidden %>"><span class="ml-2">{% icon "calendar-days", class="w-5 h-5" %}</span><span class="ml-3">Schedule</span></div>
       </div>
       <div class="flex flex-col p-1 md:flex-row md:py-0">
-        <button class="flex items-center justify-center w-full p-3 m-1 ml-0 font-bold transition rounded-md md:mt-0 md:p-2 md:mb-0 bg-slate-200/50 dark:bg-slate-800/60 text-slate-400 dark:text-slate-500 hover:bg-slate-200/70 hover:dark:bg-slate-800/80 md:mr-2" onclick="$.popup('<% media.siteUrl %>')"><span class="mr-1">{% icon "images/anilist-bw.svg", class="w-5 h-5 dark:hidden fill-slate-600" %}{% icon "images/anilist.svg", class="hidden w-5 h-5 dark:block" %}</span><span>{% icon "arrow-top-right-on-square", class="w-5 h-5" %}</span></button>
-        <button class="flex items-center justify-center w-full p-3 m-1 ml-0 font-bold transition rounded-md md:mt-0 md:p-2 md:mb-0 bg-slate-200/50 dark:bg-slate-800/60 text-slate-400 dark:text-slate-500 hover:bg-slate-200/70 hover:dark:bg-slate-800/80 md:mr-1" onclick="$.popup('https://myanimelist.net/<% #fn.toLowerCase %><% media.type %><% /fn.toLowerCase %>/<% media.idMal %>')"><span class="mr-2">{% icon "images/myanimelist.svg", class="w-5 h-5" %}</span><span>{% icon "arrow-top-right-on-square", class="w-5 h-5" %}</span></button>
+        <button class="flex items-center justify-center w-full p-3 m-1 ml-0 font-bold transition rounded-md md:mt-0 md:p-2 md:mb-0 bg-slate-200/50 dark:bg-slate-800/60 text-slate-400 dark:text-slate-500 hover:bg-slate-200/70 hover:dark:bg-slate-800/80 md:mr-2" onclick="$.popup('<% media.siteUrl %>')"><span class="mr-1">{% icon "images/vectors/anilist-bw.svg", class="w-5 h-5 dark:hidden fill-slate-600" %}{% icon "images/vectors/anilist.svg", class="hidden w-5 h-5 dark:block" %}</span><span>{% icon "arrow-top-right-on-square", class="w-5 h-5" %}</span></button>
+        <button class="flex items-center justify-center w-full p-3 m-1 ml-0 font-bold transition rounded-md md:mt-0 md:p-2 md:mb-0 bg-slate-200/50 dark:bg-slate-800/60 text-slate-400 dark:text-slate-500 hover:bg-slate-200/70 hover:dark:bg-slate-800/80 md:mr-1" onclick="$.popup('https://myanimelist.net/<% #fn.toLowerCase %><% media.type %><% /fn.toLowerCase %>/<% media.idMal %>')"><span class="mr-2">{% icon "images/vectors/myanimelist.svg", class="w-5 h-5" %}</span><span>{% icon "arrow-top-right-on-square", class="w-5 h-5" %}</span></button>
       </div>
     </div>
     <div class="m-5 ml-2 p-1 w-[75%] flex md:w-full md:m-0 md:ml-0 md:h-full flex-col justify-start md:justify-end">

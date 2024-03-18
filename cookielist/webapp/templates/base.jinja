@@ -1,46 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" class="w-full overflow-hidden">
-
-  <!--
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣤⣤⣤⣤⣄⣀⠀⠀⠉⠣⠙⣳⢤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡀⣴⡰⠁⣼⠿⢶⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠋⠶⡀⣤⢺⣿⡯⠶⠧⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡤⠴⠶⠶⠒⠲⠤⠶⢤⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢤⣈⢛⣤⣾⡷⠶⠶⠶⠧⢤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣶⣾⣍⠀⠀⠀⠀⠀⠀⢠⡆⣧⣄⣉⡛⠛⠿⣿⣿⣿⣿⣿⣿⡿⠿⢴⣒⣛⣥⡆⣠⠀⠀⠀⠀⠀⠀⠈⣶⣴⣶⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⡧⡞⣳⣶⢶⡶⢰⣯⢸⢳⡘⣿⣿⣿⣿⡏⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⣤⣳⢡⢿⢈⣷⠀⣴⣧⣀⡀⢿⣿⣿⠛⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⢀⡴⠋⠙⣗⣧⣋⡇⠘⢛⣿⣿⠞⢸⣷⡘⣿⣿⡿⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢳⣿⣿⣦⣿⣶⣿⣷⢾⣹⣶⣾⠝⠳⣄⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⣠⠞⠀⠀⠀⣹⠃⠀⠀⠀⠘⠛⠀⢀⣿⣿⣿⣾⣿⣧⣦⣬⣿⣿⣿⣿⣻⣿⣿⣿⣿⣷⣿⣿⣿⠘⢿⣿⣿⡎⢿⣏⠻⣍⠀⠀⠈⢦⡀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⢀⡴⠋⠀⠀⠀⡼⠃⠀⠀⠀⠀⠀⠀⠀⣽⢹⣿⣿⣿⡏⢿⣯⣿⠋⠙⠙⠟⠿⣿⣽⡏⣿⣿⡏⣿⣿⡌⣆⠙⢿⣷⠈⣏⢦⣸⣦⠀⠀⠀⠹⣄⠀⠀⠀⠀⠀
-⠀⠀⠀⢠⠞⠀⠀⠀⠀⡼⠁⠀⠀⠀⠀⠀⠀⠀⣸⠃⣸⣿⣿⣿⣷⡘⠛⠉⠀⠀⠀⠀⠀⠙⠋⣸⣿⣿⣿⣿⣿⡇⢿⡄⠀⢹⣀⣸⣿⡇⠙⢧⠀⠀⠀⠈⢣⡀⠀⠀⠀
-⠀⠀⡴⠃⠀⠀⠀⠀⡼⠁⠀⠀⠀⠀⠀⠀⠀⣰⡇⡸⣿⣿⣿⣿⣿⡻⣆⠀⠀⠀⠀⠀⠀⠀⡰⢿⣿⣿⣿⣿⣿⣧⠈⣇⠀⠸⠋⠙⢿⣿⣦⡀⢳⠀⠀⠀⠀⠙⣄⠀⠀
-⠀⠼⠁⠀⠀⠀⠀⡼⠁⠀⠀⠀⠀⠀⠀⠀⢰⢻⢧⢣⣿⣿⣿⣿⣿⣿⣮⣀⠈⠉⠒⠺⠗⣨⣶⣿⣿⣿⣿⣿⣿⣿⠀⠞⡆⠀⠀⠀⠈⣿⣿⡷⡀⢣⠀⠀⠀⠀⠘⣆⠀
-⠀⠀⠀⠀⠀⢀⡴⠓⠦⣄⡀⠀⠀⠀⠀⣠⣏⣸⡏⣼⣿⣿⣿⣿⣿⣿⣿⣿⣙⣲⣤⣖⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⡦⣥⣹⠀⠀⠀⢀⣿⣿⡧⠷⠚⢦⡀⠀⠀⠀⠈⣆
-⠲⠤⣀⠀⠀⠉⠀⠀⠀⠀⠈⠉⠒⠒⢦⠿⣧⠀⠉⠉⠙⢿⠻⣿⣿⣿⠿⣏⡛⠯⠭⠽⢛⡝⢿⣿⣿⣿⣿⡿⠉⠀⢰⣿⡿⠤⠔⠒⠚⠉⠁⠀⠀⠀⠀⠙⠀⠀⣀⡤⠞
-⠀⠀⠈⠑⠢⢄⣀⠀⠀⠀⠀⠀⠀⠀⠘⣆⣼⡆⢀⣀⣠⣼⣶⣿⣿⣿⡦⣵⣍⡓⠒⣚⣭⣮⡾⣽⣿⣿⣿⣃⣠⣤⠾⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⠴⠚⠉⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠈⠙⠒⠤⣀⡀⠀⠀⠀⠹⣿⠛⠉⠉⠉⢹⣹⠺⡏⣿⣷⣷⣯⣿⣿⣫⣿⡯⣲⣿⣿⣿⠏⠉⠀⠀⠀⣟⡟⠀⠀⠀⠀⢀⣠⠴⡞⣩⠄⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠑⠲⣤⣸⣿⡆⠀⠀⢀⣼⡟⢓⡿⢼⣿⣳⡙⠿⡿⠟⣡⠞⣹⣿⣿⡟⠻⣄⠤⠤⣤⣿⣄⣠⠤⣶⣾⣿⣿⣾⣞⣋⡴⠃⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⡏⠀⠀⠤⠶⠿⣧⠼⠇⠀⣿⣇⠻⣶⠬⠘⢁⣞⣿⣿⡿⣶⡞⠁⠀⠀⠀⣼⣿⡌⢣⡹⣿⣿⣿⣭⡭⢟⡁⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⡿⣽⣿⣿⡀⢀⣠⡤⠄⢹⡀⢀⡄⣿⣿⠛⠒⣖⠋⢿⣼⣿⣿⠃⠺⣷⣄⠀⠀⠚⠿⣿⣿⡄⠳⣄⢻⠉⠉⠛⠋⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⡟⣱⣿⣿⣿⡿⠛⠉⠀⣀⢹⢷⣾⣾⣿⣿⠸⡟⠉⣻⠎⣿⣿⣿⠀⠀⠀⠙⢧⣄⢀⣼⣿⡏⢿⡄⠹⣮⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⠋⢠⣿⣿⣿⣿⣷⣀⡤⠞⢁⣈⣷⣿⣿⣿⣿⠀⢳⠟⡟⢠⣿⣿⣿⣆⠀⠀⠀⠈⢻⣿⣿⣿⣿⠘⣷⠀⠹⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⢠⡞⢹⠀⣾⢻⣿⣿⣿⣿⣿⠀⢠⣝⣻⣿⣿⣿⣿⡏⠀⠈⣾⡄⢸⣿⣿⣿⣿⣿⣶⠶⣾⣿⣿⣿⣿⣽⠀⢹⡇⠀⢸⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⢠⠏⠀⢸⣸⡏⢸⣿⣿⣿⣿⣿⣿⣾⣭⠿⠿⠟⣻⡿⠀⠀⠀⣷⣧⠈⣿⡻⢿⢿⢿⣿⠟⣿⣿⣿⣿⣿⢸⡄⠈⣷⠀⣸⠙⣧⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⢠⡟⠀⠀⣼⣿⠁⡿⣏⣿⣿⣿⣿⣿⣿⣷⣤⣤⣌⣡⣇⣀⠀⠀⣿⣿⣀⣈⣳⣼⣟⣋⡿⢰⣿⣿⣿⣿⡟⢸⠁⠀⣿⢠⡏⠀⢹⡆⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠸⡇⠀⢰⠁⣿⡀⢻⠹⣿⣿⡜⣿⣿⣿⣧⢻⡳⡶⣴⠥⢿⡿⠿⣿⣿⣿⣧⠼⣿⠉⣽⡀⣿⣿⣿⡟⣼⠁⣾⠀⠀⣿⠏⠀⠀⢘⡇⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠻⡀⠈⠀⢹⠻⢾⡀⠈⠻⣷⡈⢿⣿⡏⠀⠳⣟⡙⣇⠸⣷⠀⢸⣿⠏⠀⣠⡏⢰⣿⠀⣹⣿⠟⣴⠃⣰⠇⠀⢠⡿⠀⠀⠀⠘⠃⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠇⠀⠀⠈⠛⠂⠈⠓⢦⣶⣽⣷⣜⣀⣛⣇⣼⣿⣀⣼⣯⣴⣿⣿⡿⠟⣡⠞⠁⠴⠋⠀⠀⠞⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡾⠀⠸⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢟⠟⠀⢷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠔⠃⠀⠀⠙⢦⡉⠉⠙⠛⠛⠛⠛⠛⠉⠉⢀⡴⠋⠀⣴⠀⠓⢤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠴⠋⠀⠀⣀⣤⡀⠈⠀⠙⠷⣄⡀⠀⠀⠀⣀⣤⡶⠋⠀⠀⠀⡏⠦⣀⠀⠈⠳⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠊⠁⠀⠀⢀⣾⠿⠋⠀⢀⢖⡴⠀⠈⠁⠀⣴⣋⠽⠋⠠⣄⡠⡀⠰⠁⠀⠈⠳⣦⡀⠀⠙⠤⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡠⠞⠁⠀⠀⣰⣷⠋⠀⠀⠀⠀⠀⠉⠁⠀⠀⠀⠈⠻⣾⣦⠀⠀⠐⠒⠤⣽⣦⣀⠀⠀⠀⠉⠉⠒⠤⣀⠀⠀⠀⠀⠀⠀
--->
-
+<html lang="en" class="w-full overflow-hidden {{ request.cookies.get('theme', '') }}">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('AboutView:webmanifest', version=random()) }}" crossorigin="use-credentials">
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -49,24 +16,26 @@
     <noscript>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap" />
     </noscript>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-dark.min.css">
-    {% assets 'SASS' %}
-    <link rel="stylesheet" href="$ASSET_URL?$TIME" />{% endassets %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" integrity="sha256-X7rrn44l1+AUO65h1LGALBbOc5C5bOstSYsNlv9MhT8=" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/stackoverflow-dark.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
     {{ "<style>" }}{% include "style.jinja.css" %}{{ "</style>" }}
+    {% assets 'SASS' %}
+    <link rel="stylesheet" href="$ASSET_URL" />
+    {% endassets %}
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://unpkg.com/mustache@4.2.0/mustache.js"></script>
-    {# <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> #}
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/markdown.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jsonurl/jsonurl@1.1.7" crossorigin="anonymous"></script>
-    {# <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> #}
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mustache@4.2.0/mustache.min.js" integrity="sha256-1/0GA1EkYejtvYFoa+rSq4LfM4m5zKI13Z1bQIhI4Co=" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js" integrity="sha256-Rdw90D3AegZwWiwpibjH9wkBPwS9U4bjJ51ORH8H69c=" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha256-4XodgW4TwIJuDtf+v6vDJ39FVxI0veC/kSCCmnFp7ck=" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/languages/json.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/languages/markdown.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js" integrity="sha256-WzuqEKxV9O7ODH5mbq3dUYcrjOknNnFia8zOyPhurXg=" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js" integrity="sha256-42IbU8t3tOwwbexB7ZVRHm3YDRf65aBPPjRtIUufj5I=" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jsonurl/jsonurl@1.1.7/dist/jsonurl.min.js" integrity="sha256-Mj//ApAea+AagvVXSF/tjXftrVwLnZyy5klhmG4knGY=" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.32.7/src-min-noconflict/ace.js" integrity="sha256-eO5AQ6MEZL96EZmH2ZriRAIk79HGzJobFqsuQSiHr+E=" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.32.7/src-min-noconflict/mode-yaml.js" integrity="sha256-JPqiQqxQhWVv8Ln+KD7cjYVlwq2E9agktYaOtafKXLM=" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.32.7/src-min-noconflict/theme-one_dark.js" integrity="sha256-DTvl/S/EYD9nZ5xefnsIBWrDTl2bak1tT2ItO2gZvlI=" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <title>
       {% block title %}{% endblock title %} - {{ SITE_NAME }}
@@ -76,7 +45,7 @@
 
   </head>
 
-  <body class="font-['Victor_Mono'] bg-slate-50 dark:bg-slate-900 h-full fixed w-full" onload="$('html').addClass(localStorage.getItem('__THEME'))">
+  <body class="font-['Victor_Mono'] bg-slate-50 dark:bg-slate-900 h-full fixed w-full flex" onload="if (localStorage.getItem('__site_theme') === 'dark') { $('html').addClass('dark') } else { $('html').removeClass('dark') }">
 
     {% include "blocks/notification.jinja" %}
 
@@ -100,7 +69,7 @@
 
 
     <section class="max-w-md p-4 mx-auto bg-white border border-gray-200 dark:bg-gray-800 left-16 bottom-6 dark:border-gray-700 rounded-2xl z-[80] shadow-md hidden md:!mr-4 h-min md:left-4" id="[_]-cookies-notice">
-      <h2 class="flex font-semibold text-gray-800 dark:text-white"><span>{% icon "images/cookie.svg", class="w-6 h-6" %}</span> <span class="ml-2">We use cookies</span></h2>
+      <h2 class="flex font-semibold text-gray-800 dark:text-white"><span>{% icon "images/vectors/cookie.svg", class="w-6 h-6" %}</span> <span class="ml-2">We use cookies</span></h2>
       <p class="mt-4 text-sm text-gray-600 dark:text-gray-300">Please, accept these sweeties to continue enjoying {{ SITE_NAME }}!</p>
       <div class="flex items-center justify-between mt-4 gap-x-4 shrink-0">
         <button class="text-xs text-gray-800 underline transition-colors duration-300 dark:text-white dark:hover:text-gray-400 hover:text-gray-600 focus:outline-none" onclick="CookiePopup('no')">
@@ -165,7 +134,7 @@
     </div>
 
     {% assets 'JS' %}
-    <script src="$ASSET_URL?$TIME"></script>{% endassets %}
+    <script src="$ASSET_URL"></script>{% endassets %}
     {{"<script>"}}{% include "script.jinja.js" %}{{"</script>"}}
     {% block scripts %}{% endblock scripts %}
 

@@ -70,7 +70,7 @@ class ResponseFormats:
         return BADGE.render(
             template,
             **_data.to_dict()
-            | {"anilist_avatar_base_64": _data.anilist_avatar_base_64()}
+            | {"anilist_avatar_base_64": _data.anilist_avatar_base_64}
             | kwargs,
         )
 

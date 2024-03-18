@@ -83,7 +83,7 @@ class CookieListOptions:
         "badgeServer",
         "badgeOptions",
         "isBadgeServerCustom",
-        "userOptionFormatted",
+        "userOptionFormatted"
     )
     timezoneName: str
     timeFormatString: str
@@ -143,7 +143,7 @@ def _format_user_settings(options: CookieListOptions, data: dict[str, dict]) -> 
 
 def _sanitize_options(data: dict[str, dict]) -> dict:
     options: dict[str, str | int | list[int | str]] = JsonToken.find_and_decode(
-        data["user"]["about"]
+        data["user"]["about"] or ""
     )
     sanitized = {}
 
@@ -171,7 +171,7 @@ def _sanitize_options(data: dict[str, dict]) -> dict:
     sanitized["badgeOptions"] = defaultdict(list)
     for query in re.findall(
         rf"https?://(?:{sanitized['badgeServer']})/(?:{data['user']['id']}).svg(?:\?|/\?)(.*?)[\)|\s]",
-        data["user"]["about"],
+        data["user"]["about"] or "",
     ):
         query_parsed = parse.parse_qsl(query)
         query_dict = dict(query_parsed)

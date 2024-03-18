@@ -1,4 +1,6 @@
+from email.policy import default
 import logging
+import re
 import socket
 import argparse
 from typing import Callable
@@ -9,6 +11,7 @@ import arrow
 from pathlib import Path
 import time
 from time import time as timestamp
+import rich_click as click
 
 import flask.cli
 import werkzeug._reloader
@@ -70,7 +73,9 @@ def initialize_partial_app(app: Flask, port: int):
         port=port,
         reloader_type="_cookielist_werkzeug_reloader",
         host=env.string("APP_HOST"),
-        ssl_context = "adhoc" if env.string("APP_PROTOCOL") == "https" and DEBUG else None,
+        ssl_context=(
+            "adhoc" if env.string("APP_PROTOCOL") == "https" and DEBUG else None
+        ),
     )
 
     _COOKIELIST_APP += ":{port}".format(port=port)
@@ -93,9 +98,9 @@ def initialize_partial_app(app: Flask, port: int):
             with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
                 try:
                     s.connect(("10.253.155.219", 58162))
+                    address = s.getsockname()[0]
                 except OSError:
-                    return "127.0.0.1"
-                address = s.getsockname()[0]
+                    address = "127.0.0.1"
             _log(
                 "[bold italic yellow]APP STARTED AT[/]\n"
                 + "\n".join(
@@ -162,17 +167,54 @@ def get_app(_app: str):
     port = env.int("APP_PORT")
     if _app == "cookielist-badge-app":
         port = env.int("BADGE_APP_PORT")
-    return initialize_partial_app(app, port)
+    if DEBUG:
+        return initialize_partial_app(app, port)
+    return app
+
+
+@click.group()
+@click.pass_context
+def cli(ctx):
+    pass
+
+
+@cli.command()
+@click.option("-a", "--app", default="cookielist-core-or-stub-app", type=str)
+def run(app: str):
+    cookie_app = get_app(app)
+    while True:
+        try:
+            cookie_app.run()
+        except:
+            time.sleep(1)
+            cookie_app.run()
+
+
+@cli.command()
+@click.option("--db-last-page", type=int, default=None)
+def synchronize(db_last_page: int):
+    if db_last_page is None:
+        env.environ["DATABASE_LAST_PAGE_ESTIMATE"] = str(db_last_page)
+    from cookielist.synchronize import CookieListSynchronizer
+
+    CookieListSynchronizer().synchronize()
+
+
+@cli.command()
+def github_action_set_estimate():
+    from cookielist.synchronize import set_last_database_page_github_output
+
+    set_last_database_page_github_output()
+
+
+@cli.command()
+@click.option("-g", "--group", type=int, required=True)
+@click.option("-t", "--total", type=int, required=True)
+def prefetch(group: int, total: int):
+    from cookielist.synchronize import prefetch
+
+    prefetch(group, total)
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--app", default="cookielist-core-or-stub-app", type=str)
-    args = parser.parse_args()
-    app = get_app(args.app)
-    while True:
-        try:
-            app.run()
-        except:
-            time.sleep(1)
-            app.run()
+    cli()

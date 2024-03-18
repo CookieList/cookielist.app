@@ -73,7 +73,7 @@
         </div>
       </div>
       <div class="flex flex-col items-center w-full p-2 rounded-lg my-9 bg-slate-100 dark:bg-slate-800/50">
-        <div class="flex flex-col items-center justify-center w-4/5 p-8 m-2 shadow rounded-xl bg-slate-900 md:p-3">
+        <div class="flex flex-col items-center justify-center w-[70%] md:w-[80%] p-8 m-2 shadow rounded-xl bg-slate-900 md:p-3">
           <div class="w-full [&>img]:h-auto [&>img]:w-10/12 md:[&>img]:w-full flex items-center justify-center" id="[container]-profile.status_badge"></div>
           <div class="w-11/12 mt-2.5">
             <select id="[container]-settings.badge_template_dropdown" class="md:!p-1.5 bg-white bg-no-repeat dark:[&_option]:text-slate-400 [&_option]:text-slate-600 transition-colors border border-slate-300 text-slate-600 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-600 dark:text-slate-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer m-1 appearance-none outline-none bg-[right_10px_center] bg-[length:auto_50%] [&::-ms-expand]:hidden">
@@ -102,6 +102,9 @@
   <script>InitializeProfilePage();</script>
 </template>
 
+<template id="[customize]@template.loading_badge">
+  <span>{% icon "arrow-path", class="w-6 h-6 stroke-slate-500 dark:stroke-slate-400 animate-spin" %}</span>
+</template>
 
 <template id="[customize]@template.content">
   <div class="flex flex-row items-center justify-center w-full h-full md:flex-col">
@@ -112,7 +115,7 @@
           <span class="cursor-pointer rounded-md m-1 active:scale-90 hover:brightness-90 transition p-1.5 data-[customize-menu-theme='dark']:bg-slate-900 data-[customize-menu-theme='light']:bg-slate-200 data-[customize-menu-theme='contrast']:bg-slate-100 data-[customize-menu-theme='dark']:text-slate-400 data-[customize-menu-theme='light']:text-slate-600 data-[customize-menu-theme='contrast']:text-slate-500" data-customize-menu-theme="<% fn.menuTheme %>" onclick="changeCustomizeWindowTheme('light')">{% icon "sun", class="w-6 h-6 md:w-5 md:h-5" %}</span>
           <span class="cursor-pointer rounded-md m-1 active:scale-90 hover:brightness-90 transition p-1.5 data-[customize-menu-theme='dark']:bg-slate-900 data-[customize-menu-theme='light']:bg-slate-200 data-[customize-menu-theme='contrast']:bg-slate-100 data-[customize-menu-theme='dark']:text-slate-400 data-[customize-menu-theme='light']:text-slate-600 data-[customize-menu-theme='contrast']:text-slate-500" data-customize-menu-theme="<% fn.menuTheme %>" onclick="changeCustomizeWindowTheme('contrast')">{% icon "light-bulb", class="w-6 h-6 md:w-5 md:h-5" %}</span>
         </div>
-        <span class="flex items-center justify-center w-full px-1.5 py-3 aspect-video overflow-auto" style-hide-scrollbar="true"><img class="w-10/12 md:w-11/12" src="<% fn.badgeUrl %>" id="[customize]-content.badge_image"></span>
+        <span class="flex items-center justify-center w-full px-1.5 py-3 aspect-video overflow-auto [&>img]:w-10/12 md:[&>img]:w-11/12" style-hide-scrollbar="true" id="[customize]-content.badge_image"><img src="<% fn.badgeUrl %>"></span>
         <span class="mb-1 p-1 px-1.5 text-sm md:text-xs italic font-bold rounded-md data-[customize-menu-theme='dark']:bg-slate-900 data-[customize-menu-theme='light']:bg-slate-200 data-[customize-menu-theme='contrast']:bg-slate-100 data-[customize-menu-theme='dark']:text-slate-400 data-[customize-menu-theme='light']:text-slate-600 data-[customize-menu-theme='contrast']:text-slate-500" data-customize-menu-theme="<% fn.menuTheme %>"><% fn.badgeTemplate %></span>
       </div>
       <div class="flex flex-col items-center justify-between w-full h-full m-2 mt-1 mb-0 overflow-hidden text-sm rounded-lg md:hidden md:text-xs md:mb-1 bg-slate-50 dark:bg-slate-800/80">

@@ -1,3 +1,4 @@
+import html
 import platform
 import re
 import shutil
@@ -9,8 +10,8 @@ from pathlib import Path
 import psutil
 import py7zr
 from arrow import Arrow
-from flask import abort, request, session
-from flask_classful import FlaskView, route
+from flask import abort, request, session, url_for, redirect
+from flask_classful import FlaskView, route, method
 
 from cookielist.environment import env
 
@@ -60,8 +61,8 @@ class AdminView(FlaskView):
     @route("synchronize", methods=["POST"])
     @authorize
     def synchronize(self):
-        path = Path(f"/home/{env.string('PA_USERNAME')}/app/.synchronize.archive.7z")
-        if path.is_file():
+        path = Path(f"/home/{env.string('PA_USERNAME')}/{env.string('PA_SOURCE_FOLDER')}/.synchronize.archive.7z")
+        if path.is_file() and path.exists():
             state = Path(env.string("COOKIELIST_STATE_FOLDER")).resolve()
             if state.exists():
                 shutil.rmtree(str(state), ignore_errors=True)
@@ -75,29 +76,35 @@ class AdminView(FlaskView):
             return dict(status=True)
         return abort(400)
 
-    # @authorize
-    # def in_memory_badges_size(self):
-    #     badge_cdn = BadgeCacheHandler()
+    def ping(self):
+        return dict(
+            json=dict(status=True),
+            html=f"""<!--html-->
+            <div class="flex flex-col items-center justify-center w-full m-1">
+                <img class="rounded-full w-1/3 p-1 md:w-1/2" src="{ url_for('static', filename='images/pong.png') }"/>
+                <span class="text-xl m-1 font-bold italic">#PONG</span>
+            </div>
+            """,
+        )
 
-    #     byte_to_mb = 1048576
-    #     size_in_bytes = asizeof.asizeof(badge_cdn)
-    #     size_in_mb = size_in_bytes / byte_to_mb
-
-    #     user_list_html = "".join(map(lambda _: f"<li>{_}</li>", badge_cdn.cache_items))
-
-    #     return dict(
-    #         json=dict(
-    #             size_bytes=size_in_bytes,
-    #             size_megabytes=size_in_mb,
-    #             badge_count_in_cache=badge_cdn.cache_count,
-    #             badge_user_ids=badge_cdn.cache_items,
-    #         ),
-    #         html=f"""<!--html-->
-    #             <span class="italic font-bold text-lg text-slate-300">In memory size of { round(size_in_mb, 2) }MB with { badge_cdn.cache_count } badges.</span>
-    #             <br class="m-2">
-    #             <ol class="list-decimal list-inside text-sm italic">{ user_list_html }</ol>
-    #         """,
-    #     )
+    @method("get")
+    @method("post")
+    @method("delete")
+    def access_debug_mode(self):
+        if request.method == "DELETE":
+            session.pop("__debug_password__", None)
+            return redirect("/")
+        elif request.method == "GET":
+            password = request.args.get("password", "").strip()
+            if env.string("COOKIELIST_DEBUG_PASSWORD") == password:
+                session["__debug_password__"] = password
+            return redirect("/")
+        elif request.method == "POST":
+            password = request.get_json(force=True).get("password", "").strip()
+            correct = env.string("COOKIELIST_DEBUG_PASSWORD") == password
+            return dict(
+                json=dict(password=password, correct=correct),
+            )
 
     @authorize
     def about_system_statistics(self):
@@ -170,3 +177,7 @@ class AdminView(FlaskView):
                 ),
             )
         )
+        
+    @route("/_/cookielist-stub", methods=["GET"])
+    def cookielist_stub_redirect(self):
+        return redirect(url_for('AboutView:index'))

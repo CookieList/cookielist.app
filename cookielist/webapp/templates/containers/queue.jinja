@@ -26,9 +26,9 @@
           <div class="text-sm font-bold leading-none leading-4 tracking-tight text-center text-slate-50 lg:text-xs xl:text-xs">{{ queueSectionMedia.media.mediaTitle }}</div>
           <div class="absolute bottom-0 flex flex-col items-center p-1 mb-px">
             <div class="flex">
-              <button class="p-px px-1 mr-1 transition rounded-md bg-slate-950/80 hover:scale-105" onclick="event.stopPropagation();$.popup('{{ queueSectionMedia.media.mediaAniListSiteUrl }}')">{% icon 'images/anilist.svg', class="w-5 h-5" %}</button>
+              <button class="p-px px-1 mr-1 transition rounded-md bg-slate-950/80 hover:scale-105" onclick="event.stopPropagation();$.popup('{{ queueSectionMedia.media.mediaAniListSiteUrl }}')">{% icon 'images/vectors/anilist.svg', class="w-5 h-5" %}</button>
               {% if queueSectionMedia.media.mediaMyAnimeListSiteUrl is not none %}
-              <button class="p-px px-1 transition  rounded-md bg-[#2e51a2] hover:scale-105" onclick="event.stopPropagation();$.popup('{{ queueSectionMedia.media.mediaMyAnimeListSiteUrl }}')">{% icon 'images/myanimelist.svg', class="w-5 h-5" %}</button>
+              <button class="p-px px-1 transition  rounded-md bg-[#2e51a2] hover:scale-105" onclick="event.stopPropagation();$.popup('{{ queueSectionMedia.media.mediaMyAnimeListSiteUrl }}')">{% icon 'images/vectors/myanimelist.svg', class="w-5 h-5" %}</button>
               {% endif %}
             </div>
             <span class="p-px px-1 mt-1 text-xs italic rounded-md text-slate-300 bg-slate-950/80"><span class="text-green-500" id="[container]-queue.group@{{ queueSectionMedia.media.mediaId }}.progress_text">{{ queueSectionMedia.media.userMediaProgress }}</span>{% if queueSectionMedia.media.mediaEpisodeCount is not none %}/<span class="text-yellow-500">{{ queueSectionMedia.media.mediaEpisodeCount }}</span>{% endif %}</span>

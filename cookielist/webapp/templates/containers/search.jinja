@@ -2,7 +2,7 @@
   <span class="mt-4 md:mt-2.5 font-bold text-xl md:text-lg mb-2 ml-2">Anime <% ^anime.length %><span class="text-base italic text-slate-400 dark:text-slate-500">(Empty)</span><% /anime.length %></span>
   <div class="grid w-full grid-cols-3 gap-4 py-8 pt-0 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 md:gap-2 md:py-4 md:pt-0">
     <% #anime %>
-    <span class="flex overflow-hidden rounded-lg group hover:scale-105 transition w-full cursor-pointer bg-slate-200/70 dark:bg-slate-950/40 border-2 border-transparent data-[list-status='CURRENT']:border-green-500/50 data-[list-status='PLANNING']:border-sky-500/50 data-[list-status='COMPLETED']:border-purple-500/50 data-[list-status='DROPPED']:border-rose-500/50 data-[list-status='PAUSED']:border-orange-500/50 data-[list-status='REPEATING']:border-yellow-500/50" data-list-status="<% mediaListEntry.status %>" onclick="ShowModal('<% media.id %>', '<% fn.mediaTitle %>')">
+    <span class="flex overflow-hidden rounded-lg group hover:scale-105 transition w-full cursor-pointer bg-slate-200/70 dark:bg-slate-950/40 border-2 border-transparent data-[list-status='CURRENT']:border-green-500/50 data-[list-status='PLANNING']:border-sky-500/50 data-[list-status='COMPLETED']:border-purple-500/50 data-[list-status='DROPPED']:border-rose-500/50 data-[list-status='PAUSED']:border-orange-500/50 data-[list-status='REPEATING']:border-yellow-500/50" data-list-status="<% mediaListEntry.status %>" onclick="ShowModal('<% id %>', '<% fn.mediaTitle %>')">
       <div class="w-1/4 aspect-[2/3] my-1.5 ml-1.5">
         <span class="w-full h-full overflow-hidden rounded-l-lg rounded-r-md"><img src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/default.jpg" class="object-cover w-full h-full rounded-l-lg rounded-r" data-src="<% coverImage.large %>" lazyload></span>
       </div>
@@ -25,7 +25,7 @@
   <span class="mt-2 md:mt-2.5 font-bold text-xl md:text-lg mb-2 ml-2">Manga <% ^manga.length %><span class="text-base italic text-slate-400 dark:text-slate-500">(Empty)</span><% /manga.length %></span>
   <div class="grid w-full grid-cols-3 gap-4 py-8 pt-0 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 md:gap-2 md:py-4 md:pt-0">
     <% #manga %>
-    <span class="flex overflow-hidden rounded-lg group hover:scale-105 transition w-full cursor-pointer bg-slate-200/70 dark:bg-slate-950/40 border-2 border-transparent data-[list-status='CURRENT']:border-green-500/50 data-[list-status='PLANNING']:border-sky-500/50 data-[list-status='COMPLETED']:border-purple-500/50 data-[list-status='DROPPED']:border-rose-500/50 data-[list-status='PAUSED']:border-orange-500/50 data-[list-status='REPEATING']:border-yellow-500/50" data-list-status="<% mediaListEntry.status %>" onclick="ShowModal('<% media.id %>', '<% fn.mediaTitle %>')">
+    <span class="flex overflow-hidden rounded-lg group hover:scale-105 transition w-full cursor-pointer bg-slate-200/70 dark:bg-slate-950/40 border-2 border-transparent data-[list-status='CURRENT']:border-green-500/50 data-[list-status='PLANNING']:border-sky-500/50 data-[list-status='COMPLETED']:border-purple-500/50 data-[list-status='DROPPED']:border-rose-500/50 data-[list-status='PAUSED']:border-orange-500/50 data-[list-status='REPEATING']:border-yellow-500/50" data-list-status="<% mediaListEntry.status %>" onclick="ShowModal('<% id %>', '<% fn.mediaTitle %>')">
       <div class="w-1/4 aspect-[2/3] my-1.5 ml-1.5">
         <span class="w-full h-full overflow-hidden rounded-l-lg rounded-r-md"><img src="https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/default.jpg" class="object-cover w-full h-full rounded-l-lg rounded-r" data-src="<% coverImage.large %>" lazyload></span>
       </div>
@@ -98,14 +98,15 @@
   <div class="flex items-center justify-center w-full h-full bg-white dark:bg-slate-900">
     <div class="flex flex-col items-center justify-center">
       <div class="sparkle">
-        {% icon "images/sparkle.svg" as sparkle %}
+        {% icon "images/vectors/sparkle.svg" as sparkle %}
         {% for _ in range(5) %}
         <span class="sparkle-icon">{{ sparkle }}</span>
         {% endfor %}
-        <span class="sparkle-text">@<% user %></span>
+        <span class="sparkle-text" id="[_]-status.name"><% #user %>@<% user %><% /user %><% ^user %>#<% id %><% /user %></span>
       </div>
       <i id="[_]-status" class="mt-px text-slate-500 dark:text-slate-400 md:text-sm">Initializing...</i>
       <div id="[_]-status.progress" class="flex items-center justify-center w-11/12"></div>
+      <span class="text-sm mt-1 text-slate-400 dark:text-slate-500" id="[_]-status.time_elapsed"></span>
     </div>
   </div>
 </template>

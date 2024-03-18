@@ -1,7 +1,7 @@
 import pathlib
 
 import dotted_dict
-from flask import abort, request, session, stream_template, redirect
+from flask import abort, request, session, stream_template, g
 from flask_classful import FlaskView, route
 
 from cookielist.badge.process import calculate as calculate_badge
@@ -20,13 +20,14 @@ anilist = AnilistClient(
 
 class ApiView(FlaskView):
     route_base = "/"
+    route_prefix = "/api/"
+    default_methods = ["POST"]
 
     _list = ListProcessor()
     _queue = QueueProcessor()
     _schedule = ScheduleProcessor()
 
-    @route("/api", methods=["POST"])
-    def process_data(self):
+    def process(self):
         Media, User, Options = _pre_process.process(request.get_json(force=True))
 
         parsedUserList = self._list.calculate(Media, User, Options)
@@ -44,8 +45,8 @@ class ApiView(FlaskView):
             userOptions=Options,
         )
 
-    @route("/register", methods=["GET", "POST"])
-    def register_user(self):
+    @route("/register", methods=["POST", "GET"])
+    def login(self):
         if request.method == "GET":
             return stream_template("endpoints/register.jinja")
 
@@ -100,17 +101,4 @@ class ApiView(FlaskView):
 
         else:
             return abort(404)
-        
-    @route("/_/cookielist-stub", methods=["GET"])
-    def cookielist_stub_redirect(self):
-        return redirect("/")
-    
 
-    # @route("/settings_encode", methods=["POST"])
-    # def encode_settings(self):
-    #     data = request.get_json(force=True)
-    #     _salt = request.args.get("id")
-    #     _format = request.args.get("format") or "[//]: <> (cookielist:{})"
-    #     if _salt is None:
-    #         return abort(500)
-    #     return JsonToken.encode(data, salt=_salt, _format=_format)

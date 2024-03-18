@@ -1,43 +1,39 @@
 <template id="[container]-admin@template.admin_api_response">
+  <% ^html %>
+  <% ^markdown %>
+  <% ^json %>
+  <span class="flex justify-center w-full m-1 mb-2"><span class="p-1 font-bold text-sm px-1.5 bg-green-600 rounded dark:bg-green-500 text-green-50">UNKNOWN RESPONSE FORMAT</span></span>
+  <% /json %>
+  <% /markdown %>
+  <% /html %>
+
   <% #html %>
+  <hr class="w-[75%] ml-[12.5%] rounded-full border-slate-300 dark:border-slate-700 mb-3.5 mt-1">
   <div class="p-1 mx-2 mb-2 border-2 rounded dark:bg-slate-800/40 bg-slate-800 border-slate-900 dark:border-slate-700"><% &html %></div>
   <% /html %>
+
   <% #markdown %>
-  <pre class="p-1 mx-2 mb-2 border-2 rounded dark:bg-slate-800/40 bg-slate-800 border-slate-900 dark:border-slate-700"><code class="language-markdown rounded !bg-transparent"><% &markdown %></code></pre>
+  <% ^html %>
+  <hr class="w-[75%] ml-[12.5%] rounded-full border-slate-300 dark:border-slate-700 mb-3.5 mt-1">
+  <% /html %>
+  <pre class="p-1 mx-2 mb-2 border-2 rounded dark:bg-slate-800/40 bg-slate-800 border-slate-900 dark:border-slate-700 overflow-x-scroll" style-hide-scrollbar="true"><code class="rounded !bg-transparent"><% &markdown %></code></pre>
   <% /markdown %>
+
   <% #json %>
-  <pre class="p-1 mx-2 mb-2 border-2 rounded dark:bg-slate-800/40 bg-slate-800 border-slate-900 dark:border-slate-700"><code class="rounded !bg-transparent"><% &json %></code></pre>
+  <% ^html %><% ^markdown %>
+  <hr class="w-[75%] ml-[12.5%] rounded-full border-slate-300 dark:border-slate-700 mb-3.5 mt-1">
+  <% /markdown %><% /html %>
+  <pre class="p-1 mx-2 mb-2 border-2 rounded dark:bg-slate-800/40 bg-slate-800 border-slate-900 dark:border-slate-700 overflow-x-scroll" style-hide-scrollbar="true"><code class="rounded !bg-transparent"><% &json %></code></pre>
   <% /json %>
+</template>
+
+<template id="[container]-admin@template.admin_api_error">
+  <span class="flex justify-center w-full m-1 mb-2"><span class="p-1 font-bold text-sm px-1.5 bg-rose-600 rounded dark:bg-rose-500 text-rose-50">ERROR CODE: <% status %></span></span>
 </template>
 
 <template id="[container]-admin@template.loading">
   <span class="flex justify-center w-full m-1">{% icon "arrow-path", class="w-8 h-8 stroke-slate-500 dark:stroke-slate-400 animate-spin" %}</span>
 </template>
-
-
-
-{% macro admin_content_fetch_block(endpoint, description, method='GET') %}
-{% if method == 'GET' %}
-{% set icon_name = "cloud-arrow-down" %}
-{% set icon_theme = "text-slate-400 dark:text-slate-600" %}
-{% set button_theme = "bg-slate-100 dark:bg-slate-800/40 hover:bg-slate-100/60 dark:hover:bg-slate-800/60 border-slate-200 dark:border-slate-700" %}
-{% set text_theme = "text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/40 border-slate-200 dark:border-slate-700" %}
-{% else %}
-{% set icon_name = "cloud-arrow-up" %}
-{% set icon_theme = "text-rose-500/80" %}
-{% set button_theme = "bg-rose-500/20 hover:bg-rose-500/30 border-rose-500/70" %}
-{% set text_theme = "text-rose-500/80 bg-rose-500/20 border-rose-500/70" %}
-{% endif %}
-<div class="flex flex-col justify-center w-full p-1 m-1 mb-2 border-2 border-dashed rounded dark:border-slate-700">
-  <div class="flex mx-2 my-2">
-    <span class="active:scale-95 transition mr-1 p-0.5 rounded px-3 transition cursor-pointer border-2 flex {{ button_theme }}" onclick="AdminContentFetch(`{{ url_for('AdminView:' + endpoint) }}`, '{{ endpoint }}', method='{{ method }}')">
-      <span class="self-center {{ icon_theme }}">{% icon icon_name, class="w-8 h-8" %}</span>
-    </span>
-    <span class="italic font-bold ml-1 p-0.5 rounded px-3 w-full border-2 flex {{ text_theme }}"><span class="self-center">{{ description }}</span></span>
-  </div>
-  <div class="w-full text-slate-400" id="[container]-admin@response.{{ endpoint }}"></div>
-</div>
-{% endmacro %}
 
 <template id="[container]-admin">
   <div class="flex flex-col items-center w-full h-full animate__animated animate__fadeIn" style="--animate-duration: 0.3s;">
@@ -48,9 +44,32 @@
     </div>
     {% if session.CL_USERNAME == CL_USERNAME and session.CL_PASSWORD == CL_PASSWORD and session.CL_ADMIN_TOKEN == CL_ADMIN_TOKEN %}
 
-    {{ admin_content_fetch_block('in_memory_badges_size', 'In memory cookielist-badge content archive status.') }}
-    {{ admin_content_fetch_block('about_system_statistics', "Webapp running system information and statistics")}}
-
+    <div class="flex flex-col justify-center w-full p-1 m-1 mb-2 border-2 border-dashed rounded-md dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40">
+      <div class="w-full p-2 pb-1">
+        <select id="[container]-admin.servers" class="bg-white bg-no-repeat dark:[&_option]:text-slate-400 [&_option]:text-slate-600 transition-colors border-2 border-slate-200 dark:border-slate-700 text-slate-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-slate-800 dark:placeholder-slate-600 dark:text-slate-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer appearance-none outline-none bg-[right_10px_center] bg-[length:auto_50%] [&::-ms-expand]:hidden"></select>
+      </div>
+      <div class="flex mx-2 my-2 md:flex-col">
+        <div class="flex md:w-full">
+          <span class="active:scale-95 flex grow transition mr-1 p-0.5 rounded px-3 transition cursor-pointer border-2 flex bg-green-100 dark:bg-green-800/40 hover:bg-green-100/60 dark:hover:bg-green-800/60 border-green-200 dark:border-green-700" onclick="AdminContentFetch('GET')">
+            <span class="self-center w-full text-center text-green-400 dark:text-green-600 my-1">GET</span>
+          </span>
+          <span class="active:scale-95 flex grow transition mr-1 p-0.5 rounded px-3 transition cursor-pointer border-2 flex bg-orange-100 dark:bg-orange-800/40 hover:bg-orange-100/60 dark:hover:bg-orange-800/60 border-orange-200 dark:border-orange-700" onclick="AdminContentFetch('POST')">
+            <span class="self-center w-full text-center text-orange-400 dark:text-orange-600 my-1">POST</span>
+          </span>
+          <span class="active:scale-95 flex grow md:mr-0 transition mr-1 p-0.5 rounded px-3 transition cursor-pointer border-2 flex bg-red-100 dark:bg-red-800/40 hover:bg-red-100/60 dark:hover:bg-red-800/60 border-red-200 dark:border-red-700" onclick="AdminContentFetch('DELETE')">
+            <span class="self-center w-full text-center text-red-400 dark:text-red-600 my-1">DELETE</span>
+          </span>
+        </div>
+        <input type="text" id="[container]-admin.route" class="font-bold ml-1 md:ml-0 md:mt-2 md:py-2 p-0.5 rounded px-3 w-full border-2 flex text-slate-500 dark:text-slate-400 outline-none bg-white dark:bg-slate-800/40 border-slate-200 dark:border-slate-700" />
+      </div>
+      <div class="w-full px-2">
+        <div id="[container]-admin.editor" class="w-full h-44 p-2 rounded-md my-1 text-base"></div>
+      </div>
+      <div class="w-full p-2 pt-1 mb-1">
+        <select id="[container]-admin.options" class="bg-white bg-no-repeat dark:[&_option]:text-slate-400 [&_option]:text-slate-600 transition-colors border-2 border-slate-200 dark:border-slate-700 text-slate-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-slate-800 dark:placeholder-slate-600 dark:text-slate-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer appearance-none outline-none bg-[right_10px_center] bg-[length:auto_50%] [&::-ms-expand]:hidden"></select>
+      </div>
+      <div class="w-full text-slate-400" id="[container]-admin@response"></div>
+    </div>
     <br class="m-2">
     {% else %}
     <div class="flex flex-col w-3/4 p-3">
@@ -62,4 +81,5 @@
     <span class="flex p-3 px-6 italic font-bold text-pink-100 transition border rounded-full cursor-pointer bg-pink-500/70 border-pink-500/90 hover:scale-105 text-md" onclick="AdminLogin()">Submit</span>
     {% endif %}
   </div>
+  <script>InitializeAdminSystem()</script>
 </template>

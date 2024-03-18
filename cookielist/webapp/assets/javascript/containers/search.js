@@ -15,7 +15,7 @@ function setSearchResult(response) {
       response.data.Anime.media.length === 0 &&
       response.data.Manga.media.length === 0)
   ) {
-    $.storage("__SEARCH", null);
+    $.storage("__last_search_term", null);
     $.id("[container]-search.search_results_container").mustache(
       $.id("[container]-search@template.search_empty")
     );
@@ -70,7 +70,7 @@ function searchQuery(search) {
 }
 
 function SearchInitialize() {
-  const last_search = $.storage("__SEARCH");
+  const last_search = $.storage("__last_search_term");
   if (last_search) {
     if ($.state.__userSearchResults) {
       setSearchResult($.state.__userSearchResults);
@@ -84,14 +84,14 @@ function SearchInitialize() {
     _delay_search(() => {
       const search = $.id("[container]-search.search_box").val().trim();
       searchQuery(search);
-      $.storage("__SEARCH", search);
+      $.storage("__last_search_term", search);
     })
   );
 
   $.id("[container]-search.search_button").on("click", () => {
     const search = $.id("[container]-search.search_box").val().trim();
     searchQuery(search);
-    $.storage("__SEARCH", search);
+    $.storage("__last_search_term", search);
   });
 }
 
@@ -106,6 +106,40 @@ window.onpopstate = function (e) {
 function searchUser(id, name) {
   $.state.page.id = id;
   $.state.page.user = name;
+
+  $.state.__comments = {
+    details: null,
+    comments: [],
+    load: true,
+    page: 0,
+    next: true,
+  };
+  $.state.__queueState = {
+    media: {},
+    category: {},
+  };
+  $.state.__badge_templates = {};
+  $.state.__badge_options = {};
+  $.state.__badge_ajax_request = null;
+  $.state.__is_badge_loading = false;
+  $.state.__LASTContainerID = undefined;
+  $.state.__EntrySwapID = undefined;
+  $.state.__mobile_filters = [];
+  $.state._modal_window_history = [];
+  $.state.__active_schedule_episode = null;
+  $.state.__lastModalContainer = null;
+  $.id("[_]-search.fraction").html("");
+  $.id("[_]-search")
+    .removeClass("animate__animated animate__fadeInUp animate__fadeOutDown")
+    .addClass("hidden");
+  $.state.__search_initialized = false;
+  $("[data-search-filter-active]").attr("data-search-filter-active", "false")
+  $.id("[_]-search.content").off("focus.search")
+  $.id("[_]-search.content").off("blur.search")
+  $.id("[_]-search.lock").off("click.search")
+  $("[data-search-filter-class]").off("click.search")
+  $(document).off("keyup.search")
+
   let newTitle = "";
   let newURL = "/" + id;
   if ("undefined" !== typeof history.pushState) {
@@ -117,8 +151,11 @@ function searchUser(id, name) {
     $.id("[container]-search@template.pre_search_view"),
     {
       user: name,
+      id: id,
     }
   );
+
+  ElapseTimer();
   AnimateSparkle();
   FetchAndShowContent(id);
 }

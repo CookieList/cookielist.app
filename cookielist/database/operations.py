@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 import numpy
 from numpy.typing import NDArray
+import orjson
 from rich import progress
 
 from cookielist.assets import asset
@@ -68,23 +69,30 @@ class DataBaseOperations:
             progress.TimeRemainingColumn(),
             refresh_per_second=1 / 8 if env.bool("GITHUB_ACTIONS", False) else 10,
         )
-        last_al_page = self.anilist.estimate_end_page_of_query(
-            "LastPageEstimate", "page"
-        )
+        
+        last_al_page = env.int("DATABASE_LAST_PAGE_ESTIMATE", None)
+        if last_al_page is None:
+            last_al_page = self.anilist.estimate_end_page_of_query(
+                "LastPageEstimate", "page"
+            )
 
         with progress_bar as pbar:
             for page in pbar.track(range(1, int(last_al_page / 6) + 1)):
                 factor = (page - 1) * 6
-                _response = self.anilist.query(
-                    "DatabaseInfo",
-                    sort="ID",
-                    _page_1st=factor + 1,
-                    _page_2nd=factor + 2,
-                    _page_3rd=factor + 3,
-                    _page_4th=factor + 4,
-                    _page_5th=factor + 5,
-                    _page_6th=factor + 6,
-                )
+                artifact = env.path("COOKIELIST_STATE_FOLDER").joinpath(".prefetch", f"database.fetch.{page}.json")
+                if artifact.exists():
+                    _response = orjson.loads(artifact.read_bytes())
+                else:
+                    _response = self.anilist.query(
+                        "DatabaseInfo",
+                        sort="ID",
+                        _page_1st=factor + 1,
+                        _page_2nd=factor + 2,
+                        _page_3rd=factor + 3,
+                        _page_4th=factor + 4,
+                        _page_5th=factor + 5,
+                        _page_6th=factor + 6,
+                    )
                 response = (
                     _response["_page_1st"]["media"]
                     + _response["_page_2nd"]["media"]
@@ -100,10 +108,6 @@ class DataBaseOperations:
                     )
                 )
                 media.extend(parsed)
-
-                if not _response["_page_6th"]["pageInfo"]["hasNextPage"]:
-                    pbar.stop()
-                    break
         return numpy.asarray(media, dtype="object")
 
     @staticmethod

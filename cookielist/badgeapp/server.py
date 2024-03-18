@@ -2,7 +2,7 @@ from io import BytesIO
 from time import time
 
 import flask_compress
-from flask import Flask, abort, request, send_file, g
+from flask import Flask, abort, request, send_file, g, redirect
 from flask_cors import CORS
 from cookielist.utils import WebAppLogger
 
@@ -10,6 +10,7 @@ from cookielist.badgeapp.model import CookielistBadge, db
 from cookielist.badgeapp.response import ResponseFormats
 from cookielist.environment import env
 from cookielist.utils import JsonToken
+from cookielist.assets import asset
 
 app = Flask(__name__)
 app.config["COMPRESS_MIMETYPES"] = [
@@ -20,12 +21,15 @@ app.config["COMPRESS_MIMETYPES"] = [
     "text/html",
 ]
 app.config["COMPRESS_BR_LEVEL"] = 10
-app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
+app.config["SQLALCHEMY_POOL_RECYCLE"] = 280
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 280}
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["FLASK_DEBUG"] = env.bool("FLASK_DEBUG")
 
 if env.bool("COOKIELIST_USE_MYSQL"):
-    pa_user = env.string('USER', env.string("PA_MYSQL_USERNAME", env.string("PA_USERNAME")))
+    pa_user = env.string(
+        "USER", env.string("PA_MYSQL_USERNAME", env.string("PA_USERNAME"))
+    )
     app.config["SQLALCHEMY_DATABASE_URI"] = (
         f"mysql+mysqlconnector://{pa_user}:{env.string('PA_MYSQL_PASSWORD')}@{pa_user}.mysql.pythonanywhere-services.com/{pa_user}$default"
     )
@@ -41,6 +45,8 @@ CORS(app)
 response = ResponseFormats()
 
 with app.app_context():
+    if env.bool("COOKIELIST_DEBUG"):
+        db.drop_all()
     db.create_all()
 
 
@@ -104,6 +110,21 @@ def post(id: int):
         "id": id,
         "success": True,
     }
+
+
+@app.route("/favicon.ico")
+def favicon_ico():
+    return send_file(asset.path("favicon.ico"), max_age=2 * 24 * 60 * 60)
+
+
+@app.route("/robots.txt")
+def robots_txt():
+    return "User-agent: *\nDisallow: /"
+
+
+@app.route("/")
+def base_return():
+    return redirect(env.string("COOKIELIST_SITE_URL"))
 
 
 @app.before_request

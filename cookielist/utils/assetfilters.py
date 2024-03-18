@@ -31,9 +31,9 @@ _webapp = pathlib.Path(__file__).parent.parent.joinpath("webapp").resolve()
 
 class WebAssetFilters:
     def __init__(self) -> None:
-        self.__tailwind = require("tailwindcss")
-        self.__postcss = require("postcss")
-        self.__sass = require("sass")
+        self.__tailwind = require("tailwindcss", "3.4.1")
+        self.__sass = require("sass", "1.69.7")
+        self.__postcss = require("postcss", "8.4.35")
 
     def sass(self, input: str):
         return self.__sass.compileString(

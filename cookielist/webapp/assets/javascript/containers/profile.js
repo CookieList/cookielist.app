@@ -32,11 +32,11 @@ function InitializeProfilePage() {
   if ($.state.__page_user_options.badgeTemplate) {
     badge_template_selection.val($.state.__page_user_options.badgeTemplate);
     changeBadgeTemplate($.state.__page_user_options.badgeTemplate);
-  } else if ($.storage("__badge_template")) {
-    var template = $.storage("__badge_template");
+  } else if ($.storage("__last_select_badge_template")) {
+    var template = $.storage("__last_select_badge_template");
     badge_template_selection.val(template);
     changeBadgeTemplate(template);
-    $.storage("__badge_template", template);
+    $.storage("__last_select_badge_template", template);
   } else {
     badge_template_selection.val($.state.cookielist.BADGE_DEFAULT);
     changeBadgeTemplate($.state.cookielist.BADGE_DEFAULT);
@@ -157,6 +157,10 @@ const custom_window_mustache_functions = {
 };
 
 function showCustomizeWindow() {
+  if ($.state.__is_badge_loading) {
+    $.notification("tell", "Please wait for the badge to be generated.");
+    return;
+  }
   $.id("[customize]-content").mustache($.id("[customize]@template.content"), {
     badge: $.state.__page_badge_data,
     options: $.state.__page_user_options,
@@ -213,8 +217,8 @@ function _delay_badge_update(fn, ms = 500) {
 
 function getCustomWindowArguments() {
   var arguments = {};
-  arguments["template"] = $.storage("__BADGE_TEMPLATE")
-    ? $.storage("__BADGE_TEMPLATE")
+  arguments["template"] = $.storage("__last_select_badge_template")
+    ? $.storage("__last_select_badge_template")
     : $.state.cookielist.BADGE_DEFAULT;
 
   $("[data-badge-argument]").each((index, element) => {
@@ -228,6 +232,9 @@ function getCustomWindowArguments() {
 
 function updateBadgeArguments() {
   let arguments = getCustomWindowArguments();
+  $.id("[customize]-content.badge_image").html(
+    $.id("[customize]@template.loading_badge").html()
+  );
   $.state.__badge_ajax_request = $.ajax({
     url: _badge_uri($.state.options.badge_template, arguments),
     method: "GET",
@@ -239,7 +246,9 @@ function updateBadgeArguments() {
     },
     success: (response) => {
       $.state.__badge_ajax_request = null;
-      $.id("[customize]-content.badge_image").attr("src", response);
+      $.id("[customize]-content.badge_image").html(
+        $("<img>").attr("src", response)
+      );
     },
   });
   UpdateCustomizeWindowSnippet(arguments);

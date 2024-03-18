@@ -9,7 +9,7 @@
       <p><code><% message %></code></p>
     </blockquote><br />
     <h5><a>This is a auto generated feedback message through {{ SITE_NAME }}</a></h5>
-    <h5><code>Version: <a>{% env 'COOKIELIST_VERSION' %}.{% env 'COOKIELIST_SUB_VERSION' %}@{{ COOKIEDB_VERSION }}</a></code></h5>
+    <h5><code>Version: <a>{{ env.string('COOKIELIST_VERSION') }}.{{ env.string('COOKIELIST_SUB_VERSION') }}@{{ COOKIEDB_VERSION }}</a></code></h5>
   </center>
 </template>
 
@@ -52,7 +52,7 @@
     <p class="text-slate-500 dark:text-slate-400">If you have any inquiries or have identified any technical issues within {{ SITE_NAME }}, or if you are encountering inaccuracies in the generated results, kindly utilize this page to communicate your observations and concerns.</p>
     <p class="my-2 text-slate-400 dark:text-slate-600">Read <a href="https://anilist.co/forum/thread/14" class="underline text-sky-300 dark:text-sky-500" target="_blank">guidelines</a> before sending.</p>
 
-    <p id="[container]-feedback.message_returned_badge" class="flex flex-col w-full my-2 text-slate-500"><span class="hidden text-rose-400 dark:text-rose-500" id="[container]-feedback.message_returned_badge.not_logged_in">Login from the settings menu, before using this feature or contact me at <a class="italic font-bold text-rose-500 dark:text-rose-600" href="https://anilist.co/user/{% env 'ANILIST_DEV_ID' %}" target="_blank">AniList@{% env 'ANILIST_DEV_ID' %}</a>.</span></p>
+    <p id="[container]-feedback.message_returned_badge" class="flex flex-col w-full my-2 text-slate-500"><span class="hidden text-rose-400 dark:text-rose-500" id="[container]-feedback.message_returned_badge.not_logged_in">Login from the settings menu, before using this feature or contact me at <a class="italic font-bold text-rose-500 dark:text-rose-600" href="https://anilist.co/user/{{ env.int('ANILIST_DEV_ID') }}" target="_blank">AniList@{{ env.int('ANILIST_DEV_ID') }}</a>.</span></p>
 
     <div class="hidden p-4 mt-2 border-2 border-dashed rounded mb-9 bg-slate-100 dark:bg-slate-800 dark:border-slate-700" id="[container]-feedback.feedback_history">
       <div class="flex justify-center p-3 mx-12 mb-3 border rounded-lg grow-0 bg-slate-50 border-slate-500 dark:bg-slate-700 dark:border-slate-600">

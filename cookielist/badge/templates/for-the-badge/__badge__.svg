@@ -88,7 +88,7 @@
 
     <g font-family="{{ _.font }}" font-size="{{ _.font_size }}" text-rendering="geometricPrecision">
         {% if _.show_avatar == 'true' %}
-        <image x="{{ margin }}" y="{{ (badge_height - avatar_size) / 2 }}" width="{{ avatar_size }}" height="{{ avatar_size }}" xlink:href="{{ _.anilist_avatar_base_64 }}" />
+        <image x="{{ margin }}" y="{{ (badge_height - avatar_size) / 2 }}" width="{{ avatar_size }}" height="{{ avatar_size }}" xlink:href="{{ _.anilist_avatar_base_64() }}" />
         {% endif %}
         <text x="{{ (margin * 2) + avatar_size }}" y="{{ _.font_top_margin }}" class="font-left">{{ username }}</text>
         
