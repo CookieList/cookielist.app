@@ -112,6 +112,8 @@ if [ $? -eq 0 ]; then
             echo -e "${CYAN}Info:${NC} Dependencies Installed Successfully."
         else
             echo -e "${RED}Error:${NC} Failed To Install Dependencies."
+            echo -e "${RED}Error:${NC} Terminated Setup."
+            exit 1
         fi
         
         if [ "$DEV_VERSION" == "true" ]; then
@@ -122,6 +124,8 @@ if [ $? -eq 0 ]; then
                     echo -e "${CYAN}Info:${NC} Dev Dependencies Installed Successfully."
                 else
                     echo -e "${RED}Error:${NC} Failed To Install Dev Dependencies."
+                    echo -e "${RED}Error:${NC} Terminated Setup."
+                    exit 1
                 fi
             else
                 echo -e "${YELLOW}Warning:${NC} No requirements.dev.txt Found In The Repository."
