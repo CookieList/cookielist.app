@@ -45,7 +45,7 @@ if [ -z "$COOKIELIST_APP" ]; then
     read COOKIELIST_APP
 fi
 
-if [[ -d $DIRECTORY && -n "$(ls -A $DIRECTORY)" ]]; then
+if [[ -d "$DIRECTORY" && -n "$(ls -A "$DIRECTORY")" ]]; then
     CHOICE=$4
     if [ -z "$CHOICE" ]; then
         echo -e "${YELLOW}Warning:${NC} Current Directory Is Not Empty."
@@ -56,7 +56,7 @@ if [[ -d $DIRECTORY && -n "$(ls -A $DIRECTORY)" ]]; then
     case $CHOICE in
         "YES" | "yes" | "Yes" | "Y" | "y")
             echo -e "${CYAN}Info:${NC} Clearing Curret Directory."
-            find $DIRECTORY -mindepth 1 -exec rm -rf -- {} +
+            find "$DIRECTORY" -mindepth 1 -exec rm -rf -- {} +
             if [ $? -eq 0 ]; then
                 echo -e "${CYAN}Info:${NC} Curret Directory Cleared Successfully"
             else
@@ -100,13 +100,13 @@ if [ -z "$DOTENV_KEY" ]; then
     read DOTENV_KEY
 fi
 
-git clone --branch $BRANCH "https://github.com/$REPOSITORY.git" $DIRECTORY
+git clone --branch $BRANCH "https://github.com/$REPOSITORY.git" "$DIRECTORY"
 
 if [ $? -eq 0 ]; then
     echo -e "${CYAN}Info:${NC} Cloned Repository 'https://github.com/$REPOSITORY.git' ($BRANCH) At '$DIRECTORY'"
     
     if [ -f "$DIRECTORY/requirements.txt" ]; then
-        python -m pip install --no-cache-dir -r $DIRECTORY/requirements.txt
+        python -m pip install --no-cache-dir -r "$DIRECTORY/requirements.txt"
         
         if [ $? -eq 0 ]; then
             echo -e "${CYAN}Info:${NC} Dependencies Installed Successfully."
@@ -115,15 +115,17 @@ if [ $? -eq 0 ]; then
         fi
         
         if [ "$DEV_VERSION" == "true" ]; then
-            python -m pip install --no-cache-dir -r $DIRECTORY/requirements.dev.txt
-            
-            if [ $? -eq 0 ]; then
-                echo -e "${CYAN}Info:${NC} Dev Dependencies Installed Successfully."
+            if [ -f "$DIRECTORY/requirements.dev.txt" ]; then
+                python -m pip install --no-cache-dir -r "$DIRECTORY/requirements.dev.txt"
+                
+                if [ $? -eq 0 ]; then
+                    echo -e "${CYAN}Info:${NC} Dev Dependencies Installed Successfully."
+                else
+                    echo -e "${RED}Error:${NC} Failed To Install Dev Dependencies."
+                fi
             else
-                echo -e "${RED}Error:${NC} Failed To Install Dev Dependencies."
+                echo -e "${YELLOW}Warning:${NC} No requirements.dev.txt Found In The Repository."
             fi
-        else
-            echo -e "${YELLOW}Warning:${NC} No requirements.dev.txt Found In The Repository."
         fi
     else
         echo -e "${YELLOW}Warning:${NC} No requirements.txt Found In The Repository."
@@ -143,7 +145,7 @@ if [ $? -eq 0 ]; then
         echo "from cookielist.__main__ import get_app"
         echo "app = get_app('$COOKIELIST_APP')"
         echo ""
-    } > $DIRECTORY/app.py
+    } > "$DIRECTORY/app.py"
     
     echo -e "${CYAN}Info:${NC} Creating update.sh"
     {
@@ -153,13 +155,13 @@ if [ $? -eq 0 ]; then
         echo "# automatically created by setup.sh on '$(date)'."
         echo "# with the github repository https://github.com/$REPOSITORY.git ($BRANCH)"
         echo ""
-        echo "cd $DIRECTORY"
+        echo "cd \"$DIRECTORY\""
         echo "curl -L https://raw.githubusercontent.com/$REPOSITORY/$BRANCH/setup.sh | bash -s -- $REPOSITORY $BRANCH $COOKIELIST_APP yes $DEV_VERSION $DOTENV_KEY"
         echo ""
-    } > $DIRECTORY/update.sh
+    } > "$DIRECTORY/update.sh"
     
     echo -e "${CYAN}Info:${NC} Removing Unnecessary Files."
-    rm -rf $DIRECTORY/.git $DIRECTORY/.github $DIRECTORY/requirements.dev.txt $DIRECTORY/requirements.txt $DIRECTORY/setup.sh $DIRECTORY/run.sh $DIRECTORY/README.md $DIRECTORY/.gitignore # $DIRECTORY/LICENSE $DIRECTORY/docs
+    rm -rf "$DIRECTORY/.git" "$DIRECTORY/.github" "$DIRECTORY/requirements.dev.txt" "$DIRECTORY/requirements.txt" "$DIRECTORY/setup.sh" "$DIRECTORY/run.sh" "$DIRECTORY/README.md" "$DIRECTORY/.gitignore" # "$DIRECTORY/LICENSE" "$DIRECTORY/docs"
     
     echo -e "${GREEN}Success:${NC} Setup Completed Successfully."
     
