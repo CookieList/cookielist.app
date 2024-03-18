@@ -3,10 +3,11 @@
 # Bash script to setup a new CookieList project
 #
 # $1 == CookieList Repository Name (e.g. gh_username/repo_name)
-# $2 == CookieList Project App Id (e.g. cookielist-core-or-stub-app)
-# $3 == Empty Directory Warning (e.g. "Yes" or "No")
-# $4 == Is Developent version? (e.g. "Yes" or "No")
-# $5 == DotEnv Key (e.g. dotenv://:key_dotenv_project_hash_id@dotenv.org/vault/.env.vault?environment=environment_id)
+# $2 == CookieList Repository Branch (e.g. "main", "staging")
+# $3 == CookieList Project App Id (e.g. cookielist-core-or-stub-app)
+# $4 == Empty Directory Warning (e.g. "Yes" or "No")
+# $5 == Is Developent version? (e.g. "Yes" or "No")
+# $6 == DotEnv Key (e.g. dotenv://:key_dotenv_project_hash_id@dotenv.org/vault/.env.vault?environment=environment_id)
 
 
 CYAN='\033[0;36m'
@@ -28,14 +29,24 @@ if [ -z "$REPOSITORY" ]; then
     fi
 fi
 
-COOKIELIST_APP=$2
+BRANCH=$2
+if [ -z "$BRANCH" ]; then
+    DEFAULT_BRANCH="main"
+    echo -e -n "${CYAN}Enter CookieList Branch Name${NC} [${GREEN}$DEFAULT_BRANCH${NC}]: "
+    read BRANCH
+    if [ -z "$BRANCH" ]; then
+        BRANCH="$DEFAULT_BRANCH"
+    fi
+fi
+
+COOKIELIST_APP=$3
 if [ -z "$COOKIELIST_APP" ]; then
     echo -e -n "${CYAN}Enter CookieList App Id${NC}: "
     read COOKIELIST_APP
 fi
 
 if [[ -d $DIRECTORY && -n "$(ls -A $DIRECTORY)" ]]; then
-    CHOICE=$3
+    CHOICE=$4
     if [ -z "$CHOICE" ]; then
         echo -e "${YELLOW}Warning:${NC} Current Directory Is Not Empty."
         echo -e -n "${CYAN}Empty '$DIRECTORY'${NC} [${GREEN}Yes/(No)${NC}]: "
@@ -65,15 +76,15 @@ if [[ -d $DIRECTORY && -n "$(ls -A $DIRECTORY)" ]]; then
     esac
 fi
 
-DEV_VERSION=$4
+DEV_VERSION=$5
 if [ -z "$DEV_VERSION" ]; then
     echo -e -n "${CYAN}Is Dev version${NC}: "
     read DEV_VERSION
     case $DEV_VERSION in
-        "YES" | "yes" | "Yes" | "Y" | "y")
+        "YES" | "yes" | "Yes" | "Y" | "y" | "true")
             DEV_VERSION="true"
         ;;
-        "NO" | "no" | "No" | "N" | "n")
+        "NO" | "no" | "No" | "N" | "n" | "false")
             DEV_VERSION="false"
         ;;
         *)
@@ -83,16 +94,16 @@ if [ -z "$DEV_VERSION" ]; then
     esac
 fi
 
-DOTENV_KEY=$5
+DOTENV_KEY=$6
 if [ -z "$DOTENV_KEY" ]; then
     echo -e -n "${CYAN}Enter DotEnv Key${NC}: "
     read DOTENV_KEY
 fi
 
-git clone "https://github.com/$REPOSITORY.git" $DIRECTORY
+git clone --branch $BRANCH "https://github.com/$REPOSITORY.git" $DIRECTORY
 
 if [ $? -eq 0 ]; then
-    echo -e "${CYAN}Info:${NC} Cloned Repository 'https://github.com/$REPOSITORY.git' At '$(pwd)'"
+    echo -e "${CYAN}Info:${NC} Cloned Repository 'https://github.com/$REPOSITORY.git' ($BRANCH) At '$DIRECTORY'"
     
     if [ -f "$DIRECTORY/requirements.txt" ]; then
         python -m pip install --no-cache-dir -r $DIRECTORY/requirements.txt
@@ -102,19 +113,18 @@ if [ $? -eq 0 ]; then
         else
             echo -e "${RED}Error:${NC} Failed To Install Dependencies."
         fi
-
-        case $DEV_VERSION in
-            "true")
-                DEV_VERSION="true"
-            ;;
-            "false")
-                DEV_VERSION="false"
-            ;;
-            *)
-                echo -e "${RED}Error:${NC} Invalid Input, Terminated Setup."
-                exit 1
-            ;;
-    esac
+        
+        if [ "$DEV_VERSION" == "true" ]; then
+            python -m pip install --no-cache-dir -r $DIRECTORY/requirements.dev.txt
+            
+            if [ $? -eq 0 ]; then
+                echo -e "${CYAN}Info:${NC} Dev Dependencies Installed Successfully."
+            else
+                echo -e "${RED}Error:${NC} Failed To Install Dev Dependencies."
+            fi
+        else
+            echo -e "${YELLOW}Warning:${NC} No requirements.dev.txt Found In The Repository."
+        fi
     else
         echo -e "${YELLOW}Warning:${NC} No requirements.txt Found In The Repository."
     fi
@@ -125,7 +135,7 @@ if [ $? -eq 0 ]; then
         echo ""
         echo "# This file is part of the 'CookieList' project."
         echo "# automatically created by setup.sh on '$(date)'."
-        echo "# with the github repository https://github.com/$REPOSITORY.git"
+        echo "# with the github repository https://github.com/$REPOSITORY.git ($BRANCH)"
         echo ""
         echo "import os"
         echo "os.environ['DOTENV_KEY'] = '$DOTENV_KEY'"
@@ -134,17 +144,17 @@ if [ $? -eq 0 ]; then
         echo "app = get_app('$COOKIELIST_APP')"
         echo ""
     } > $DIRECTORY/app.py
-
+    
     echo -e "${CYAN}Info:${NC} Creating update.sh"
     {
         echo "#!/usr/bin/env bash"
         echo ""
         echo "# This file is part of the 'CookieList' project."
         echo "# automatically created by setup.sh on '$(date)'."
-        echo "# with the github repository https://github.com/$REPOSITORY.git"
+        echo "# with the github repository https://github.com/$REPOSITORY.git ($BRANCH)"
         echo ""
         echo "cd $DIRECTORY"
-        echo "curl -L https://raw.githubusercontent.com/$REPOSITORY/main/setup.sh | bash -s -- $REPOSITORY $COOKIELIST_APP yes $DOTENV_KEY"
+        echo "curl -L https://raw.githubusercontent.com/$REPOSITORY/$BRANCH/setup.sh | bash -s -- $REPOSITORY $BRANCH $COOKIELIST_APP yes $DEV_VERSION $DOTENV_KEY"
         echo ""
     } > $DIRECTORY/update.sh
     
