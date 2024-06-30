@@ -62,6 +62,7 @@ if env.bool("FLASK_DEBUG"):
     app.config["TEMPLATES_AUTO_RELOAD"] = True
     app.config["DEBUG_TB_PROFILER_ENABLED"] = True
     app.config["DEBUG_TB_TEMPLATE_EDITOR_ENABLED"] = True
+    app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
 else:
     app.config["SEND_FILE_MAX_AGE_DEFAULT"] = datetime.timedelta(days=7)
 
