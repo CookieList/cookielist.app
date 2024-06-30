@@ -347,16 +347,16 @@ jobs:
           path: |
             ./**
 
-  cleanup:
-    name: Cleanup Artifacts
-    needs: publish
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Git
-        uses: actions/checkout@v4
+  # cleanup:
+  #   name: Cleanup Artifacts
+  #   needs: publish
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Git
+  #       uses: actions/checkout@v4
 
-      - name: Remove Pre-fetch data
-        uses: geekyeggo/delete-artifact@v4
-        with:
-            name: prefetch-*
-            failOnError: false
+  #     - name: Remove Pre-fetch data
+  #       uses: geekyeggo/delete-artifact@v4
+  #       with:
+  #           name: prefetch-*
+  #           failOnError: false
